@@ -26,8 +26,8 @@ public class Game implements Runnable {
 	}
 
 	private void initClasses() {
-		player = new Player(200, 200);
-	}
+		player = new Player(0, 750 );
+	} //750 == ground level
 
 	private void startGameLoop(){
 		gameThread = new Thread(this);

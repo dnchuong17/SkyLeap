@@ -21,7 +21,7 @@ public class Player extends Entity{
 
     // Charging Jump attributes
     private boolean isJumping = false;
-    private boolean isChargingJump;
+    public boolean isChargingJump;
     private long chargeStartTime;
     private final int maxChargeTime = 2000; // 2000 millisecond = 2 seconds
     private final int baseJumpStrength = -10;
@@ -111,7 +111,9 @@ public class Player extends Entity{
 
         if(isMoving){
             playerAction = RUNNING;
-        } else playerAction = IDLE;
+        } else if(isChargingJump && !isJumping){
+            playerAction = CHARGING;
+        }else playerAction = IDLE;
 
         if(startAnimation != playerAction) {
             resetAnimationTick();
