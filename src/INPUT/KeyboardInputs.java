@@ -24,6 +24,10 @@ public class KeyboardInputs implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		switch (e.getKeyCode()) {
+			case KeyEvent.VK_SPACE:
+				System.out.println("Jump released");
+				gamePanel.getGame().getPlayer().executeJump();
+				break;
 			case KeyEvent.VK_W:
 				gamePanel.getGame().getPlayer().setUp(false);
 				break;
@@ -43,6 +47,10 @@ public class KeyboardInputs implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		switch (e.getKeyCode()) {
+			case KeyEvent.VK_SPACE:
+				System.out.println("Jump charging");
+				gamePanel.getGame().getPlayer().startCharging();
+				break;
 			case KeyEvent.VK_W:
 				gamePanel.getGame().getPlayer().setUp(true);
 				break;
