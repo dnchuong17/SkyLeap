@@ -18,8 +18,6 @@ public class Constants {
         public static final int FAILING = 4;
 
 
-
-
         public static int GetSpriteAmounts(int player_action ) {
             switch (player_action) {
                     case RUNNING: return 4;

@@ -1,5 +1,7 @@
 package entities;
 
+import utilz.LoadSave;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -8,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
+import static main.Game.GAME_HEIGHT;
 import static utilz.Constants.PlayerConstants.*;
 
 public class Player extends Entity{
@@ -17,15 +20,15 @@ public class Player extends Entity{
     private float verticalVelocity = 0; //thay doi boi gravity & suc nhay cua character
     private float horizontalVelocity = 1.5f*playerSpeed;
     private float gravity = 0.3f;
-    private int groundLevel = 1050 - 300;
+    private int groundLevel = GAME_HEIGHT - 96; // 96 is the height of the player sprite    //ground level = 544
 
     // Charging Jump attributes
     private boolean isJumping = false;
     private boolean isChargingJump;
     private long chargeStartTime;
     private final int maxChargeTime = 2000; // 2000 millisecond = 2 seconds
-    private final int baseJumpStrength = -10;
-    private final int maxJumpStrength = -20;
+    private final float baseJumpStrength = -7.5f;
+    private final float maxJumpStrength = -15.0f;
     //private float jumpSpeed = 10.0f; // Speed at which the player jumps                      //old jump variable for old jump method
     //private double jumpAngle = 45.0; // Angle in degrees
 
@@ -36,8 +39,8 @@ public class Player extends Entity{
     private boolean left, up, right, down;
 
 
-    public Player(float startX, float startY) {
-        super(startX, startY);
+    public Player(float startX, float startY, int width , int height) throws IOException {
+        super(startX, startY, width, height);
         loadAnimation();
     }
 
@@ -164,7 +167,7 @@ public class Player extends Entity{
         }
     }
 
-    private void loadAnimation() {
+    private void loadAnimation() throws IOException {
         /*InputStream is = getClass().getResourceAsStream("/Player/maincharacter.png");  // old way of loading image
         try {
             BufferedImage img = ImageIO.read(is);
@@ -183,8 +186,7 @@ public class Player extends Entity{
             } catch(IOException e){
                 e.printStackTrace();
             }
-        }*/
-        // new way of loading the player sprite sheet
+        }
         InputStream is = getClass().getResourceAsStream("/Player/maincharacter.png");
         try {
             BufferedImage img = ImageIO.read(is);
@@ -203,6 +205,13 @@ public class Player extends Entity{
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }*/
+        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.PLAYER_PATH);
+        animations = new BufferedImage[5][4]; // 5 actions, 4 frames each
+        for (int i = 0; i < animations.length; i++) {
+            for (int j = 0; j < animations[i].length; j++) {
+                animations[i][j] = img.getSubimage(j * 46, i * 48, 48, 48);
             }
         }
     }

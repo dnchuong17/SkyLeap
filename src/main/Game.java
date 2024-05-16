@@ -1,8 +1,10 @@
 package main;
 
+import Levels.LevelsManager;
 import entities.Player;
 
 import java.awt.*;
+import java.io.IOException;
 
 
 public class Game implements Runnable {
@@ -14,19 +16,26 @@ public class Game implements Runnable {
 	private final int UPS = 200;
 
 	private Player player;
+	private LevelsManager levelsManager;
 
-	public Game() {
+	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS
+	public static final float TILE_SCALE= 2.0f;
+	public static final int TILE_IN_WIDTH = 26;    // 30
+	public static final int TILE_IN_HEIGHT = 14;	//20
+	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * TILE_SCALE);
+	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
+	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
+	public Game() throws IOException {
 		initClasses();
 		gamePanel = new GamePanel(this);
 		gameWindow = new GameWindow(gamePanel);
 		gamePanel.requestFocus();
-
 		startGameLoop();
-
 	}
 
-	private void initClasses() {
-		player = new Player(200, 200);
+	private void initClasses() throws IOException {
+		player = new Player(200, 200, 32,32);
+		levelsManager = new LevelsManager(this);
 	}
 
 	private void startGameLoop(){
@@ -36,11 +45,12 @@ public class Game implements Runnable {
 
 
 	public void update(){
-
+		levelsManager.update();
 		player.update();
 	}
 
 	public void render(Graphics g){
+		levelsManager.render(g);
 		player.render(g);
 	}
 
