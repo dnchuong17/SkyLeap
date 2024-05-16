@@ -30,11 +30,9 @@ public class GamePanel extends JPanel {
 
 
 	private void setPanelSize() {
-		Dimension size = new Dimension(1160, 600);
+		Dimension size = new Dimension(1680, 1050);
 		setPreferredSize(size);
 	}
-
-
 
 
 
