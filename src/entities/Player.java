@@ -53,28 +53,11 @@ public class Player extends Entity{
 
     public void loadLevelData(int[][] levelData) {
         this.levelData = levelData;
+        if(!IsEntityOnGround(hitBox, levelData)){
+            isInAir = true;
+        }
     }
 
-    /* Start charging the jump
-    public void startCharging() {
-        if (!isJumping && !isChargingJump) {
-            isChargingJump = true;
-            chargeStartTime = System.currentTimeMillis();
-        }
-    }
-    // Execute the jump
-    public void executeJump() {
-        if (isChargingJump) {
-            isChargingJump = false;
-            long chargeTime = Math.min(System.currentTimeMillis() - chargeStartTime, maxChargeTime);
-            System.out.println("Charge time: " + chargeTime);
-            double chargeRatio = (double) chargeTime / maxChargeTime;
-            System.out.println("Charge ratio: " + chargeRatio);
-            verticalVelocity = baseJumpStrength + (int)(chargeRatio * (maxJumpStrength - baseJumpStrength));
-            System.out.println("Jump strength: " + verticalVelocity);
-            isJumping = true;
-        }
-    }*/
     private void updateJumpState() {
         if(isInAir){return;}
         isInAir = true;
@@ -87,7 +70,7 @@ public class Player extends Entity{
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int)(hitBox.x), (int)(hitBox.y), 96, 96, null);
+        g.drawImage(animations[playerAction][animationIndex], (int)(hitBox.x - xDrawOffset), (int)(hitBox.y - yDrawOffset), 96, 96, null);
         renderHitBox(g); // for debugging
     }
 
@@ -119,7 +102,7 @@ public class Player extends Entity{
         animationIndex = 0;
     }
 
-    private void updatePosition() {   //update position of player only on x axi
+    private void updatePosition() {   //update position of player only on x axis
         isMoving = false;
         if(jump){
             updateJumpState();
@@ -204,9 +187,29 @@ public class Player extends Entity{
         this.right = right;
     }
     public boolean isJumping() {
-        return down;
+        return jump;
     }
     public void setJumping(boolean jumping) {
         this.jump = jumping;
     }
 }
+/* Start charging the jump
+    public void startCharging() {
+        if (!isJumping && !isChargingJump) {
+            isChargingJump = true;
+            chargeStartTime = System.currentTimeMillis();
+        }
+    }
+    // Execute the jump
+    public void executeJump() {
+        if (isChargingJump) {
+            isChargingJump = false;
+            long chargeTime = Math.min(System.currentTimeMillis() - chargeStartTime, maxChargeTime);
+            System.out.println("Charge time: " + chargeTime);
+            double chargeRatio = (double) chargeTime / maxChargeTime;
+            System.out.println("Charge ratio: " + chargeRatio);
+            verticalVelocity = baseJumpStrength + (int)(chargeRatio * (maxJumpStrength - baseJumpStrength));
+            System.out.println("Jump strength: " + verticalVelocity);
+            isJumping = true;
+        }
+    }*/
