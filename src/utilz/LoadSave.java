@@ -32,24 +32,6 @@ public class LoadSave {
         return img;
     }
 
-    public static int[][] getLevelData(String filePath) throws IOException {
-        BufferedImage img = getSpriteAtlas(filePath);
-        int[][] levelData = new int[img.getHeight()][img.getWidth()];
-        for (int y = 0; y < img.getHeight(); y++) {
-            for (int x = 0; x < img.getWidth(); x++) {
-                int pixel = img.getRGB(x, y);
-                int red = (pixel >> 16) & 0xff;
-                int green = (pixel >> 8) & 0xff;
-                int blue = (pixel) & 0xff;
-                if (red == 0 && green == 0 && blue == 0) {
-                    levelData[y][x] = 0;
-                } else {
-                    levelData[y][x] = 1;
-                }
-            }
-        }
-        return levelData;
-    }
     public static int[][] getLevelData() throws IOException {
         int[][] levelData = new int[Game.TILE_IN_HEIGHT][Game.TILE_IN_WIDTH];
         BufferedImage img = getSpriteAtlas(LEVEL_TEST);

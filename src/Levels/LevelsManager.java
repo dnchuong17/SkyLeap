@@ -42,4 +42,7 @@ public class LevelsManager {
     public void update(){
 
     }
+    public Level getCurentLevel() {
+        return levelTest;
+    }
 }

@@ -19,10 +19,10 @@ public class Game implements Runnable {
 	private LevelsManager levelsManager;
 
 	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS
-	public static final float TILE_SCALE= 2.0f;
+	public static final float SCALE= 2.0f;
 	public static final int TILE_IN_WIDTH = 26;    // 30
 	public static final int TILE_IN_HEIGHT = 14;	//20
-	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * TILE_SCALE);
+	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
 	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
 	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
 	public Game() throws IOException {
@@ -34,8 +34,9 @@ public class Game implements Runnable {
 	}
 
 	private void initClasses() throws IOException {
-		player = new Player(200, 200, 32,32);
 		levelsManager = new LevelsManager(this);
+		player = new Player(200, 200, 96,96);
+		player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
 	}
 
 	private void startGameLoop(){
