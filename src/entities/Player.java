@@ -113,6 +113,8 @@ public class Player extends Entity{
             playerAction = RUNNING;
         } else if(isChargingJump && !isJumping){
             playerAction = CHARGING;
+        } else if(isJumping){
+            playerAction = JUMPING;
         }else playerAction = IDLE;
 
         if(startAnimation != playerAction) {
@@ -187,13 +189,13 @@ public class Player extends Entity{
             }
         }*/
         // new way of loading the player sprite sheet
-        InputStream is = getClass().getResourceAsStream("/Player/maincharacter.png");
+        InputStream is = getClass().getResourceAsStream("/Player/maincharacter1.png");
         try {
             BufferedImage img = ImageIO.read(is);
             animations = new BufferedImage[5][4]; // 5 actions, 4 frames each
             for (int i = 0; i < animations.length; i++) {
                 for (int j = 0; j < animations[i].length; j++) {
-                    animations[i][j] = img.getSubimage(j * 46, i * 48, 48, 48);
+                    animations[i][j] = img.getSubimage(j * 31, i * 32, 32, 32);
                 }
             }
         } catch (IOException e) {
