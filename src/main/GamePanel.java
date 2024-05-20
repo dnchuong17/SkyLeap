@@ -9,6 +9,8 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import static main.Game.GAME_HEIGHT;
+import static main.Game.GAME_WIDTH;
 import static utilz.Constants.PlayerConstants.*;
 import static utilz.Constants.Directions.*;
 
@@ -30,11 +32,10 @@ public class GamePanel extends JPanel {
 
 
 	private void setPanelSize() {
-		Dimension size = new Dimension(1160, 600);
+		Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
 		setPreferredSize(size);
+		System.out.println("GamePanel size set to: " + GAME_WIDTH + "x" + GAME_HEIGHT);
 	}
-
-
 
 
 
