@@ -42,6 +42,11 @@ public class LevelsManager {
     public void update(){
 
     }
+
+    public void draw(Graphics g){
+
+    }
+
     public Level getCurentLevel() {
         return levelTest;
     }
