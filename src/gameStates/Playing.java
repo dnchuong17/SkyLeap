@@ -9,77 +9,96 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class Playing extends State implements stateMethods{
-    private Player player;
-    private LevelsManager levelsManager;
+public class Playing extends State implements Statemethods {
+	private Player player;
+	private LevelsManager levelManager;
 
-    public Playing(Game game) throws IOException {
-        super(game);
-        initClasses();
-    }
+	public Playing(Game game) throws IOException {
+		super(game);
+		initClasses();
+	}
 
-    private void initClasses() throws IOException {
-        levelsManager = new LevelsManager(game);
-        player = new Player(200, 200, 96,96);
-        player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
-    }
+	private void initClasses() throws IOException {
+		levelManager = new LevelsManager(game);
+		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
+		player.loadLevelData(levelManager.getCurentLevel().getLevelData());
 
+	}
 
-    public void windowFocusLost(){
-        player.resetDirBooleans();
-    }
-    public Player getPlayer() {
-        return player;
-    }
+	@Override
+	public void update() {
+		levelManager.update();
+		player.update();
 
-    @Override
-    public void update() {
-        levelsManager.update();
-        player.update();
-    }
+	}
 
-    @Override
-    public void draw(Graphics g) {
-        levelsManager.draw(g);
-        player.render(g);
-    }
-    @Override
-    public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_SPACE:
-                System.out.println("Jump charging");
-                player.setJumping(true);
-                break;
-            case KeyEvent.VK_W:
-                player.setUp(true);
-                break;
-            case KeyEvent.VK_A:
-                player.setLeft(true);
-                break;
-            case KeyEvent.VK_D:
-                player.setRight(true);
-                break;
-        }
+	@Override
+	public void draw(Graphics g) {
+		levelManager.draw(g);
+		player.render(g);
 
-    }
+	}
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_SPACE:
-                System.out.println("Jump released");
-                player.setJumping(false);
-                break;
-            case KeyEvent.VK_W:
-                player.setUp(false);
-                break;
-            case KeyEvent.VK_A:
-                player.setLeft(false);
-                break;
-            case KeyEvent.VK_D:
-                player.setRight(false);
-                break;
-        }
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
 
-    }
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_SPACE:
+				System.out.println("Jump charging");
+				player.setJumping(true);
+				break;
+			case KeyEvent.VK_A:
+				player.setLeft(true);
+				break;
+			case KeyEvent.VK_D:
+				player.setRight(true);
+				break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_A:
+			player.setLeft(false);
+			break;
+		case KeyEvent.VK_D:
+			player.setRight(false);
+			break;
+		case KeyEvent.VK_SPACE:
+			player.setJumping(false);
+			break;
+		}
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void windowFocusLost() {
+		player.resetDirBooleans();
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
 }
