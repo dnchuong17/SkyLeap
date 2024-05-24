@@ -29,6 +29,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			case PLAYING:
 				gamePanel.getGame().getPlaying().mouseMoved(e);
 				break;
+			case OPTION:
+				gamePanel.getGame().getOption().mouseMoved(e);
+				break;
 			default:
 				break;
 
@@ -56,6 +59,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			case PLAYING:
 				gamePanel.getGame().getPlaying().mousePressed(e);
 				break;
+			case OPTION:
+				gamePanel.getGame().getOption().mousePressed(e);
+				break;
 			default:
 				break;
 
@@ -70,6 +76,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 				break;
 			case PLAYING:
 				gamePanel.getGame().getPlaying().mouseReleased(e);
+				break;
+			case OPTION:
+				gamePanel.getGame().getOption().mouseReleased(e);
 				break;
 			default:
 				break;

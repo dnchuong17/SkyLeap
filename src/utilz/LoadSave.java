@@ -14,6 +14,7 @@ public class LoadSave {
     public static final String LEVEL_TEST = "/backgrounds/level_one_data.png"; // test level
     public static final String MENU_BUTTONS = "/backgrounds/button_atlas.png";
     public static final String MENU_BACKGROUND = "/backgrounds/menu_background.png";
+    public static final String HELP_IMAGE = "/backgrounds/menu_background.png";
 
 
     public static BufferedImage getSpriteAtlas(String filePath) throws IOException {

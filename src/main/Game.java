@@ -2,6 +2,7 @@ package main;
 
 import gameStates.Gamestate;
 import gameStates.Menu;
+import gameStates.Option;
 import gameStates.Playing;
 
 import java.awt.*;
@@ -18,6 +19,7 @@ public class Game implements Runnable {
 
 	private Playing playing;
 	private Menu menu;
+	private Option option;
 
 	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS
 	public static final float SCALE= 2.0f;
@@ -37,6 +39,7 @@ public class Game implements Runnable {
 	private void initClasses() throws IOException {
 		menu = new Menu(this);
 		playing = new Playing(this);
+		option = new Option(this);
 	}
 
 	private void startGameLoop(){
@@ -54,6 +57,8 @@ public class Game implements Runnable {
 				playing.update();
 				break;
 			case OPTION:
+				option.update();
+				break;
 			case QUIT:
 			default:
 				System.exit(0);
@@ -70,6 +75,8 @@ public class Game implements Runnable {
 			case PLAYING:
 				playing.draw(g);
 				break;
+			case OPTION:
+				option.draw(g);
 			default:
 				break;
 		}
@@ -127,5 +134,9 @@ public class Game implements Runnable {
 	}
 	public Playing getPlaying() {
 		return playing;
+	}
+
+	public Option getOption(){
+		return option;
 	}
 }
