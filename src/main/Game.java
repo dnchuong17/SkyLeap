@@ -17,6 +17,7 @@ public class Game implements Runnable {
 	private final int FPS = 120;
 	private final int UPS = 200;
 
+
 	private Playing playing;
 	private Menu menu;
 	private Option option;
