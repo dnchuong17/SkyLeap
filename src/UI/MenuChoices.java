@@ -14,12 +14,14 @@ public class MenuChoices {
     private int yPos;
     private int rowIndex;
     private int index;
-    private int xOffsetCenter = B_WIDTH/ 2;
+    private int xOffsetCenter = B_WIDTH / 2;
     private Gamestate state;
     private BufferedImage[] imgs;
     private boolean mouseOver;
     private boolean mousePressed;
     private Rectangle bounds;
+
+    private boolean keyPressed, keyOver;
 
     public MenuChoices(int xPos, int yPos, int rowIndex, Gamestate state) throws IOException {
         this.xPos = xPos;
@@ -35,30 +37,27 @@ public class MenuChoices {
     }
 
     private void loadImgs() throws IOException {
-        this.imgs = new BufferedImage[3];
+        imgs = new BufferedImage[3];
         BufferedImage temp = LoadSave.getSpriteAtlas(LoadSave.MENU_BUTTONS);
 
-        for(int i = 0; i < this.imgs.length; ++i) {
-            this.imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT, B_HEIGHT_DEFAULT);
-
+        for (int i = 0; i < 3; i++) {
+           imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT, B_HEIGHT_DEFAULT);
         }
+    }
 
+    public void update(int choice) {
+        if (choice == rowIndex) {
+            if (keyPressed) {
+                index = 2;
+            }
+            else
+                index = 1;
+        }
+        else index = 0;
     }
 
     public void draw(Graphics g) {
         g.drawImage(imgs[index], xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT, null);
-    }
-
-    public void update() {
-        this.index = 0;
-        if (this.mouseOver) {
-            this.index = 1;
-        }
-
-        if (this.mousePressed) {
-            this.index = 2;
-        }
-
     }
 
     public boolean isMouseOver() {
@@ -85,8 +84,29 @@ public class MenuChoices {
         Gamestate.state = this.state;
     }
 
+    public boolean isKeyPressed() {
+        return keyPressed;
+    }
+
+    public void setKeyPressed(boolean keyPressed) {
+        this.keyPressed = keyPressed;
+    }
+
+    public boolean isKeyOver() {
+        return keyOver;
+    }
+
+    public void setKeyOver(boolean keyOver) {
+        this.keyOver = keyOver;
+    }
+
     public void resetBools() {
         this.mouseOver = false;
         this.mousePressed = false;
+
+        this.keyOver = false;
+        this.keyPressed = false;
     }
+
+
 }

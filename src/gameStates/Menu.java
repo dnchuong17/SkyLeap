@@ -13,7 +13,10 @@ import java.io.IOException;
 public class Menu extends State implements Statemethods {
 	private MenuChoices[] buttons = new MenuChoices[3];
 	private BufferedImage bgImage;
-	private int menuX, menuY, menuWidth, menuHeight;
+	private int menuX, menuY, menuWidth, menuHeight, index, rowIndex;
+	private int choice = 0;
+
+	private boolean keyOver, keyPressed;
 
 	public Menu(Game game) throws IOException {
 		super(game);
@@ -35,11 +38,11 @@ public class Menu extends State implements Statemethods {
 		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 1, Gamestate.OPTION);
 		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (290 * Game.SCALE), 2, Gamestate.QUIT);
 	}
-
+//test choice
 	@Override
 	public void update() {
 		for (MenuChoices mb : buttons)
-			mb.update();
+			mb.update(choice);
 	}
 
 	@Override
@@ -58,47 +61,57 @@ public class Menu extends State implements Statemethods {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		for (MenuChoices mb : buttons) {
-			if (isIn(e, mb)) {
-				mb.setMousePressed(true);
-			}
-		}
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		for (MenuChoices mb : buttons) {
-			if (isIn(e, mb)) {
-				if (mb.isMousePressed())
-					mb.applyGamestate();
-				break;
-			}
-		}
-
-		resetButtons();
+		
 	}
-	private void resetButtons() {
-		for (MenuChoices mb : buttons)
-			mb.resetBools();
 
-	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		for (MenuChoices mb : buttons)
-			mb.setMouseOver(false);
-		for (MenuChoices mb : buttons) {
-			if (isIn(e, mb)) {
-				mb.setMouseOver(true);
-				break;
-			}
+
+	}
+
+	private void select() {
+		if (choice == 0) {
+			Gamestate.state = Gamestate.PLAYING;
+		}
+		if (choice == 1) {
+			//help
+			Gamestate.state = Gamestate.OPTION;
 
 		}
+		if (choice == 2) {
+			System.exit(0);
+		}
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		for (MenuChoices mb : buttons) {
+			if (isInKey(e, mb)) {
+				mb.setKeyPressed(true);
+			}
+		}
 
-
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			select();
+		}
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			choice--;
+			if (choice == -1) {
+				choice = buttons.length - 1;
+			}
+		}
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			choice++;
+			if (choice == buttons.length) {
+				choice = 0;
+			}
+		}
 	}
 
 	@Override
