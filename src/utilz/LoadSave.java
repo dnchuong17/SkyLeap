@@ -17,6 +17,7 @@ public class LoadSave {
     public static final String HELP_IMAGE = "/GameUI/1.png";
     public static final String PAUSE_BACKGROUND = "/GameUI/pause_menu.png";
     public static final String SOUND_BUTTONS = "/GameUI/sound_button.png";
+    public static final String URM_BUTTONS = "/GameUI/urm_buttons.png";
 
 
 
