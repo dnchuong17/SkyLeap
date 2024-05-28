@@ -1,6 +1,7 @@
 package gameStates;
 
 import Levels.LevelsManager;
+import UI.PauseOverlay;
 import entities.Player;
 import main.Game;
 
@@ -12,6 +13,8 @@ import java.io.IOException;
 public class Playing extends State implements Statemethods {
 	private Player player;
 	private LevelsManager levelManager;
+	private PauseOverlay pauseOverlay;
+	private boolean paused = true;
 
 	public Playing(Game game) throws IOException {
 		super(game);
@@ -22,6 +25,7 @@ public class Playing extends State implements Statemethods {
 		levelManager = new LevelsManager(game);
 		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
 		player.loadLevelData(levelManager.getCurentLevel().getLevelData());
+		pauseOverlay = new PauseOverlay();
 
 	}
 
@@ -29,6 +33,7 @@ public class Playing extends State implements Statemethods {
 	public void update() {
 		levelManager.update();
 		player.update();
+		pauseOverlay.update();
 
 	}
 
@@ -36,6 +41,8 @@ public class Playing extends State implements Statemethods {
 	public void draw(Graphics g) {
 		levelManager.draw(g);
 		player.render(g);
+
+		pauseOverlay.draw(g);
 
 	}
 
@@ -80,20 +87,23 @@ public class Playing extends State implements Statemethods {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (paused){
+			pauseOverlay.mousePressed(e);
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (paused){
+			pauseOverlay.mouseReleased(e);
+		}
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		if (paused){
+			pauseOverlay.mouseMoved(e);
+		}
 	}
 
 	public void windowFocusLost() {

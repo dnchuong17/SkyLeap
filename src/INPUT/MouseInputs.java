@@ -70,19 +70,19 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-//		switch (Gamestate.state) {
-//			case MENU:
-//				gamePanel.getGame().getMenu().mouseReleased(e);
-//				break;
-//			case PLAYING:
-//				gamePanel.getGame().getPlaying().mouseReleased(e);
-//				break;
-//			case OPTION:
-//				gamePanel.getGame().getOption().mouseReleased(e);
-//				break;
-//			default:
-//				break;
-//		}
+		switch (Gamestate.state) {
+			case MENU:
+				gamePanel.getGame().getMenu().mouseReleased(e);
+				break;
+			case PLAYING:
+				gamePanel.getGame().getPlaying().mouseReleased(e);
+				break;
+			case OPTION:
+				gamePanel.getGame().getOption().mouseReleased(e);
+				break;
+			default:
+				break;
+		}
 
 	}
 

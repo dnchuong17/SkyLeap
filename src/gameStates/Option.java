@@ -24,10 +24,10 @@ public class Option extends State implements Statemethods{
 
     private void loadOptionImage() throws IOException {
         optionImage = LoadSave.getSpriteAtlas(LoadSave.HELP_IMAGE);
-        optionWidth =  Game.GAME_WIDTH +80;
-        optionHeight =Game.GAME_HEIGHT +250;
-        optionX = Game.GAME_WIDTH/2 - 875;
-        optionY = (int) (Game.SCALE-250);
+        optionWidth =  Game.GAME_WIDTH;
+        optionHeight =Game.GAME_HEIGHT ;
+        optionX = Game.GAME_WIDTH/2 - 850;
+        optionY = (int) (Game.SCALE+10);
 
         helpColor = new Color(128,0,0);
         helpFont = new Font("Century Gothic", Font.PLAIN, 28);
@@ -44,8 +44,8 @@ public class Option extends State implements Statemethods{
 
         g.setColor(helpColor);
         g.setFont(helpFont);
-        g.drawString(Help1,150, Game.GAME_HEIGHT/2);
-        g.drawString(Help2,150, Game.GAME_HEIGHT/2 + 40);
+        g.drawString(Help1,280, Game.GAME_HEIGHT/2);
+        g.drawString(Help2,280, Game.GAME_HEIGHT/2 + 40);
 
 
     }

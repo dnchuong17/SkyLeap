@@ -12,9 +12,12 @@ public class LoadSave {
     public static final String PLAYER_PATH = "/Player/maincharacter.png";                                         //error
     public static final String LEVEL_ATLAS = "/backgrounds/outside_sprites.png";
     public static final String LEVEL_TEST = "/backgrounds/level_one_data.png"; // test level
-    public static final String MENU_BUTTONS = "/backgrounds/button_atlas.png";
-    public static final String MENU_BACKGROUND = "/backgrounds/menu_background.png";
-    public static final String HELP_IMAGE = "/backgrounds/menu_background.png";
+    public static final String MENU_BUTTONS = "/GameUI/button_atlas.png";
+    public static final String MENU_BACKGROUND = "/GameUI/menu_background.png";
+    public static final String HELP_IMAGE = "/GameUI/1.png";
+    public static final String PAUSE_BACKGROUND = "/GameUI/pause_menu.png";
+    public static final String SOUND_BUTTONS = "/GameUI/sound_button.png";
+
 
 
     public static BufferedImage getSpriteAtlas(String filePath) throws IOException {
