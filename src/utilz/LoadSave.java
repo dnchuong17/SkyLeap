@@ -19,6 +19,7 @@ public class LoadSave {
     public static final String SOUND_BUTTONS = "/GameUI/sound_button.png";
     public static final String URM_BUTTONS = "/GameUI/urm_buttons.png";
     public static final String VOLUME_BUTTONS = "/GameUI/volume_buttons.png";
+    public static final String MENU_BACKGROUND_IMG = "/backgrounds/BackgroundMenu.png";
 
 
 
