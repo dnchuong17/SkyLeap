@@ -15,8 +15,12 @@ public class Game implements Runnable {
 	private final int FPS = 120;
 	private final int UPS = 200;
 
-	private Player player;
-	private LevelsManager levelsManager;
+
+    private Playing playing;
+    private Menu menu;
+    private Option option;
+    private Player player;
+    private LevelsManager levelsManager;
 
 	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
 	public static final float SCALE = 1.0f;
@@ -33,11 +37,14 @@ public class Game implements Runnable {
 		startGameLoop();
 	}
 
-	private void initClasses() throws IOException {
-		levelsManager = new LevelsManager(this);
-		player = new Player(200, 200, 32,32);
-		player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
-	}
+    private void initClasses() throws IOException {
+        menu = new Menu(this);
+        playing = new Playing(this);
+        option = new Option(this);
+        levelsManager = new LevelsManager(this);
+        player = new Player(200, 200, 32, 32);
+        player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
+    }
 
 	private void startGameLoop(){
 		gameThread = new Thread(this);
@@ -45,15 +52,43 @@ public class Game implements Runnable {
 	}
 
 
-	public void update(){
-		levelsManager.update();
-		player.update();
-	}
+    public void update() {
+        levelsManager.update();
+        player.update();
+        switch (Gamestate.state) {
+            case MENU:
+                menu.update();
+                break;
+            case PLAYING:
+                playing.update();
+                break;
+            case OPTION:
+                option.update();
+                break;
+            case QUIT:
+            default:
+                System.exit(0);
+                break;
 
-	public void render(Graphics g){
-		levelsManager.draw(g);
-		player.render(g);
-	}
+        }
+    }
+
+    public void draw(Graphics g) {
+//        levelsManager.render(g);
+        player.render(g);
+        switch (Gamestate.state) {
+            case MENU:
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+                break;
+            case OPTION:
+                option.draw(g);
+            default:
+                break;
+        }
+    }
 
 	@Override
 	public void run() {
@@ -98,10 +133,24 @@ public class Game implements Runnable {
 		}
 	}
 
-	public void windowFocusLost(){
-		player.resetDirBooleans();
-	}
-	public Player getPlayer() {
-		return player;
-	}
+    public void windowFocusLost() {
+        if (Gamestate.state == Gamestate.PLAYING)
+            playing.getPlayer().resetDirBooleans();
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Playing getPlaying() {
+        return playing;
+    }
+
+    public Option getOption() {
+        return option;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

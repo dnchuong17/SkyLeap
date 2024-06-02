@@ -5,9 +5,16 @@ import INPUT.MouseInputs;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
+import static utilz.Constants.PlayerConstants.*;
+import static utilz.Constants.Directions.*;
 
 
 public class GamePanel extends JPanel {
