@@ -1,10 +1,10 @@
 package INPUT;
 
+import gameStates.Gamestate;
+import main.GamePanel;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import main.GamePanel;
-import static utilz.Constants.Directions.*;
 
 public class KeyboardInputs implements KeyListener {
 
@@ -23,45 +23,35 @@ public class KeyboardInputs implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		switch (e.getKeyCode()) {
-			case KeyEvent.VK_SPACE:
-				System.out.println("Jump released");
-				gamePanel.getGame().getPlayer().executeJump();
+		switch (Gamestate.state) {
+			case MENU:
+				gamePanel.getGame().getMenu().keyReleased(e);
 				break;
-			case KeyEvent.VK_W:
-				gamePanel.getGame().getPlayer().setUp(false);
+			case PLAYING:
+				gamePanel.getGame().getPlaying().keyReleased(e);
 				break;
-			case KeyEvent.VK_A:
-				gamePanel.getGame().getPlayer().setLeft(false);
+			case OPTION:
+				gamePanel.getGame().getOption().keyReleased(e);
 				break;
-			case KeyEvent.VK_S:
-				gamePanel.getGame().getPlayer().setDown(false);
+			default:
 				break;
-			case KeyEvent.VK_D:
-			gamePanel.getGame().getPlayer().setRight(false);
-			break;
+
 		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
-		switch (e.getKeyCode()) {
-			case KeyEvent.VK_SPACE:
-				System.out.println("Jump charging");
-				gamePanel.getGame().getPlayer().startCharging();
+		switch (Gamestate.state) {
+			case MENU:
+				gamePanel.getGame().getMenu().keyPressed(e);
 				break;
-			case KeyEvent.VK_W:
-				gamePanel.getGame().getPlayer().setUp(true);
+			case PLAYING:
+				gamePanel.getGame().getPlaying().keyPressed(e);
 				break;
-			case KeyEvent.VK_A:
-				gamePanel.getGame().getPlayer().setLeft(true);
+			case OPTION:
+				gamePanel.getGame().getOption().keyPressed(e);
 				break;
-			case KeyEvent.VK_S:
-				gamePanel.getGame().getPlayer().setDown(true);
-				break;
-			case KeyEvent.VK_D:
-				gamePanel.getGame().getPlayer().setRight(true);
+			default:
 				break;
 		}
 
