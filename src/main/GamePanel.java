@@ -9,15 +9,14 @@ import java.awt.*;
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
 
+
 public class GamePanel extends JPanel {
 	private MouseInputs mouseInputs;
-	private KeyboardInputs keyboardInputs;
 	private Game game;
 
 
 	public GamePanel(Game game) {
 		mouseInputs = new MouseInputs(this);
-		keyboardInputs = new KeyboardInputs(this);
 		this.game = game;
 		setPanelSize();
 		addMouseListener(mouseInputs);
@@ -44,6 +43,7 @@ public class GamePanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		game.render(g);
+
 	}
 
 	public Game getGame() {
