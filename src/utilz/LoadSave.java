@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class LoadSave {
-    public static final String PLAYER_PATH = "/Player/maincharacter.png";                                         //error
+    public static final String PLAYER_PATH = "/Player/maincharacter1.png";                                         //error
     public static final String LEVEL_ATLAS = "/backgrounds/outside_sprites.png";
     public static final String LEVEL_TEST = "/backgrounds/level_one_data.png"; // test level
 

@@ -11,8 +11,7 @@ import javax.swing.JPanel;
 
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
-import static utilz.Constants.PlayerConstants.*;
-import static utilz.Constants.Directions.*;
+
 
 public class GamePanel extends JPanel {
 	private MouseInputs mouseInputs;
