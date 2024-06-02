@@ -47,7 +47,7 @@ public class Player extends Entity{
 
     public void loadLevelData(int[][] levelData) {
         this.levelData = levelData;
-        if(!IsEntityOnGround(hitBox, levelData)){
+        if(!isEntityOnGround(hitBox, levelData)){
             isInAir = true;
         }
     }
@@ -73,7 +73,7 @@ public class Player extends Entity{
             airSpeed += gravity; // Apply gravity
         } else {
             // Handle collision with the ground or walls
-            hitBox.y = GetEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed);
+            hitBox.y = getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed);
             airSpeed = 0;
             horizontalVelocity = 0;
             isInAir = false;
@@ -129,7 +129,7 @@ public class Player extends Entity{
         if (right) { xTempSpeed = playerSpeed;}
 
         if (!isInAir) {
-            if(!IsEntityOnGround(hitBox, levelData)){
+            if(!isEntityOnGround(hitBox, levelData)){
                 isInAir = true;
             }
         }
@@ -139,7 +139,7 @@ public class Player extends Entity{
                 airSpeed += gravity;
                 updateXPosition(xTempSpeed);
             }else {
-                hitBox.y = GetEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed);
+                hitBox.y = getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed);
                 if(airSpeed > 0){
                     resetIsInAir();
                 }else {
@@ -163,7 +163,7 @@ public class Player extends Entity{
             hitBox.x += xTempSpeed;
             isMoving = true;
         }else {
-            hitBox.x = GetEntityXPosNextToWall(hitBox, xTempSpeed);
+            hitBox.x = getEntityXPosNextToWall(hitBox, xTempSpeed);
         }
     }
 
