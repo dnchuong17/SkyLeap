@@ -2,18 +2,13 @@ package entities;
 
 import main.Game;
 import utilz.LoadSave;
-import utilz.Constants.PlayerConstants;
-import static utilz.HelpMeMethod.*;
-import javax.imageio.ImageIO;
+
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 
-
-import static main.Game.GAME_HEIGHT;
 import static utilz.Constants.PlayerConstants.*;
+import static utilz.HelpMeMethod.*;
 
 public class Player extends Entity{
     //player attributes
@@ -46,7 +41,7 @@ public class Player extends Entity{
     public Player(float startX, float startY, int width , int height) throws IOException {
         super(startX, startY, width, height);
         loadAnimation();
-        initHitBox(x, y, 28* Game.SCALE,28* Game.SCALE);        // something wrong here with the hitbox when 32*Game.SCALE
+        initHitBox(x, y, (int)(28* Game.SCALE),(int)(28* Game.SCALE));        // something wrong here with the hitbox when 32*Game.SCALE
                                                                             // work fine with 28*Game.SCALE
     }
 

@@ -8,8 +8,6 @@ import java.awt.*;
 
 import static main.Game.GAME_HEIGHT;
 import static main.Game.GAME_WIDTH;
-import static utilz.Constants.PlayerConstants.*;
-import static utilz.Constants.Directions.*;
 
 
 public class GamePanel extends JPanel {
@@ -44,7 +42,7 @@ public class GamePanel extends JPanel {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		game.render(g);
+		game.draw(g);
 
 	}
 

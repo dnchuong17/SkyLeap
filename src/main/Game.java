@@ -2,6 +2,10 @@ package main;
 
 import Levels.LevelsManager;
 import entities.Player;
+import gameStates.Gamestate;
+import gameStates.Option;
+import gameStates.Playing;
+import gameStates.Menu;
 
 import java.awt.*;
 import java.io.IOException;
