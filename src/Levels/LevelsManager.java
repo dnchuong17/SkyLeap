@@ -31,16 +31,17 @@ public class LevelsManager {
         }
     }
 
-    public void render(Graphics g){
-        for (int y = 0; y < Game.TILE_IN_HEIGHT; y++) {
-            for (int x = 0; x < Game.TILE_IN_WIDTH; x++) {
-                int index = levelTest.getSpriteIndex(x, y);
-                g.drawImage(levelSprite[index], x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
-            }
-        }
-    }
+
     public void update(){
 
+    }
+
+    public void draw(Graphics g) {
+        for (int j = 0; j < Game.TILE_IN_HEIGHT; j++)
+            for (int i = 0; i < Game.TILE_IN_WIDTH; i++) {
+                int index = levelTest.getSpriteIndex(i, j);
+                g.drawImage(levelSprite[index], TILE_SIZE * i, TILE_SIZE * j, TILE_SIZE, TILE_SIZE, null);
+            }
     }
     public Level getCurentLevel() {
         return levelTest;
