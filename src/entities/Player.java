@@ -12,7 +12,7 @@ import static utilz.HelpMeMethod.*;
 
 public class Player extends Entity{
     //player attributes
-    private float playerSpeed = 1.5f;
+    private float playerSpeed = 1.5f * Game.SCALE;
     private boolean isMoving = false; //private boolean moving thay thanh isMoving cho no de hieu hon
     private float horizontalVelocity = 2.0f*playerSpeed;
 
@@ -41,8 +41,8 @@ public class Player extends Entity{
     public Player(float startX, float startY, int width , int height) throws IOException {
         super(startX, startY, width, height);
         loadAnimation();
-        initHitBox(x, y, (int)(28* Game.SCALE),(int)(28* Game.SCALE));        // something wrong here with the hitbox when 32*Game.SCALE
-                                                                            // work fine with 28*Game.SCALE
+        initHitBox(x, y, (int)(28* Game.SCALE),(int)(28* Game.SCALE));          // something wrong here with the hitbox when 32*Game.SCALE
+                                                                                // work fine with 28*Game.SCALE
     }
 
     public void loadLevelData(int[][] levelData) {
@@ -81,7 +81,7 @@ public class Player extends Entity{
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int)(hitBox.x-xDrawOffset), (int)(hitBox.y-yDrawOffset), 32, 32, null);
+        g.drawImage(animations[playerAction][animationIndex], (int)(hitBox.x-xDrawOffset), (int)(hitBox.y-yDrawOffset), (int)(32*Game.SCALE), (int)(32*Game.SCALE), null);
         renderHitBox(g); // for debugging
     }
 

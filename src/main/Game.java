@@ -27,13 +27,14 @@ public class Game implements Runnable {
     private LevelsManager levelsManager;
 
 	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
-	public static final float SCALE = 1.0f;
+	public static final float SCALE = 2.0f;
 	public static final int TILE_IN_WIDTH = 26;    // 30 => 960 1920 sau khi scale
 	public static final int TILE_IN_HEIGHT = 14;	//20
 	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
 	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
 	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
-	public Game() throws IOException {
+
+    public Game() throws IOException {
 		initClasses();
 		gamePanel = new GamePanel(this);
 		gameWindow = new GameWindow(gamePanel);
@@ -46,8 +47,9 @@ public class Game implements Runnable {
         playing = new Playing(this);
         option = new Option(this);
         levelsManager = new LevelsManager(this);
-        player = new Player(200, 200, 32, 32);
+        player = new Player(200, 200, (int)(32 * Game.SCALE), (int)(32 * Game.SCALE));
         player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
+        playing.setPlayer(player); // Pass player to playing
     }
 
 	private void startGameLoop(){
@@ -58,7 +60,7 @@ public class Game implements Runnable {
 
     public void update() {
         levelsManager.update();
-        player.update();
+
         switch (Gamestate.state) {
             case MENU:
                 menu.update();
@@ -73,7 +75,6 @@ public class Game implements Runnable {
             default:
                 System.exit(0);
                 break;
-
         }
     }
 
@@ -95,47 +96,45 @@ public class Game implements Runnable {
     }
 
 	@Override
-	public void run() {
-		double timePerFrame = 1000000000.0 / FPS;
-		double timePerUpdate = 1000000000.0 / UPS;
+    public void run() {
+        double timePerFrame = 1000000000.0 / FPS;
+        double timePerUpdate = 1000000000.0 / UPS;
 
+        long previousTime = System.nanoTime();
 
-		long previousTime = System.nanoTime();
+        int frames = 0;
+        int updates = 0;
+        long lastCheck = System.currentTimeMillis();
 
-		int frames = 0;
-		int updates = 0;
-		long lastCheck = System.currentTimeMillis();
+        double deltaU = 0;
+        double deltaF = 0;
 
-		double deltaU = 0;
-		double deltaF = 0;
-		while(true){
+        while (true) {
+            long currentTime = System.nanoTime();
+            deltaU += (currentTime - previousTime) / timePerUpdate;
+            deltaF += (currentTime - previousTime) / timePerFrame;
+            previousTime = currentTime;
 
-			long currentTime = System.nanoTime();
+            if (deltaU >= 1) {
+                update();
+                updates++;
+                deltaU--;
+            }
 
-			deltaU += (currentTime - previousTime) / timePerUpdate;
-			deltaF += (currentTime - previousTime) / timePerFrame;
-			previousTime = currentTime;
-			if(deltaU >= 1){
-				update();
-				updates++;
-				deltaU--;
-			}
+            if (deltaF >= 1) {
+                gamePanel.repaint();
+                frames++;
+                deltaF--;
+            }
 
-			if(deltaF >= 1){
-				gamePanel.repaint();
-				frames++;
-				deltaF--;
-			}
-
-
-			if (System.currentTimeMillis() - lastCheck >= 1000) {
-				lastCheck = System.currentTimeMillis();
-				System.out.println("FPS: " + frames + " | UPS: " + updates);
-				frames = 0;
-				updates = 0;
-			}
-		}
-	}
+            if (System.currentTimeMillis() - lastCheck >= 1000) {
+                System.out.println("FPS: " + frames + " | UPS: " + updates); // Debugging info
+                lastCheck = System.currentTimeMillis();
+                frames = 0;
+                updates = 0;
+            }
+        }
+    }
 
     public void windowFocusLost() {
         if (Gamestate.state == Gamestate.PLAYING)
