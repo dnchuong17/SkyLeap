@@ -18,17 +18,19 @@ public class Playing extends State implements Statemethods {
 
 	public Playing(Game game) throws IOException {
 		super(game);
-		initClasses();
+		initClasses(game);
 	}
 
-	private void initClasses() throws IOException {
+	private void initClasses(Game game) throws IOException {
 		levelManager = new LevelsManager(game);
-		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
-		player.loadLevelData(levelManager.getCurentLevel().getLevelData());
+		//player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
+		//player.loadLevelData(levelManager.getCurentLevel().getLevelData());
 		pauseOverlay = new PauseOverlay(this);
 
 	}
-
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 	@Override
 	public void update() {
 		if (!paused) {
@@ -36,16 +38,15 @@ public class Playing extends State implements Statemethods {
 			player.update();
 		}
 		else pauseOverlay.update();
-
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		levelManager.draw(g);
 		player.render(g);
-		if(paused)
-		pauseOverlay.draw(g);
-
+		if(paused){
+			pauseOverlay.draw(g);
+		}
 	}
 
 	@Override
