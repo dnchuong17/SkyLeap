@@ -27,17 +27,17 @@ public class Menu extends State implements Statemethods {
 
 	private void loadBackground() throws IOException {
 		bgImage = LoadSave.getSpriteAtlas(LoadSave.MENU_BACKGROUND);
-		menuWidth = (int)(bgImage.getWidth()* Game.SCALE);
-		menuHeight = (int)(bgImage.getHeight()* Game.SCALE);
+		menuWidth = (int)(bgImage.getWidth()* Game.SCALE) -100;
+		menuHeight = (int)(bgImage.getHeight()* Game.SCALE) -100;
 		menuX = Game.GAME_WIDTH / 2 - menuWidth /2;
-		menuY = (int) (45 * Game.SCALE);
+		menuY = (int) (130 * Game.SCALE);
 
 	}
 
 	private void loadButtons() throws IOException {
-		buttons[0] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (150 * Game.SCALE), 0, Gamestate.PLAYING);
-		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 1, Gamestate.OPTION);
-		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (290 * Game.SCALE), 2, Gamestate.QUIT);
+		buttons[0] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 0, Gamestate.PLAYING);
+		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (280 * Game.SCALE), 1, Gamestate.OPTION);
+		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (340 * Game.SCALE), 2, Gamestate.QUIT);
 	}
 //test choice
 	@Override
