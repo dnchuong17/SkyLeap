@@ -1,5 +1,7 @@
 package entities;
 
+import utilz.LoadSave;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -17,7 +19,7 @@ public class Player extends Entity{
     private float verticalVelocity = 0; //thay doi boi gravity & suc nhay cua character
     private float horizontalVelocity = 1.5f*playerSpeed;
     private float gravity = 0.3f;
-    private int groundLevel = 1050 - 300;
+    private int groundLevel = 702; // GAME_HEIGHT - 64;
 
     // Charging Jump attributes
     private boolean isJumping = false;
@@ -92,7 +94,7 @@ public class Player extends Entity{
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int)x, (int)y, 96, 96, null);
+        g.drawImage(animations[playerAction][animationIndex], (int)x, (int)y, 32, 32, null);
     }
 
     private void updateAnimationTick() {
@@ -189,26 +191,14 @@ public class Player extends Entity{
             }
         }*/
         // new way of loading the player sprite sheet
-        InputStream is = getClass().getResourceAsStream("/Player/maincharacter1.png");
-        try {
-            BufferedImage img = ImageIO.read(is);
+
+            BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
             animations = new BufferedImage[5][4]; // 5 actions, 4 frames each
             for (int i = 0; i < animations.length; i++) {
                 for (int j = 0; j < animations[i].length; j++) {
                     animations[i][j] = img.getSubimage(j * 31, i * 32, 32, 32);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void resetDirBooleans(){

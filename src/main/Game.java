@@ -1,6 +1,7 @@
 package main;
 
 import entities.Player;
+import levels.LevelManager;
 
 import java.awt.*;
 
@@ -14,6 +15,23 @@ public class Game implements Runnable {
 	private final int UPS = 200;
 
 	private Player player;
+	private LevelManager levelManager;
+
+	public final static int TILES_DEFAULT_SIZE = 16;
+	public final static float SCALE = 1.0f;
+	public final static int TILES_IN_WIDTH = 32;
+	public final static int TILES_IN_HEIGHT = 48;
+	public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE); //16 * 1 = 16
+	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH; //16*32 = 512 (map 480)
+	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT; //16*48 = 768 (map 1472)
+
+//	public final static int TILES_DEFAULT_SIZE = 32;
+//	public final static float SCALE = 1.0f;
+//	public final static int TILES_IN_WIDTH = 26;
+//	public final static int TILES_IN_HEIGHT = 14;
+//	public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE); //16 * 1 = 16
+//	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH; //16*32 = 512 (map 480)
+//	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT; //16*48 = 768 (map 1472)
 
 	public Game() {
 		initClasses();
@@ -26,8 +44,9 @@ public class Game implements Runnable {
 	}
 
 	private void initClasses() {
-		player = new Player(0, 750 );
-	} //750 == ground level
+		player = new Player(0, GAME_HEIGHT - 64 );
+		levelManager = new LevelManager(this);
+	} //Game_Height - 64 == ground level
 
 	private void startGameLoop(){
 		gameThread = new Thread(this);
@@ -36,11 +55,12 @@ public class Game implements Runnable {
 
 
 	public void update(){
-
 		player.update();
+		levelManager.update();
 	}
 
 	public void render(Graphics g){
+		levelManager.draw(g);
 		player.render(g);
 	}
 
