@@ -2,112 +2,155 @@ package entities;
 
 import main.Game;
 import utilz.LoadSave;
+import utilz.HelpMeMethod;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static utilz.Constants.PlayerConstants.*;
-import static utilz.HelpMeMethod.*;
+import static utilz.HelpMeMethod.isEntityOnGround;
 
 public class Player extends Entity {
     // Player attributes
-    private float playerSpeed = 1.5f * Game.SCALE;
-    private boolean isMoving = false;
-    private float horizontalVelocity = 3.0f * playerSpeed;
-    private float verticalVelocity = 3.0f * playerSpeed;
+    private float playerSpeed = 1.5f * Game.SCALE; // The speed at which the player moves
+    private boolean isMoving = false; // Whether the player is currently moving
+    private float horizontalVelocity = 0f; // The horizontal speed of the player
+    private float verticalVelocity = 0f; // The vertical speed of the player
 
     // Jump attributes / gravity / fall speed
-    private float airSpeed = 1.0f * Game.SCALE;
-    private boolean isInAir = false;
-    private boolean isJumping = false;
-    private boolean hitWall = false;
-    private float jumpTime = 0.0f;
-    private final float BASE_JUMP_FORCE = -4.0f * Game.SCALE;
-    private final float MAX_JUMP_FORCE = -7.0f * Game.SCALE;
-    private final float JUMP_MULTIPLIER = 0.1f * Game.SCALE;
-    private final long JUMP_CHARGE_START_TIME = 0;
-    private final float GRAVITY = 0.1f * Game.SCALE;
-    private final float MAX_FALL_SPEED = 10.0f * Game.SCALE;
-    private final float SIGNIFICANT_FALL_SPEED = 8.0f;
-    private float fallSpeedAfterCollision = 0.0f * Game.SCALE;
-    private static final float MAX_CHARGE_TIME = 2000; // max charge time in milliseconds
+    private float airSpeed = 1.0f * Game.SCALE; // The speed at which the player falls
+    private boolean isInAir = false; // Whether the player is currently in the air
+    private boolean isJumping = false; // Whether the player is currently jumping
+    private boolean hitWall = false; // Whether the player has hit a wall
+    private float jumpTime = 0.0f; // The duration of the player's jump
+    private final float BASE_JUMP_FORCE = -2.0f * Game.SCALE; // The base force applied for a jump
+    private final float MAX_JUMP_CHARGE_FORCE = -5.0f * Game.SCALE; // The maximum force applied for a charged jump
+    private final float JUMP_MULTIPLIER = 0.1f * Game.SCALE; // The multiplier for jump force
+    private final long JUMP_CHARGE_START_TIME = 0; // The start time for jump charge
+    private final float GRAVITY = 0.1f * Game.SCALE; // The gravity applied to the player
+    private final float MAX_FALL_SPEED = 10.0f * Game.SCALE; // The maximum speed the player can fall
+    private final float SIGNIFICANT_FALL_SPEED = 8.0f; // The speed considered significant for falling
+    private float fallSpeedAfterCollision = 0.0f * Game.SCALE; // The fall speed after a collision
+    private static final float MAX_CHARGE_TIME = 3000; // max charge time in milliseconds
 
     // Player actions and rendering
-    private BufferedImage[][] animations;
-    private int animationTick, animationIndex, animationSpeed = 50; // speed = 4 animations per second ~ 120 fps
-    private int playerAction = IDLE;
-    private boolean left, up, right, down, jump;
-    private float xDrawOffset = 2 * Game.SCALE;
-    private float yDrawOffset = 2 * Game.SCALE;
+    private BufferedImage[][] animations; // Array to hold animation frames
+    private int animationTick, animationIndex, animationSpeed = 50; // Animation variables
+    private int playerAction = IDLE; // The current action of the player
+    private boolean left, up, right, down, jump; // Movement flags
+    private float xDrawOffset = 2 * Game.SCALE; // The offset for drawing the player on the x-axis
+    private float yDrawOffset = 2 * Game.SCALE; // The offset for drawing the player on the y-axis
+
     // Store load save = level data
-    private int[][] levelData;
+    private int[][] levelData; // The level data
+
+    // Jump charge attributes
+    private boolean isChargingJump = false; // Whether the player is charging a jump
+    private long jumpChargeStartTime = 0; // The start time for the jump charge
+    private float jumpChargeForce = BASE_JUMP_FORCE; // The force of the jump charge
+    private boolean lastDirectionLeft = false; // Whether the last direction input was left
+    private boolean lastDirectionRight = false; // Whether the last direction input was right
 
     public Player(float startX, float startY, int width, int height) throws IOException {
         super(startX, startY, width, height);
-        loadAnimation();
-        initHitBox(x, y, (int) (28 * Game.SCALE), (int) (28 * Game.SCALE)); // something wrong here with the hitbox when 32*Game.SCALE
-        // work fine with 28*Game.SCALE
+        loadAnimation(); // Load the player's animations
+        initHitBox(x, y, (int) (28 * Game.SCALE), (int) (28 * Game.SCALE)); // Initialize the hitbox
     }
 
     public void loadLevelData(int[][] levelData) {
         this.levelData = levelData;
         if (!isEntityOnGround(hitBox, levelData)) {
-            isInAir = true;
+            isInAir = true; // Set the player to be in the air if not on the ground
         }
     }
+
     private void applyGravity() {
         if (isInAir) {
             if (airSpeed < MAX_FALL_SPEED) {
-                airSpeed += GRAVITY ;
+                airSpeed += GRAVITY; // Apply gravity to the player's air speed
             }
         }
     }
-    private void updateJumpState() {
-        if (isInAir) {
-            return;
+
+    private void startJumpCharging() {
+        isChargingJump = true; // Start charging the jump
+        jumpChargeStartTime = System.currentTimeMillis(); // Record the start time
+        if (left) {
+            lastDirectionLeft = true; // Set the last direction to left
+            lastDirectionRight = false; // Unset the last direction right
+        } else if (right) {
+            lastDirectionRight = true; // Set the last direction to right
+            lastDirectionLeft = false; // Unset the last direction left
+        } else {
+            lastDirectionLeft = false; // Unset the last direction left
+            lastDirectionRight = false; // Unset the last direction right
         }
-        isInAir = true;
-        airSpeed = BASE_JUMP_FORCE;
-        System.out.println("Jump started: airSpeed=" + airSpeed);
+        System.out.println("Jump charging started: lastDirectionLeft=" + lastDirectionLeft + ", lastDirectionRight=" + lastDirectionRight);
+    }
+
+    private void releaseJump() {
+        long chargeTime = System.currentTimeMillis() - jumpChargeStartTime; // Calculate the charge time
+        float chargeRatio = Math.min(chargeTime / (float) MAX_CHARGE_TIME, 1.0f); // Calculate the charge ratio
+        jumpChargeForce = BASE_JUMP_FORCE + chargeRatio * (MAX_JUMP_CHARGE_FORCE - BASE_JUMP_FORCE); // Calculate the jump charge force
+
+        isChargingJump = false; // Stop charging the jump
+        isInAir = true; // Set the player to be in the air
+        airSpeed = jumpChargeForce; // Set the air speed to the jump charge force
+
+        // Apply horizontal velocity based on last direction input
+        if (lastDirectionLeft) {
+            horizontalVelocity = -playerSpeed; // Set the horizontal velocity to left
+        } else if (lastDirectionRight) {
+            horizontalVelocity = playerSpeed; // Set the horizontal velocity to right
+        } else {
+            horizontalVelocity = 0; // Set the horizontal velocity to 0 if no direction was pressed
+        }
+
+        System.out.println("Jump released: airSpeed=" + airSpeed + ", horizontalVelocity=" + horizontalVelocity + ", chargeTime=" + chargeTime + "ms, jumpChargeForce=" + jumpChargeForce);
     }
 
     public void update() {
-        updatePosition();
-        updateAnimationTick();
-        setAnimation();
+        updatePosition(); // Update the player's position
+        updateAnimationTick(); // Update the animation tick
+        setAnimation(); // Set the current animation
     }
 
     private void updateAirbornePosition() {
-        if (canMoveHere(hitBox.x + horizontalVelocity, hitBox.y + airSpeed, hitBox.width, hitBox.height, levelData)) {
-            hitBox.x += horizontalVelocity;
-            hitBox.y += airSpeed;
-            applyGravity();
+        if (HelpMeMethod.canMoveHere(hitBox.x + horizontalVelocity, hitBox.y + airSpeed, hitBox.width, hitBox.height, levelData)) {
+            hitBox.x += horizontalVelocity; // Update the x position
+            hitBox.y += airSpeed; // Update the y position
+            applyGravity(); // Apply gravity
             if (airSpeed > MAX_FALL_SPEED) {
-                airSpeed = MAX_FALL_SPEED;
+                airSpeed = MAX_FALL_SPEED; // Limit the air speed to max fall speed
             }
-            System.out.println("Airborne: x=" + hitBox.x + ", y=" + hitBox.y + ", airSpeed=" + airSpeed);
+            System.out.println("Airborne: x=" + hitBox.x + ", y=" + hitBox.y + ", airSpeed=" + airSpeed + ", horizontalVelocity=" + horizontalVelocity);
         } else {
-            hitBox.y = getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed);
-            airSpeed = 0;
-            horizontalVelocity = 0;
-            isInAir = false;
-            System.out.println("Collision detected: y=" + hitBox.y);
+            if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, horizontalVelocity, levelData)) {
+                horizontalVelocity = -horizontalVelocity * 0.5f; // Rebound effect with reduced speed
+                System.out.println("Rebound: horizontalVelocity=" + horizontalVelocity);
+            } else {
+                hitBox.y = HelpMeMethod.getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed); // Get the correct y position after collision
+                airSpeed = 0; // Stop vertical movement
+                horizontalVelocity = 0; // Stop horizontal movement
+                isInAir = false; // Set the player to be on the ground
+                System.out.println("Collision detected: y=" + hitBox.y);
+            }
         }
     }
 
     public void render(Graphics g) {
         g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset), (int) (32 * Game.SCALE), (int) (32 * Game.SCALE), null);
-        renderHitBox(g); // for debugging
+        renderHitBox(g); // Render the hitbox for debugging
     }
 
     private void updateAnimationTick() {
         animationTick++;
         if (animationTick >= animationSpeed) {
-            animationTick = 0;
-            animationIndex++;
+            animationTick = 0; // Reset the animation tick
+            animationIndex++; // Move to the next animation frame
             if (animationIndex >= GetSpriteAmounts(playerAction)) {
-                animationIndex = 0;
+                animationIndex = 0; // Loop the animation frames
             }
             System.out.println("Animation tick: animationIndex=" + animationIndex);
         }
@@ -116,157 +159,170 @@ public class Player extends Entity {
     private void setAnimation() {
         int startAnimation = playerAction;
 
-        if (isMoving) {
-            playerAction = RUNNING;
-        } else playerAction = IDLE;
+        if (isChargingJump) {
+            playerAction = IDLE; // Ensure the player action is idle while charging jump
+        } else if (isMoving) {
+            playerAction = RUNNING; // Set the player action to running if moving
+        } else {
+            playerAction = IDLE; // Set the player action to idle if not moving
+        }
 
         if (startAnimation != playerAction) {
-            resetAnimationTick();
+            resetAnimationTick(); // Reset the animation tick if the action changes
             System.out.println("Animation changed: playerAction=" + playerAction);
         }
     }
 
     private void resetAnimationTick() {
-        animationTick = 0;
-        animationIndex = 0;
+        animationTick = 0; // Reset the animation tick
+        animationIndex = 0; // Reset the animation index
     }
 
     private void updatePosition() {
-        isMoving = false;
         if (jump) {
-            updateJumpState();
+            if (!isChargingJump && !isInAir) {
+                startJumpCharging(); // Start charging the jump if not already charging or in the air
+            } else if (isChargingJump && (System.currentTimeMillis() - jumpChargeStartTime >= MAX_CHARGE_TIME)) {
+                releaseJump(); // Release the jump if charging time exceeds max charge time
+            }
+        } else {
+            if (isChargingJump) {
+                releaseJump(); // Release the jump if the jump key is released
+            }
         }
-        if (!left && !right && !isInAir) {
+
+        // Prevent movement while charging the jump
+        if (isChargingJump) {
+            isMoving = false;
             return;
         }
+
         float xTempSpeed = 0;
 
         // Handle horizontal movement
         if (left) {
-            xTempSpeed = -playerSpeed;
-            System.out.println("Moving left: xTempSpeed=" + xTempSpeed);
+            xTempSpeed = -playerSpeed; // Move left
+            lastDirectionLeft = true; // Set the last direction to left
+            lastDirectionRight = false; // Unset the last direction right
         }
         if (right) {
-            xTempSpeed = playerSpeed;
-            System.out.println("Moving right: xTempSpeed=" + xTempSpeed);
+            xTempSpeed = playerSpeed; // Move right
+            lastDirectionRight = true; // Set the last direction to right
+            lastDirectionLeft = false; // Unset the last direction left
         }
 
-        if (!isInAir) {
-            if (!isEntityOnGround(hitBox, levelData)) {
-                isInAir = true;
-                System.out.println("Became airborne");
-            }
-        }
+        // Update the x position
         if (isInAir) {
-            if (canMoveHere(hitBox.x, hitBox.y + airSpeed, hitBox.width, hitBox.height, levelData)) {
-                hitBox.y += airSpeed;
-                applyGravity();
-                updateXPosition(xTempSpeed);
-            } else {
-                hitBox.y = getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed);
-                xTempSpeed = - horizontalVelocity;
-                if (airSpeed > 0) {
-                    resetIsInAir();
-                } else {
-                    airSpeed = fallSpeedAfterCollision;
-                    updateXPosition(xTempSpeed);
-                }
-                System.out.println("Vertical collision: y=" + hitBox.y);
-            }
-        } else {
+            hitBox.x += horizontalVelocity;
+        } else if (xTempSpeed != 0) {
             updateXPosition(xTempSpeed);
         }
-        isMoving = true;
-        System.out.println("Updated position: x=" + hitBox.x + ", y=" + hitBox.y + ", isMoving=" + isMoving);
+
+        isMoving = (xTempSpeed != 0);
+        System.out.println("Updated position: x=" + hitBox.x + ", y=" + hitBox.y + ", isMoving=" + isMoving + ", horizontalVelocity=" + horizontalVelocity);
+
+        if (!isInAir && !isEntityOnGround(hitBox, levelData)) {
+            isInAir = true;
+            System.out.println("Became airborne");
+        }
+
+        if (isInAir) {
+            updateAirbornePosition();
+        }
     }
 
     private void resetIsInAir() {
-        isInAir = false;
+        isInAir = false; // Set the player to be on the ground
         airSpeed = 0.1f; // Slight positive value for bounce effect
         System.out.println("Landed: airSpeed=" + airSpeed);
     }
 
     private void updateXPosition(float xTempSpeed) {
-        if (canMoveHere(hitBox.x + xTempSpeed, hitBox.y, hitBox.width, hitBox.height, levelData)) {
-            hitBox.x += xTempSpeed;
-            isMoving = true;
+        if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, xTempSpeed, levelData)) {
+            horizontalVelocity = -horizontalVelocity * 0.5f; // Rebound effect with reduced speed
+            System.out.println("Horizontal collision with rebound: horizontalVelocity=" + horizontalVelocity);
+        } else if (HelpMeMethod.canMoveHere(hitBox.x + xTempSpeed, hitBox.y, hitBox.width, hitBox.height, levelData)) {
+            hitBox.x += xTempSpeed; // Update the x position
         } else {
-            hitBox.x = getEntityXPosNextToWall(hitBox, xTempSpeed);
+            hitBox.x = HelpMeMethod.getEntityXPosNextToWall(hitBox, xTempSpeed); // Get the correct x position after collision
             System.out.println("Horizontal collision: x=" + hitBox.x);
         }
     }
 
     private void loadAnimation() throws IOException {
-        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.PLAYER_PATH);
-        animations = new BufferedImage[5][4]; // 5 actions, 4 frames each
+        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.PLAYER_PATH); // Load the player sprite atlas
+        animations = new BufferedImage[5][4]; // Initialize the animations array (5 actions, 4 frames each)
         for (int i = 0; i < animations.length; i++) {
             for (int j = 0; j < animations[i].length; j++) {
-                animations[i][j] = img.getSubimage(j * 32, i * 32, 32, 32);
+                animations[i][j] = img.getSubimage(j * 32, i * 32, 32, 32); // Load each frame of the animation
             }
         }
         System.out.println("Animations loaded");
     }
 
     public void resetDirBooleans() {
-        left = false;
-        up = false; // redundant but need for look up
-        right = false;
+        left = false; // Reset the left flag
+        up = false; // Reset the up flag (redundant but needed for looking up)
+        right = false; // Reset the right flag
     }
 
     public boolean isLeft() {
-        return left;
+        return left; // Return whether the left flag is set
     }
 
     public void setLeft(boolean left) {
-        this.left = left;
+        this.left = left; // Set the left flag
     }
 
     public boolean isUp() {
-        return up;
+        return up; // Return whether the up flag is set
     }
 
     public void setUp(boolean up) {
-        this.up = up;
+        this.up = up; // Set the up flag
     }
 
     public boolean isRight() {
-        return right;
+        return right; // Return whether the right flag is set
     }
 
     public void setRight(boolean right) {
-        this.right = right;
+        this.right = right; // Set the right flag
     }
 
     public boolean isJumping() {
-        return jump;
+        return jump; // Return whether the jump flag is set
     }
 
     public void setJumping(boolean jumping) {
-        this.jump = jumping;
+        this.jump = jumping; // Set the jump flag
     }
 
     // Getters and setters for testing purposes
     public float getYVelocity() {
-        return airSpeed;
+        return airSpeed; // Return the air speed
     }
 
     public float getXVelocity() {
-        return horizontalVelocity;
+        return horizontalVelocity; // Return the horizontal velocity
     }
 
     public boolean getIsJumping() {
-        return isJumping;
+        return isJumping; // Return whether the player is jumping
     }
 
     public float getJumpTime() {
-        return jumpTime;
+        return jumpTime; // Return the jump time
     }
 
     public void setYVelocity(float airSpeed) {
-        this.airSpeed = airSpeed;
+        this.airSpeed = airSpeed; // Set the air speed
     }
 
     public void setXVelocity(float horizontalVelocity) {
-        this.horizontalVelocity = horizontalVelocity;
+        this.horizontalVelocity = horizontalVelocity; // Set the horizontal velocity
     }
 }
+
+
+
