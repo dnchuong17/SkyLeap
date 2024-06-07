@@ -208,16 +208,19 @@ public class Player extends Entity {
             xTempSpeed = -playerSpeed; // Move left
             lastDirectionLeft = true; // Set the last direction to left
             lastDirectionRight = false; // Unset the last direction right
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.WALK);
         }
+        else playing.getGame().getAudioPlayer().stopEffect();
         if (right) {
             xTempSpeed = playerSpeed; // Move right
             lastDirectionRight = true; // Set the last direction to right
             lastDirectionLeft = false; // Unset the last direction left
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.WALK);
         }
+        else playing.getGame().getAudioPlayer().stopEffect();
 
         // Update the x position
         if (isInAir) {
-            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
             hitBox.x += horizontalVelocity;
         } else if (xTempSpeed != 0) {
             updateXPosition(xTempSpeed);
@@ -232,8 +235,10 @@ public class Player extends Entity {
         }
 
         if (isInAir) {
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
             updateAirbornePosition();
         }
+        else playing.getGame().getAudioPlayer().stopEffect();
 
     }
 

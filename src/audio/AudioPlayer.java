@@ -86,6 +86,16 @@ public class AudioPlayer {
         if (songs[currentSongID].isActive())
         songs[currentSongID].stop();
     }
+    public void stopEffect(){
+        if (effects[JUMP].isActive())
+            effects[JUMP].stop();
+        if (effects[FALL].isActive())
+            effects[FALL].stop();
+        if (effects[WALK].isActive())
+            effects[WALK].stop();
+        if (effects[BOUNCE].isActive())
+            effects[BOUNCE].stop();
+    }
 
 
 
