@@ -100,9 +100,9 @@ public class Player extends Entity {
 
         // Apply horizontal velocity based on last direction input
         if (lastDirectionLeft) {
-            horizontalVelocity = -playerSpeed; // Set the horizontal velocity to left
+            horizontalVelocity = -playerSpeed/2; // Set the horizontal velocity to left
         } else if (lastDirectionRight) {
-            horizontalVelocity = playerSpeed; // Set the horizontal velocity to right
+            horizontalVelocity = playerSpeed/2; // Set the horizontal velocity to right
         } else {
             horizontalVelocity = 0; // Set the horizontal velocity to 0 if no direction was pressed
         }
@@ -127,7 +127,7 @@ public class Player extends Entity {
             System.out.println("Airborne: x=" + hitBox.x + ", y=" + hitBox.y + ", airSpeed=" + airSpeed + ", horizontalVelocity=" + horizontalVelocity);
         } else {
             if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, horizontalVelocity, levelData)) {
-                horizontalVelocity = -horizontalVelocity * 0.5f; // Rebound effect with reduced speed
+                horizontalVelocity = -horizontalVelocity * 0.9f; // Rebound effect with reduced speed
                 System.out.println("Rebound: horizontalVelocity=" + horizontalVelocity);
             } else {
                 hitBox.y = HelpMeMethod.getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed); // Get the correct y position after collision
