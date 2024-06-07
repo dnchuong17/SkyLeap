@@ -1,11 +1,13 @@
 package main;
 
 import Levels.LevelsManager;
+import UI.AudioOptions;
+import audio.AudioPlayer;
 import entities.Player;
 import gameStates.Gamestate;
+import gameStates.Menu;
 import gameStates.Option;
 import gameStates.Playing;
-import gameStates.Menu;
 
 import java.awt.*;
 import java.io.IOException;
@@ -25,6 +27,8 @@ public class Game implements Runnable {
     private Option option;
     private Player player;
     private LevelsManager levelsManager;
+    private AudioOptions audioOptions;
+    private AudioPlayer audioPlayer;
 
 	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
 	public static final float SCALE = 2.0f;
@@ -42,7 +46,9 @@ public class Game implements Runnable {
 		startGameLoop();
 	}
 
+
     private void initClasses() throws IOException {
+        audioOptions = new AudioOptions();
         menu = new Menu(this);
         playing = new Playing(this);
         option = new Option(this);
@@ -155,5 +161,8 @@ public class Game implements Runnable {
 
     public Player getPlayer() {
         return player;
+    }
+    public AudioOptions getAudioOptions() {
+        return audioOptions;
     }
 }
