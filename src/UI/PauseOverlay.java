@@ -81,6 +81,7 @@ public class PauseOverlay {
        if (isIn(e, unpauseB))
            unpauseB.setMousePressed(true);
        else audioOptions.mousePressed(e);
+
     }
 
     public void mouseReleased(MouseEvent e){

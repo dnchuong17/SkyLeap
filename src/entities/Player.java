@@ -1,8 +1,10 @@
 package entities;
 
+import audio.AudioPlayer;
+import gameStates.Playing;
 import main.Game;
-import utilz.LoadSave;
 import utilz.HelpMeMethod;
+import utilz.LoadSave;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,6 +19,7 @@ public class Player extends Entity {
     private boolean isMoving = false; // Whether the player is currently moving
     private float horizontalVelocity = 0f; // The horizontal speed of the player
     private float verticalVelocity = 0f; // The vertical speed of the player
+    private Playing playing;
 
     // Jump attributes / gravity / fall speed
     private float airSpeed = 1.0f * Game.SCALE; // The speed at which the player falls
@@ -52,8 +55,9 @@ public class Player extends Entity {
     private boolean lastDirectionLeft = false; // Whether the last direction input was left
     private boolean lastDirectionRight = false; // Whether the last direction input was right
 
-    public Player(float startX, float startY, int width, int height) throws IOException {
+    public Player(float startX, float startY, int width, int height, Playing playing) throws IOException {
         super(startX, startY, width, height);
+        this.playing = playing;
         loadAnimation(); // Load the player's animations
         initHitBox(x, y, (int) (28 * Game.SCALE), (int) (28 * Game.SCALE)); // Initialize the hitbox
     }
@@ -213,6 +217,7 @@ public class Player extends Entity {
 
         // Update the x position
         if (isInAir) {
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
             hitBox.x += horizontalVelocity;
         } else if (xTempSpeed != 0) {
             updateXPosition(xTempSpeed);
@@ -229,6 +234,7 @@ public class Player extends Entity {
         if (isInAir) {
             updateAirbornePosition();
         }
+
     }
 
     private void resetIsInAir() {

@@ -9,6 +9,8 @@ import gameStates.Menu;
 import gameStates.Option;
 import gameStates.Playing;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
 
@@ -30,7 +32,8 @@ public class Game implements Runnable {
     private AudioOptions audioOptions;
     private AudioPlayer audioPlayer;
 
-	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
+
+    public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
 	public static final float SCALE = 2.0f;
 	public static final int TILE_IN_WIDTH = 26;    // 30 => 960 1920 sau khi scale
 	public static final int TILE_IN_HEIGHT = 14;	//20
@@ -38,7 +41,7 @@ public class Game implements Runnable {
 	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
 	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
 
-    public Game() throws IOException {
+    public Game() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 		initClasses();
 		gamePanel = new GamePanel(this);
 		gameWindow = new GameWindow(gamePanel);
@@ -47,13 +50,14 @@ public class Game implements Runnable {
 	}
 
 
-    private void initClasses() throws IOException {
-        audioOptions = new AudioOptions();
+    private void initClasses() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        audioOptions = new AudioOptions(this);
+        audioPlayer = new AudioPlayer();
         menu = new Menu(this);
         playing = new Playing(this);
         option = new Option(this);
         levelsManager = new LevelsManager(this);
-        player = new Player(200, 200, (int)(32 * Game.SCALE), (int)(32 * Game.SCALE));
+        player = new Player(200, 200, (int)(32 * Game.SCALE), (int)(32 * Game.SCALE), this.playing);
         player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
         playing.setPlayer(player); // Pass player to playing
     }
@@ -164,5 +168,8 @@ public class Game implements Runnable {
     }
     public AudioOptions getAudioOptions() {
         return audioOptions;
+    }
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
     }
 }
