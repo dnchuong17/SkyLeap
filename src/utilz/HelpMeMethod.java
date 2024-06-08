@@ -13,13 +13,21 @@ public class HelpMeMethod {
     }
 
     private static boolean isSolid(float x, float y, int[][] levelData) {
-        if (x < 0 || y < 0 || x >= Game.GAME_WIDTH || y >= Game.GAME_HEIGHT) {
-            return true;  // Return true if the coordinates are out of the game boundaries, treating out-of-bounds as solid.
-        }
+        int maxWidth = levelData[0].length * Game.TILE_SIZE; //nay` la bigger lvl X
+
+//        if (x < 0 || y < 0 || x >= Game.GAME_WIDTH || y >= Game.GAME_HEIGHT) {
+//            return true;  // Return true if the coordinates are out of the game boundaries, treating out-of-bounds as solid.
+//        } // nay` la` code của Le~
+
+//        int maxHeight = levelData[0].length * Game.TILE_SIZE;
+        if (x < 0 || x >= maxWidth)
+            return true;
+        if (y < 0 || y >= Game.GAME_HEIGHT)
+            return true;
         int xIndex = (int) (x / Game.TILE_SIZE);  // column index of the tile based on x-coordinate.
         int yIndex = (int) (y / Game.TILE_SIZE);  // row index of the tile based on y-coordinate.
         int tileValue = levelData[yIndex][xIndex];  // Retrieve the tile type from the level data using the calculated indices.
-        return tileValue >= 48 || tileValue != 11;  // Determine if the tile is solid based on its value.
+        return tileValue >= 48 || tileValue != 11 || tileValue < 0;  // Determine if the tile is solid based on its value.
     }
 
     public static float getEntityXPosNextToWall(Rectangle2D.Float hitBox, float xTempSpeed) {

@@ -4,6 +4,7 @@ import Levels.LevelsManager;
 import UI.PauseOverlay;
 import entities.Player;
 import main.Game;
+import utilz.LoadSave;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -16,6 +17,20 @@ public class Playing extends State implements Statemethods {
 	private PauseOverlay pauseOverlay;
 	private boolean paused = false;
 
+	private int xLvlOffSet;
+	private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
+	private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
+	private int lvlTilesWide = LoadSave.getLevelData()[0].length;
+	private int maxTilesOffSet = lvlTilesWide - Game.TILE_IN_WIDTH;
+	private int maxlvlOffSetX = maxTilesOffSet * Game.TILE_SIZE;
+
+//	private int yLvlOffSet;
+//	private int downBorder = (int) (0.2 * Game.GAME_HEIGHT);
+//	private int upBorder = (int) (0.8 * Game.GAME_HEIGHT);
+//	private int lvlTilesHigh = LoadSave.getLevelData().length;
+//	private int maxTilesOffSet = lvlTilesHigh - Game.TILE_IN_HEIGHT;
+//	private int maxlvlOffSetY = maxTilesOffSet * Game.TILE_SIZE;
+
 	public Playing(Game game) throws IOException {
 		super(game);
 		initClasses(game);
@@ -23,8 +38,8 @@ public class Playing extends State implements Statemethods {
 
 	private void initClasses(Game game) throws IOException {
 		levelManager = new LevelsManager(game);
-		//player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
-		//player.loadLevelData(levelManager.getCurentLevel().getLevelData());
+		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
+		player.loadLevelData(levelManager.getCurentLevel().getLevelData());
 		pauseOverlay = new PauseOverlay(this);
 
 	}
@@ -36,18 +51,64 @@ public class Playing extends State implements Statemethods {
 		if (!paused) {
 			levelManager.update();
 			player.update();
+			checkCloseToBorder();
 		}
 		else pauseOverlay.update();
 	}
 
+	//Bigger lvl X
+	private void checkCloseToBorder() {
+		int playerX = (int) player.getHitBox().x;
+		int difference = playerX - xLvlOffSet;
+
+		if(difference > rightBorder) {
+			xLvlOffSet += difference - rightBorder;
+		} else if(difference < leftBorder) {
+			xLvlOffSet += difference - leftBorder;
+		}
+
+		if(xLvlOffSet > maxlvlOffSetX){
+			xLvlOffSet = maxlvlOffSetX;
+		} else if(xLvlOffSet < 0){
+			xLvlOffSet = 0;
+		}
+	}
+
+//	private void checkCloseToBorder() {
+//		int playerY = (int) player.getHitBox().y;
+//		int difference = playerY - yLvlOffSet;
+//
+//		if(difference > upBorder) {
+//			yLvlOffSet += difference - upBorder;
+//		} else if(difference < downBorder) {
+//			yLvlOffSet += difference - downBorder;
+//		}
+//
+//		if(yLvlOffSet > maxlvlOffSetY){
+//			yLvlOffSet = maxlvlOffSetY;
+//		} else if(yLvlOffSet < 0){
+//			yLvlOffSet = 0;
+//		}
+//	}
+
+	//Bigger lvl X
 	@Override
 	public void draw(Graphics g) {
-		levelManager.draw(g);
-		player.render(g);
+		levelManager.draw(g, xLvlOffSet);
+		player.render(g, xLvlOffSet);
 		if(paused){
 			pauseOverlay.draw(g);
 		}
 	}
+
+//	@Override
+//	public void draw(Graphics g) {
+//		levelManager.draw(g, yLvlOffSet);
+//		player.render(g, yLvlOffSet);
+//		if(paused){
+//			pauseOverlay.draw(g);
+//		}
+//	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

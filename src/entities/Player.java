@@ -139,9 +139,9 @@ public class Player extends Entity {
         }
     }
 
-    public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset), (int) (32 * Game.SCALE), (int) (32 * Game.SCALE), null);
-        renderHitBox(g); // Render the hitbox for debugging
+    public void render(Graphics g, int lvlOffSet) {
+        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset) - lvlOffSet, (int) (hitBox.y - yDrawOffset), (int) (32 * Game.SCALE), (int) (32 * Game.SCALE), null);
+//        renderHitBox(g); // Render the hitbox for debugging
     }
 
     private void updateAnimationTick() {
@@ -160,7 +160,7 @@ public class Player extends Entity {
         int startAnimation = playerAction;
 
         if (isChargingJump) {
-            playerAction = IDLE; // Ensure the player action is idle while charging jump
+            playerAction = CHARGING; // Ensure the player action is idle while charging jump
         } else if (isMoving) {
             playerAction = RUNNING; // Set the player action to running if moving
         } else {

@@ -10,10 +10,10 @@ import java.io.InputStream;
 
 public class LoadSave {
     public static final String PLAYER_PATH = "/Player/maincharacter1.png";                                         //error
-//    public static final String LEVEL_ATLAS = "/backgrounds/outside_sprites.png";
-//    public static final String LEVEL_TEST = "/backgrounds/level_one_data.png";
     public static final String LEVEL_ATLAS = "/backgrounds/outside_sprites.png";
-    public static final String LEVEL_TEST = "/backgrounds/level_one_data.png";// test level
+    public static final String LEVEL_TEST = "/backgrounds/level_one_data_long.png";
+//    public static final String LEVEL_ATLAS = "/backgrounds/level2_sprites.png";
+//    public static final String LEVEL_TEST = "/backgrounds/level_2_data.png";// test level
     public static final String MENU_BUTTONS = "/GameUI/button_atlas.png";
     public static final String MENU_BACKGROUND = "/GameUI/menu_background.png";
     public static final String HELP_IMAGE = "/GameUI/1.png";
@@ -43,9 +43,10 @@ public class LoadSave {
         return img;
     }
 
+    //Old map
     public static int[][] getLevelData() throws IOException {
-        int[][] levelData = new int[Game.TILE_IN_HEIGHT][Game.TILE_IN_WIDTH];
         BufferedImage img = getSpriteAtlas(LEVEL_TEST);
+        int[][] levelData = new int[img.getHeight()][img.getWidth()];
         for (int y = 0; y < img.getHeight(); y++) {
             for (int x = 0; x < img.getWidth(); x++) {
                 Color color = new Color(img.getRGB(x, y));
@@ -58,7 +59,27 @@ public class LoadSave {
             }
         return levelData;
     }
+
+    //New Map
+//    public static int[][] getLevelData() throws IOException {
+//
+//        BufferedImage img = getSpriteAtlas(LEVEL_TEST);
+//        int[][] levelData = new int[img.getHeight()][img.getWidth()];
+//
+//        for (int y = 0; y < img.getHeight(); y++) {
+//            for (int x = 0; x < img.getWidth(); x++) {
+//                Color color = new Color(img.getRGB(x, y));
+//                levelData[y][x] = color.getRed();
+//                int value = color.getRed();
+//                if(value >= 104)
+//                    value = 0;
+//                levelData[y][x] = value;
+//            }
+//        }
+//        return levelData;
+//    }
 }
+
 /*BufferedImage img = getSpriteAtlas(LEVEL_TEST);
         for (int y = 0; y < img.getHeight(); y++) {
             for (int x = 0; x < img.getWidth(); x++) {

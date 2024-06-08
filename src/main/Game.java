@@ -26,13 +26,23 @@ public class Game implements Runnable {
     private Player player;
     private LevelsManager levelsManager;
 
-	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
-	public static final float SCALE = 2.0f;
-	public static final int TILE_IN_WIDTH = 26;    // 30 => 960 1920 sau khi scale
-	public static final int TILE_IN_HEIGHT = 14;	//20
-	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
-	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
-	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
+    //New Map
+//	public static final int TILE_DEFAULT_SIZE = 16; // 16PIXELS => 64x64
+//	public static final float SCALE = 1.0f;
+//	public static final int TILE_IN_WIDTH = 32;    // 30 => 960 1920 sau khi scale
+//	public static final int TILE_IN_HEIGHT = 24;	//20
+//	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
+//	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
+//	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
+
+    //Old Map
+    public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
+    public static final float SCALE = 2.0f;
+    public static final int TILE_IN_WIDTH = 26;    // 30 => 960 1920 sau khi scale
+    public static final int TILE_IN_HEIGHT = 14;	//20
+    public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
+    public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
+    public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
 
     public Game() throws IOException {
 		initClasses();
@@ -80,7 +90,7 @@ public class Game implements Runnable {
 
     public void draw(Graphics g) {
 //        levelsManager.render(g);
-        player.render(g);
+//        player.render(g);
         switch (Gamestate.state) {
             case MENU:
                 menu.draw(g);
