@@ -27,8 +27,8 @@ public class Playing extends State implements Statemethods {
 	private int yLvlOffSet;
 	private int downBorder = (int) (0.2 * Game.GAME_HEIGHT);
 	private int upBorder = (int) (0.8 * Game.GAME_HEIGHT);
-	private int lvlTilesHigh = LoadSave.getLevelData().length;
-	private int maxTilesOffSet = lvlTilesHigh - Game.TILE_IN_HEIGHT;
+	private int lvlTilesHigh = LoadSave.getLevelData().length; //92
+	private int maxTilesOffSet = lvlTilesHigh - Game.TILE_IN_HEIGHT; //92 - 24 = 68
 	private int maxlvlOffSetY = maxTilesOffSet * Game.TILE_SIZE;
 
 	public Playing(Game game) throws IOException {
@@ -46,6 +46,7 @@ public class Playing extends State implements Statemethods {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+
 	@Override
 	public void update() {
 		if (!paused) {
