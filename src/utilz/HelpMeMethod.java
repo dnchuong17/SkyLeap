@@ -21,7 +21,7 @@ public class HelpMeMethod {
 //        } // nay` la` code của Le~
 
 //        int maxHeight = levelData.length * TILE_SIZE;
-        int maxHeight = GAME_HEIGHT - 64;
+        int maxHeight = GAME_HEIGHT - 96;
         if (x < 0 || x >= Game.GAME_WIDTH)
             return true;
         if (y < 0 || y >= maxHeight)
