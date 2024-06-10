@@ -25,8 +25,8 @@ public class Playing extends State implements Statemethods {
 //	private int maxlvlOffSetX = maxTilesOffSet * Game.TILE_SIZE;
 
 	private int yLvlOffSet;
-	private int downBorder = (int) (0.8 * Game.GAME_HEIGHT);
-	private int upBorder = (int) (0.2 * Game.GAME_HEIGHT);
+	private int downBorder = (int) (0.2 * Game.GAME_HEIGHT);
+	private int upBorder = (int) (0.8 * Game.GAME_HEIGHT);
 	private int lvlTilesHigh = LoadSave.getLevelData().length;
 	private int maxTilesOffSet = lvlTilesHigh - Game.TILE_IN_HEIGHT;
 	private int maxlvlOffSetY = maxTilesOffSet * Game.TILE_SIZE;
@@ -38,8 +38,8 @@ public class Playing extends State implements Statemethods {
 
 	private void initClasses(Game game) throws IOException {
 		levelManager = new LevelsManager(game);
-		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
-		player.loadLevelData(levelManager.getCurentLevel().getLevelData());
+//		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
+//		player.loadLevelData(levelManager.getCurentLevel().getLevelData());
 		pauseOverlay = new PauseOverlay(this);
 
 	}
@@ -79,9 +79,13 @@ public class Playing extends State implements Statemethods {
 		int difference = playerY - yLvlOffSet;
 
 		if(difference > upBorder) {
+			System.out.println("diff > upBorder: " + difference + ", " + upBorder);
 			yLvlOffSet += difference - upBorder;
+			System.out.println("yLvOffSet: " + yLvlOffSet);
 		} else if(difference < downBorder) {
+			System.out.println("diff < downBorder: " + difference + ", " + downBorder);
 			yLvlOffSet += difference - downBorder;
+			System.out.println("yLvOffSet: " + yLvlOffSet);
 		}
 
 		if(yLvlOffSet > maxlvlOffSetY){

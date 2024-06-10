@@ -2,6 +2,7 @@ package utilz;
 
 import main.Game;
 import java.awt.geom.Rectangle2D;
+import static main.Game.*;
 
 public class HelpMeMethod {
 
@@ -19,7 +20,8 @@ public class HelpMeMethod {
 //            return true;  // Return true if the coordinates are out of the game boundaries, treating out-of-bounds as solid.
 //        } // nay` la` code của Le~
 
-        int maxHeight = levelData.length * Game.TILE_SIZE;
+//        int maxHeight = levelData.length * TILE_SIZE;
+        int maxHeight = GAME_HEIGHT - 64;
         if (x < 0 || x >= Game.GAME_WIDTH)
             return true;
         if (y < 0 || y >= maxHeight)
@@ -27,7 +29,7 @@ public class HelpMeMethod {
         int xIndex = (int) (x / Game.TILE_SIZE);  // column index of the tile based on x-coordinate.
         int yIndex = (int) (y / Game.TILE_SIZE);  // row index of the tile based on y-coordinate.
         int tileValue = levelData[yIndex][xIndex];  // Retrieve the tile type from the level data using the calculated indices.
-        return tileValue >= 48 || tileValue != 11 || tileValue < 0;  // Determine if the tile is solid based on its value.
+        return tileValue != 102;  // Determine if the tile is solid based on its value.
     }
 
     public static float getEntityXPosNextToWall(Rectangle2D.Float hitBox, float xTempSpeed) {

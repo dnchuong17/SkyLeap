@@ -140,8 +140,8 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g, int lvlOffSet) {
-        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset) - lvlOffSet, (int) (hitBox.y - yDrawOffset), (int) (32 * Game.SCALE), (int) (32 * Game.SCALE), null);
-//        renderHitBox(g); // Render the hitbox for debugging
+        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (32 * Game.SCALE), (int) (32 * Game.SCALE), null);
+        renderHitBox(g); // Render the hitbox for debugging
     }
 
     private void updateAnimationTick() {
@@ -214,9 +214,10 @@ public class Player extends Entity {
         // Update the x position
         if (isInAir) {
             hitBox.x += horizontalVelocity;
-        } else if (xTempSpeed != 0) {
-            updateXPosition(xTempSpeed);
         }
+//        else if (xTempSpeed != 0) {
+//            updateXPosition(xTempSpeed);
+//        }
 
         isMoving = (xTempSpeed != 0);
         System.out.println("Updated position: x=" + hitBox.x + ", y=" + hitBox.y + ", isMoving=" + isMoving + ", horizontalVelocity=" + horizontalVelocity);
