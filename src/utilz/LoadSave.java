@@ -13,7 +13,7 @@ public class LoadSave {
 //    public static final String LEVEL_ATLAS = "/backgrounds/outside_sprites.png";
 //    public static final String LEVEL_TEST = "/backgrounds/level_one_data_long.png";
     public static final String LEVEL_ATLAS = "/backgrounds/level2_sprites.png";
-    public static final String LEVEL_TEST = "/backgrounds/level_2_data.png";// test level
+    public static final String LEVEL_TEST = "/backgrounds/level_2_data_long.png";// test level
     public static final String MENU_BUTTONS = "/GameUI/button_atlas.png";
     public static final String MENU_BACKGROUND = "/GameUI/menu_background.png";
     public static final String HELP_IMAGE = "/GameUI/1.png";
