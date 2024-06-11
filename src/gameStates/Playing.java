@@ -103,7 +103,7 @@ public class Playing extends State implements Statemethods {
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(MouseEvent e) throws IOException {
 		if (paused){
 			pauseOverlay.mouseReleased(e);
 		}
@@ -125,6 +125,11 @@ public class Playing extends State implements Statemethods {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public void resetAll() throws IOException {
+		levelManager.reset();
+		player.reset();
 	}
 
 }

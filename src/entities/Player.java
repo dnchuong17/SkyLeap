@@ -206,4 +206,16 @@ public class Player extends Entity{
     public void setJumping(boolean jumping) {
         this.jump = jumping;
     }
+
+    public void reset() {
+        resetDirBooleans();
+        isInAir = false;
+        isMoving = false;
+        playerAction = IDLE;
+        hitBox.x = x;
+        hitBox.y = y;
+        if(!isEntityOnGround(hitBox, levelData)){
+            isInAir = true;
+        }
+    }
 }

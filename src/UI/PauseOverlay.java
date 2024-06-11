@@ -115,7 +115,7 @@ public class PauseOverlay {
             volumeButton.setMousePressed(true);
     }
 
-    public void mouseReleased(MouseEvent e){
+    public void mouseReleased(MouseEvent e) throws IOException {
         if (isIn(e, musicButton)) {
             if (musicButton.isMousePressed())
                 musicButton.setMuted(!musicButton.isMuted());
@@ -132,7 +132,8 @@ public class PauseOverlay {
 
         if (isIn(e, replayB)){
             if(replayB.isMousePressed())
-                System.out.println("replay");
+                playing.resetAll();
+                playing.unpauseGame();
         }
 
         if (isIn(e, unpauseB)) {
