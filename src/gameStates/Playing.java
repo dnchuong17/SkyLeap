@@ -45,6 +45,8 @@ public class Playing extends State implements Statemethods {
 		levelManager.draw(g);
 		player.render(g);
 		if(paused){
+			g.setColor(new Color(0, 0, 0, 100));
+			g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 			pauseOverlay.draw(g);
 		}
 	}
