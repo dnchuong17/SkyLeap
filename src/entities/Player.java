@@ -1,13 +1,11 @@
 package entities;
 
-import audio.AudioPlayer;
 import gameStates.Playing;
 import main.Game;
 import utilz.HelpMeMethod;
 import utilz.LoadSave;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -251,16 +249,12 @@ public class Player extends Entity {
             xTempSpeed = -playerSpeed; // Move left
             lastDirectionLeft = true; // Set the last direction to left
             lastDirectionRight = false; // Unset the last direction right
-            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.WALK);
         }
-        else playing.getGame().getAudioPlayer().stopEffect();
         if (right) {
             xTempSpeed = playerSpeed; // Move right
             lastDirectionRight = true; // Set the last direction to right
             lastDirectionLeft = false; // Unset the last direction left
-            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.WALK);
         }
-        else playing.getGame().getAudioPlayer().stopEffect();
 
         // Update the x position
         if (isInAir) {
@@ -278,11 +272,8 @@ public class Player extends Entity {
         }
 
         if (isInAir) {
-            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
             updateAirbornePosition();
         }
-        else playing.getGame().getAudioPlayer().stopEffect();
-
     }
 
     private void resetIsInAir() {
