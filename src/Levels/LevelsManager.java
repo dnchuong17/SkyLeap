@@ -70,7 +70,7 @@ public class LevelsManager {
 //    }
 
     public void draw(Graphics g, int lvlOffSet) {
-        for (int j = 0  ; j < levelTest.getLevelData().length; j++) {
+        for (int j = 0  ; j < TILE_IN_HEIGHT; j++) {
             for (int i = 0; i < TILE_IN_WIDTH; i++) {
                 int index = levelTest.getSpriteIndex(i, j);
                 g.drawImage(levelSprite[index], TILE_SIZE * i, TILE_SIZE * j - (levelTest.getLevelData().length*TILE_SIZE) + GAME_HEIGHT - lvlOffSet , TILE_SIZE, TILE_SIZE, null);

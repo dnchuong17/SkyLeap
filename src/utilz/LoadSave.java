@@ -43,23 +43,6 @@ public class LoadSave {
         return img;
     }
 
-    //Old map
-//    public static int[][] getLevelData() throws IOException {
-//        BufferedImage img = getSpriteAtlas(LEVEL_TEST);
-//        int[][] levelData = new int[img.getHeight()][img.getWidth()];
-//        for (int y = 0; y < img.getHeight(); y++) {
-//            for (int x = 0; x < img.getWidth(); x++) {
-//                Color color = new Color(img.getRGB(x, y));
-//                levelData[y][x] = color.getRed();
-//                int value = color.getRed();
-//                if (value >= 48)
-//                    value = 0;
-//                levelData[y][x] = value;
-//            }
-//        }
-//        return levelData;
-//    }
-
     //New Map
     public static int[][] getLevelData() throws IOException {
 
@@ -78,21 +61,4 @@ public class LoadSave {
         }
         return levelData;
     }
-
-
 }
-
-/*BufferedImage img = getSpriteAtlas(LEVEL_TEST);
-        for (int y = 0; y < img.getHeight(); y++) {
-            for (int x = 0; x < img.getWidth(); x++) {
-                int pixel = img.getRGB(x, y);
-                int red = (pixel >> 16) & 0xff;
-                int green = (pixel >> 8) & 0xff;
-                int blue = (pixel) & 0xff;
-                if (red == 0 && green == 0 && blue == 0) {
-                    levelData[y][x] = 0;
-                } else {
-                    levelData[y][x] = 1;
-                }
-            }
-        }*/

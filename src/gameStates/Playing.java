@@ -38,8 +38,6 @@ public class Playing extends State implements Statemethods {
 
 	private void initClasses(Game game) throws IOException {
 		levelManager = new LevelsManager(game);
-//		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
-//		player.loadLevelData(levelManager.getCurentLevel().getLevelData());
 		pauseOverlay = new PauseOverlay(this);
 
 	}
@@ -52,7 +50,7 @@ public class Playing extends State implements Statemethods {
 		if (!paused) {
 			levelManager.update();
 			player.update();
-			checkCloseToBorder();
+			//checkCloseToBorder();
 		}
 		else pauseOverlay.update();
 	}

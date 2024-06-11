@@ -54,8 +54,9 @@ public class Player extends Entity {
 
     public Player(float startX, float startY, int width, int height) throws IOException {
         super(startX, startY, width, height);
+        initHitBox(x, y, (int) (14 * Game.SCALE), (int) (14 * Game.SCALE)); // Initialize the hitbox
         loadAnimation(); // Load the player's animations
-        initHitBox(x, y, (int) (28 * Game.SCALE), (int) (28 * Game.SCALE)); // Initialize the hitbox
+
     }
 
     public void loadLevelData(int[][] levelData) {
@@ -117,30 +118,58 @@ public class Player extends Entity {
     }
 
     private void updateAirbornePosition() {
+        System.out.println("Updating airborne position...");
+        System.out.println("Current position: x=" + hitBox.x + ", y=" + hitBox.y + ", airSpeed=" + airSpeed + ", horizontalVelocity=" + horizontalVelocity);
+
         if (HelpMeMethod.canMoveHere(hitBox.x + horizontalVelocity, hitBox.y + airSpeed, hitBox.width, hitBox.height, levelData)) {
             hitBox.x += horizontalVelocity; // Update the x position
             hitBox.y += airSpeed; // Update the y position
             applyGravity(); // Apply gravity
+
             if (airSpeed > MAX_FALL_SPEED) {
                 airSpeed = MAX_FALL_SPEED; // Limit the air speed to max fall speed
             }
+
             System.out.println("Airborne: x=" + hitBox.x + ", y=" + hitBox.y + ", airSpeed=" + airSpeed + ", horizontalVelocity=" + horizontalVelocity);
         } else {
-            if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, horizontalVelocity, levelData)) {
+            boolean collidedHorizontally = HelpMeMethod.isEntityCollidingHorizontally(hitBox, horizontalVelocity, levelData);
+            System.out.println("Collision detected. Horizontal collision: " + collidedHorizontally);
+
+            if (collidedHorizontally) {
+                if (horizontalVelocity > 0) {
+                    hitBox.x = HelpMeMethod.getEntityXPosNextToWall(hitBox, horizontalVelocity) - 1; // Adjust to the left of the wall
+                } else {
+                    hitBox.x = HelpMeMethod.getEntityXPosNextToWall(hitBox, horizontalVelocity) + 1; // Adjust to the right of the wall
+                }
                 horizontalVelocity = -horizontalVelocity * 0.5f; // Rebound effect with reduced speed
-                System.out.println("Rebound: horizontalVelocity=" + horizontalVelocity);
-            } else {
-                hitBox.y = HelpMeMethod.getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed); // Get the correct y position after collision
-                airSpeed = 0; // Stop vertical movement
-                horizontalVelocity = 0; // Stop horizontal movement
-                isInAir = false; // Set the player to be on the ground
-                System.out.println("Collision detected: y=" + hitBox.y);
+                System.out.println("Horizontal collision: adjusted position to avoid sticking. x=" + hitBox.x);
             }
+
+
+            boolean collidedVertically = !HelpMeMethod.canMoveHere(hitBox.x, hitBox.y + airSpeed, hitBox.width, hitBox.height, levelData);
+            System.out.println("Vertical collision: " + collidedVertically);
+
+            if (collidedVertically) {
+                if (airSpeed > 0) {
+                    // If falling, set the player on the ground
+                    hitBox.y = HelpMeMethod.getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed); // Get the correct y position after collision
+                    airSpeed = 0; // Stop vertical movement
+                    isInAir = false; // Set the player to be on the ground
+                    System.out.println("Vertical collision: player landed. y=" + hitBox.y);
+                } else if (airSpeed < 0) {
+                    // If jumping, stop upward movement
+                    airSpeed = 0;
+                    System.out.println("Vertical collision: player hit the roof.");
+                }
+            }
+
+//            horizontalVelocity = 0; // Stop horizontal movement
         }
     }
 
+
     public void render(Graphics g, int lvlOffSet) {
-        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (32 * Game.SCALE), (int) (32 * Game.SCALE), null);
+        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), null);
         renderHitBox(g); // Render the hitbox for debugging
     }
 
@@ -215,9 +244,9 @@ public class Player extends Entity {
         if (isInAir) {
             hitBox.x += horizontalVelocity;
         }
-//        else if (xTempSpeed != 0) {
-//            updateXPosition(xTempSpeed);
-//        }
+        else if (xTempSpeed != 0) {
+            updateXPosition(xTempSpeed);
+        }
 
         isMoving = (xTempSpeed != 0);
         System.out.println("Updated position: x=" + hitBox.x + ", y=" + hitBox.y + ", isMoving=" + isMoving + ", horizontalVelocity=" + horizontalVelocity);
