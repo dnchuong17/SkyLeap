@@ -12,12 +12,12 @@ import java.io.IOException;
 
 
 public class Game implements Runnable {
-	
-	private GameWindow gameWindow;
-	private GamePanel gamePanel;
-	private Thread gameThread;
-	private final int FPS = 120;
-	private final int UPS = 200;
+
+    private GameWindow gameWindow;
+    private GamePanel gamePanel;
+    private Thread gameThread;
+    private final int FPS = 120;
+    private final int UPS = 200;
 
 
     private Playing playing;
@@ -27,36 +27,36 @@ public class Game implements Runnable {
     private LevelsManager levelsManager;
 
     //New Map
-	public static final int TILE_DEFAULT_SIZE = 16; // 16PIXELS => 64x64
-	public static final float SCALE = 1.0f;
-	public static final int TILE_IN_WIDTH = 30;    // 30 => 960 1920 sau khi scale
-	public static final int TILE_IN_HEIGHT = 92;	//20
-	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
-	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
-	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
+    public static final int TILE_DEFAULT_SIZE = 16; // 16PIXELS => 64x64
+    public static final float SCALE = 1.0f;
+    public static final int TILE_IN_WIDTH = 30;    // 30 => 960 1920 sau khi scale
+    public static final int TILE_IN_HEIGHT = 46;	//20
+    public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
+    public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
+    public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
 
     public Game() throws IOException {
-		initClasses();
-		gamePanel = new GamePanel(this);
-		gameWindow = new GameWindow(gamePanel);
-		gamePanel.requestFocus();
-		startGameLoop();
-	}
+        initClasses();
+        gamePanel = new GamePanel(this);
+        gameWindow = new GameWindow(gamePanel);
+        gamePanel.requestFocus();
+        startGameLoop();
+    }
 
     private void initClasses() throws IOException {
         menu = new Menu(this);
         playing = new Playing(this);
         option = new Option(this);
         levelsManager = new LevelsManager(this);
-        player = new Player(180,  600, (int)(TILE_DEFAULT_SIZE * Game.SCALE), (int)(TILE_DEFAULT_SIZE * Game.SCALE));
+        player = new Player(100,  1472-32, (int)(TILE_DEFAULT_SIZE * Game.SCALE), (int)(TILE_DEFAULT_SIZE * Game.SCALE));
         player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
         playing.setPlayer(player); // Pass player to playing
     }
 
-	private void startGameLoop(){
-		gameThread = new Thread(this);
-		gameThread.start();
-	}
+    private void startGameLoop(){
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
 
 
     public void update() {
@@ -96,7 +96,7 @@ public class Game implements Runnable {
         }
     }
 
-	@Override
+    @Override
     public void run() {
         double timePerFrame = 1000000000.0 / FPS;
         double timePerUpdate = 1000000000.0 / UPS;

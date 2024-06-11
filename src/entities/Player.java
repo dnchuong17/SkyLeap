@@ -196,8 +196,8 @@ public class Player extends Entity {
     }
 
 
-    public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset), (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), null);
+    public void render(Graphics g, int lvlOffSet) {
+        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), null);
         renderHitBox(g); // Render the hitbox for debugging
     }
 
@@ -393,6 +393,5 @@ public class Player extends Entity {
         this.horizontalVelocity = horizontalVelocity; // Set the horizontal velocity
     }
 }
-
 
 

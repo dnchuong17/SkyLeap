@@ -17,11 +17,12 @@ public class HelpMeMethod {
     }
 
     private static boolean isSolid(float x, float y, int[][] levelData) {
+        int maxHeight = levelData.length * TILE_SIZE;
         if (x < 0 || x >= Game.GAME_WIDTH) {
             System.out.println("x out of bounds: " + x);
             return true;
         }
-        if (y < 0 || y >= GAME_HEIGHT) {
+        if (y < 0 || y >= maxHeight) {
             System.out.println("y out of bounds: " + y);
             return true;
         }
@@ -31,7 +32,7 @@ public class HelpMeMethod {
         int tileValue = levelData[yIndex][xIndex];
         System.out.println("Tile value: " + tileValue);
         // Adjust this condition based on your game's tile data
-        return tileValue != 94;
+        return (tileValue >= 104 || tileValue < 0 || tileValue != 94);
     }
 
     public static float getEntityXPosNextToWall(Rectangle2D.Float hitBox, float xTempSpeed) {
@@ -83,4 +84,3 @@ public class HelpMeMethod {
         }
     }
 }
-

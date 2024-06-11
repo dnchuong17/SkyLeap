@@ -18,7 +18,7 @@ public class Playing extends State implements Statemethods {
 	private boolean paused = false;
 
 	private int yLvlOffSet;
-	private int downBorder = (int) (0.2 * Game.GAME_HEIGHT);
+	private int downBorder = (int) (0.8 * Game.GAME_HEIGHT);
 	private int upBorder = (int) (0.8 * Game.GAME_HEIGHT);
 	private int lvlTilesHigh = LoadSave.getLevelData().length; //92
 	private int maxTilesOffSet = lvlTilesHigh - Game.TILE_IN_HEIGHT; //92 - 24 = 68
@@ -43,7 +43,7 @@ public class Playing extends State implements Statemethods {
 		if (!paused) {
 			levelManager.update();
 			player.update();
-			//checkCloseToBorder();
+			checkCloseToBorder();
 		}
 		else pauseOverlay.update();
 	}
@@ -71,8 +71,8 @@ public class Playing extends State implements Statemethods {
 
 	@Override
 	public void draw(Graphics g) {
-		levelManager.draw(g);
-		player.render(g);
+		levelManager.draw(g, yLvlOffSet);
+		player.render(g, yLvlOffSet);
 		if(paused){
 			pauseOverlay.draw(g);
 		}
@@ -109,15 +109,15 @@ public class Playing extends State implements Statemethods {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_A:
-			player.setLeft(false);
-			break;
-		case KeyEvent.VK_D:
-			player.setRight(false);
-			break;
-		case KeyEvent.VK_SPACE:
-			player.setJumping(false);
-			break;
+			case KeyEvent.VK_A:
+				player.setLeft(false);
+				break;
+			case KeyEvent.VK_D:
+				player.setRight(false);
+				break;
+			case KeyEvent.VK_SPACE:
+				player.setJumping(false);
+				break;
 		}
 
 	}
