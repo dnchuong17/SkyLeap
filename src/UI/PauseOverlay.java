@@ -94,7 +94,7 @@ public class PauseOverlay {
         if (isIn(e, replayB)) {
             if (replayB.isMousePressed())
                 playing.resetAll();
-            playing.unpauseGame();
+                playing.unpauseGame();
         }
 
         if (isIn(e, unpauseB)) {
