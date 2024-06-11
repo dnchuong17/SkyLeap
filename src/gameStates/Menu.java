@@ -1,6 +1,7 @@
 package gameStates;
 
 import UI.MenuChoices;
+import audio.AudioPlayer;
 import main.Game;
 import utilz.LoadSave;
 
@@ -15,6 +16,7 @@ public class Menu extends State implements Statemethods {
 	private BufferedImage bgImage, bgImageFull;
 	private int menuX, menuY, menuWidth, menuHeight, index, rowIndex;
 	private int choice = 0;
+	private AudioPlayer audioPlayer;
 
 	private boolean keyOver, keyPressed;
 
@@ -119,8 +121,6 @@ public class Menu extends State implements Statemethods {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

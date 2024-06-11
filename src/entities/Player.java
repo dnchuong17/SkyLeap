@@ -1,5 +1,7 @@
 package entities;
 
+import audio.AudioPlayer;
+import gameStates.Playing;
 import main.Game;
 import utilz.HelpMeMethod;
 import utilz.LoadSave;
@@ -18,6 +20,7 @@ public class Player extends Entity {
     private boolean isMoving = false; // Whether the player is currently moving
     private float horizontalVelocity = 0f; // The horizontal speed of the player
     private float verticalVelocity = 0f; // The vertical speed of the player
+    private Playing playing;
 
     // Jump attributes / gravity / fall speed
     private float airSpeed = 1.0f * Game.SCALE; // The speed at which the player falls
@@ -57,8 +60,9 @@ public class Player extends Entity {
     // Fall attributes
     private long fallStartTime = 0; // The start time of the fall
 
-    public Player(float startX, float startY, int width, int height) throws IOException {
+    public Player(float startX, float startY, int width, int height, Playing playing) throws IOException {
         super(startX, startY, width, height);
+        this.playing = playing;
         loadAnimation(); // Load the player's animations
         initHitBox(x, y, (int) (28 * Game.SCALE), (int) (28 * Game.SCALE)); // Initialize the hitbox
     }
@@ -247,12 +251,16 @@ public class Player extends Entity {
             xTempSpeed = -playerSpeed; // Move left
             lastDirectionLeft = true; // Set the last direction to left
             lastDirectionRight = false; // Unset the last direction right
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.WALK);
         }
+        else playing.getGame().getAudioPlayer().stopEffect();
         if (right) {
             xTempSpeed = playerSpeed; // Move right
             lastDirectionRight = true; // Set the last direction to right
             lastDirectionLeft = false; // Unset the last direction left
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.WALK);
         }
+        else playing.getGame().getAudioPlayer().stopEffect();
 
         // Update the x position
         if (isInAir) {
@@ -270,8 +278,11 @@ public class Player extends Entity {
         }
 
         if (isInAir) {
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
             updateAirbornePosition();
         }
+        else playing.getGame().getAudioPlayer().stopEffect();
+
     }
 
     private void resetIsInAir() {

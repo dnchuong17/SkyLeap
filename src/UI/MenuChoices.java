@@ -108,5 +108,9 @@ public class MenuChoices {
         this.keyPressed = false;
     }
 
+    public Gamestate getState(){
+        return state;
+    }
+
 
 }
