@@ -16,7 +16,7 @@ public class PauseOverlay {
     private Playing playing;
     private BufferedImage backgroundImage;
     private int bgX, bgY, bgW, bgH;
-   private AudioOptions audioOptions;
+    private AudioOptions audioOptions;
 
     private UrmButtons menuB, replayB, unpauseB;
 
@@ -34,9 +34,9 @@ public class PauseOverlay {
         int unpauseX = (int) (465 * Game.SCALE);
         int bY = (int) (325 * Game.SCALE);
 
-       menuB = new UrmButtons(menuX, bY, URM_SIZE, URM_SIZE, 2);
-       replayB = new UrmButtons(replayX, bY, URM_SIZE, URM_SIZE, 1);
-       unpauseB = new UrmButtons(unpauseX, bY, URM_SIZE, URM_SIZE, 0);
+        menuB = new UrmButtons(menuX, bY, URM_SIZE, URM_SIZE, 2);
+        replayB = new UrmButtons(replayX, bY, URM_SIZE, URM_SIZE, 1);
+        unpauseB = new UrmButtons(unpauseX, bY, URM_SIZE, URM_SIZE, 0);
 
     }
 
@@ -44,11 +44,11 @@ public class PauseOverlay {
         backgroundImage = LoadSave.getSpriteAtlas(LoadSave.PAUSE_BACKGROUND);
         bgW = (int) (backgroundImage.getWidth() * Game.SCALE);
         bgH = (int) (backgroundImage.getHeight() * Game.SCALE);
-        bgX = Game.GAME_WIDTH /2 - bgW /2;
+        bgX = Game.GAME_WIDTH / 2 - bgW / 2;
         bgY = (int) (25 * Game.SCALE);
     }
 
-    public void update(){
+    public void update() {
         menuB.update();
         replayB.update();
         unpauseB.update();
@@ -56,7 +56,7 @@ public class PauseOverlay {
 
     }
 
-    public void draw(Graphics g){
+    public void draw(Graphics g) {
         //Background
         g.drawImage(backgroundImage, bgX, bgY, bgW, bgH, null);
 
@@ -68,52 +68,45 @@ public class PauseOverlay {
         audioOptions.draw(g);
     }
 
-    public void mouseDragged(MouseEvent e){
-      audioOptions.mouseDragged(e);
+    public void mouseDragged(MouseEvent e) {
+        audioOptions.mouseDragged(e);
 
     }
-    public void mousePressed(MouseEvent e){
-       if (isIn(e, menuB))
-           menuB.setMousePressed(true);
-       if (isIn(e, replayB))
-           replayB.setMousePressed(true);
-       if (isIn(e, unpauseB))
-           unpauseB.setMousePressed(true);
-       else audioOptions.mousePressed(e);
+
+    public void mousePressed(MouseEvent e) {
+        if (isIn(e, menuB))
+            menuB.setMousePressed(true);
+        if (isIn(e, replayB))
+            replayB.setMousePressed(true);
+        if (isIn(e, unpauseB))
+            unpauseB.setMousePressed(true);
+        else audioOptions.mousePressed(e);
 
     }
+
     public void mouseReleased(MouseEvent e) throws IOException {
-        if (isIn(e, musicButton)) {
-            if (musicButton.isMousePressed())
-                musicButton.setMuted(!musicButton.isMuted());
-        }
-        if (isIn(e, sfxButton)){
-            if (sfxButton.isMousePressed())
-                sfxButton.setMuted(!sfxButton.isMuted());
-        }
-        if (isIn(e, menuB)){
+        if (isIn(e, menuB)) {
             if (menuB.isMousePressed())
                 Gamestate.state = Gamestate.MENU;
             playing.unpauseGame();
         }
 
-        if (isIn(e, replayB)){
-            if(replayB.isMousePressed())
+        if (isIn(e, replayB)) {
+            if (replayB.isMousePressed())
                 playing.resetAll();
-                playing.unpauseGame();
+            playing.unpauseGame();
         }
 
         if (isIn(e, unpauseB)) {
             if (unpauseB.isMousePressed())
                 playing.unpauseGame();
-        }
-        else audioOptions.mouseReleased(e);
+        } else audioOptions.mouseReleased(e);
         menuB.resetBools();
         replayB.resetBools();
         unpauseB.resetBools();
-}
+    }
 
-    public void mouseMoved(MouseEvent e){
+    public void mouseMoved(MouseEvent e) {
         menuB.setMouseOver(false);
         replayB.setMouseOver(false);
         unpauseB.setMouseOver(false);
@@ -125,18 +118,11 @@ public class PauseOverlay {
             replayB.setMouseOver(true);
         if (isIn(e, unpauseB)) {
             unpauseB.setMouseOver(true);
-        }
-       else audioOptions.mouseMoved(e);
-    }
+        } else audioOptions.mouseMoved(e);
     }
 
 
-    private boolean isIn(MouseEvent e, PauseButtons b){
+    private boolean isIn(MouseEvent e, PauseButtons b) {
         return b.getBounds().contains(e.getX(), e.getY());
     }
-
-
-
-
-
 }
