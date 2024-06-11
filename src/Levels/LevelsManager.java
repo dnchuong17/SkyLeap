@@ -46,4 +46,8 @@ public class LevelsManager {
     public Level getCurentLevel() {
         return levelTest;
     }
+
+    public void reset() throws IOException {
+        levelTest = new Level(LoadSave.getLevelData());
+    }
 }

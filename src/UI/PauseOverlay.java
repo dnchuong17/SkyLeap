@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static utilz.Constants.UI.UrmButtons.URM_SIZE;
+import static utilz.Constants.UI.UrmButtons.*;
 
 public class PauseOverlay {
     private Playing playing;
@@ -71,7 +71,6 @@ public class PauseOverlay {
     public void mouseDragged(MouseEvent e){
       audioOptions.mouseDragged(e);
 
-
     }
     public void mousePressed(MouseEvent e){
        if (isIn(e, menuB))
@@ -83,8 +82,15 @@ public class PauseOverlay {
        else audioOptions.mousePressed(e);
 
     }
-
-    public void mouseReleased(MouseEvent e){
+    public void mouseReleased(MouseEvent e) throws IOException {
+        if (isIn(e, musicButton)) {
+            if (musicButton.isMousePressed())
+                musicButton.setMuted(!musicButton.isMuted());
+        }
+        if (isIn(e, sfxButton)){
+            if (sfxButton.isMousePressed())
+                sfxButton.setMuted(!sfxButton.isMuted());
+        }
         if (isIn(e, menuB)){
             if (menuB.isMousePressed())
                 Gamestate.state = Gamestate.MENU;
@@ -93,7 +99,8 @@ public class PauseOverlay {
 
         if (isIn(e, replayB)){
             if(replayB.isMousePressed())
-                System.out.println("replay");
+                playing.resetAll();
+                playing.unpauseGame();
         }
 
         if (isIn(e, unpauseB)) {
@@ -104,8 +111,7 @@ public class PauseOverlay {
         menuB.resetBools();
         replayB.resetBools();
         unpauseB.resetBools();
-
-    }
+}
 
     public void mouseMoved(MouseEvent e){
         menuB.setMouseOver(false);
@@ -121,6 +127,7 @@ public class PauseOverlay {
             unpauseB.setMouseOver(true);
         }
        else audioOptions.mouseMoved(e);
+    }
     }
 
 

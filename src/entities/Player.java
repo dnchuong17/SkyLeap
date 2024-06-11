@@ -374,6 +374,18 @@ public class Player extends Entity {
     public void setXVelocity(float horizontalVelocity) {
         this.horizontalVelocity = horizontalVelocity; // Set the horizontal velocity
     }
+
+    public void reset() {
+        resetDirBooleans();
+        isInAir = false;
+        isMoving = false;
+        playerAction = IDLE;
+        hitBox.x = x;
+        hitBox.y = y;
+        if(!isEntityOnGround(hitBox, levelData)){
+            isInAir = true;
+        }
+    }
 }
 
 
