@@ -1,10 +1,11 @@
 package entities;
 
 import main.Game;
-import utilz.LoadSave;
 import utilz.HelpMeMethod;
+import utilz.LoadSave;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -24,9 +25,9 @@ public class Player extends Entity {
     private boolean isJumping = false; // Whether the player is currently jumping
     private boolean hitWall = false; // Whether the player has hit a wall
     private float jumpTime = 0.0f; // The duration of the player's jump
-    private final float BASE_JUMP_FORCE = -2.0f * Game.SCALE; // The base force applied for a jump
-    private final float MAX_JUMP_CHARGE_FORCE = -5.0f * Game.SCALE; // The maximum force applied for a charged jump
-    private final float JUMP_MULTIPLIER = 0.1f * Game.SCALE; // The multiplier for jump force
+    private final float BASE_JUMP_FORCE = -3.0f * Game.SCALE; // The base force applied for a jump
+    private final float MAX_JUMP_CHARGE_FORCE = -6.0f * Game.SCALE; // The maximum force applied for a charged jump
+    private final float JUMP_MULTIPLIER = 0.2f * Game.SCALE; // The multiplier for jump force
     private final long JUMP_CHARGE_START_TIME = 0; // The start time for jump charge
     private final float GRAVITY = 0.1f * Game.SCALE; // The gravity applied to the player
     private final float MAX_FALL_SPEED = 10.0f * Game.SCALE; // The maximum speed the player can fall
@@ -51,6 +52,10 @@ public class Player extends Entity {
     private float jumpChargeForce = BASE_JUMP_FORCE; // The force of the jump charge
     private boolean lastDirectionLeft = false; // Whether the last direction input was left
     private boolean lastDirectionRight = false; // Whether the last direction input was right
+    private boolean canRedirectJump = false; // Whether the player can redirect the jump
+
+    // Fall attributes
+    private long fallStartTime = 0; // The start time of the fall
 
     public Player(float startX, float startY, int width, int height) throws IOException {
         super(startX, startY, width, height);
@@ -76,6 +81,8 @@ public class Player extends Entity {
     private void startJumpCharging() {
         isChargingJump = true; // Start charging the jump
         jumpChargeStartTime = System.currentTimeMillis(); // Record the start time
+        canRedirectJump = false; // Disable jump redirection initially
+
         if (left) {
             lastDirectionLeft = true; // Set the last direction to left
             lastDirectionRight = false; // Unset the last direction right
@@ -86,6 +93,7 @@ public class Player extends Entity {
             lastDirectionLeft = false; // Unset the last direction left
             lastDirectionRight = false; // Unset the last direction right
         }
+
         System.out.println("Jump charging started: lastDirectionLeft=" + lastDirectionLeft + ", lastDirectionRight=" + lastDirectionRight);
     }
 
@@ -100,9 +108,9 @@ public class Player extends Entity {
 
         // Apply horizontal velocity based on last direction input
         if (lastDirectionLeft) {
-            horizontalVelocity = -playerSpeed; // Set the horizontal velocity to left
+            horizontalVelocity = -playerSpeed / 2; // Set the horizontal velocity to left
         } else if (lastDirectionRight) {
-            horizontalVelocity = playerSpeed; // Set the horizontal velocity to right
+            horizontalVelocity = playerSpeed / 2; // Set the horizontal velocity to right
         } else {
             horizontalVelocity = 0; // Set the horizontal velocity to 0 if no direction was pressed
         }
@@ -114,11 +122,34 @@ public class Player extends Entity {
         updatePosition(); // Update the player's position
         updateAnimationTick(); // Update the animation tick
         setAnimation(); // Set the current animation
+
+        if (isInAir && fallStartTime == 0) {
+            fallStartTime = System.currentTimeMillis(); // Start fall timer
+        } else if (!isInAir && fallStartTime != 0) {
+            long fallDuration = System.currentTimeMillis() - fallStartTime;
+            fallStartTime = 0; // Reset fall timer
+
+            if (fallDuration >= 2000) {
+                triggerSignificantFallEvent();
+            } else if (fallDuration > 0) {
+                triggerMinorFallEvent();
+            }
+        }
+    }
+
+    private void triggerSignificantFallEvent() {
+        System.out.println("Significant fall event triggered.");
+        // Implement the logic for significant fall event
+    }
+
+    private void triggerMinorFallEvent() {
+        System.out.println("Minor fall event triggered.");
+        // Implement the logic for minor fall event
     }
 
     private void updateAirbornePosition() {
         if (HelpMeMethod.canMoveHere(hitBox.x + horizontalVelocity, hitBox.y + airSpeed, hitBox.width, hitBox.height, levelData)) {
-            hitBox.x += horizontalVelocity; // Update the x position
+            hitBox.x += horizontalVelocity; // Maintain horizontal velocity
             hitBox.y += airSpeed; // Update the y position
             applyGravity(); // Apply gravity
             if (airSpeed > MAX_FALL_SPEED) {
@@ -127,12 +158,11 @@ public class Player extends Entity {
             System.out.println("Airborne: x=" + hitBox.x + ", y=" + hitBox.y + ", airSpeed=" + airSpeed + ", horizontalVelocity=" + horizontalVelocity);
         } else {
             if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, horizontalVelocity, levelData)) {
-                horizontalVelocity = -horizontalVelocity * 0.5f; // Rebound effect with reduced speed
+                horizontalVelocity = -horizontalVelocity * 0.9f; // Rebound effect with reduced speed
                 System.out.println("Rebound: horizontalVelocity=" + horizontalVelocity);
             } else {
                 hitBox.y = HelpMeMethod.getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed); // Get the correct y position after collision
                 airSpeed = 0; // Stop vertical movement
-                horizontalVelocity = 0; // Stop horizontal movement
                 isInAir = false; // Set the player to be on the ground
                 System.out.println("Collision detected: y=" + hitBox.y);
             }
@@ -160,7 +190,7 @@ public class Player extends Entity {
         int startAnimation = playerAction;
 
         if (isChargingJump) {
-            playerAction = IDLE; // Ensure the player action is idle while charging jump
+            playerAction = CHARGING; // Ensure the player action is idle while charging jump
         } else if (isMoving) {
             playerAction = RUNNING; // Set the player action to running if moving
         } else {
@@ -184,10 +214,23 @@ public class Player extends Entity {
                 startJumpCharging(); // Start charging the jump if not already charging or in the air
             } else if (isChargingJump && (System.currentTimeMillis() - jumpChargeStartTime >= MAX_CHARGE_TIME)) {
                 releaseJump(); // Release the jump if charging time exceeds max charge time
+            } else if (isChargingJump && (System.currentTimeMillis() - jumpChargeStartTime >= 500)) {
+                canRedirectJump = true; // Allow jump redirection after 0.5 seconds of charging
             }
         } else {
             if (isChargingJump) {
                 releaseJump(); // Release the jump if the jump key is released
+            }
+        }
+
+        // Handle horizontal movement for jump redirection
+        if (canRedirectJump) {
+            if (left) {
+                lastDirectionLeft = true; // Set the last direction to left
+                lastDirectionRight = false; // Unset the last direction right
+            } else if (right) {
+                lastDirectionRight = true; // Set the last direction to right
+                lastDirectionLeft = false; // Unset the last direction left
             }
         }
 
