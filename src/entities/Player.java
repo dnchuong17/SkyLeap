@@ -58,6 +58,9 @@ public class Player extends Entity {
     // Fall attributes
     private long fallStartTime = 0; // The start time of the fall
 
+    private int flipX = 0;
+    private int flipW = 1;
+
     public Player(float startX, float startY, int width, int height, Playing playing) throws IOException {
         super(startX, startY, width, height);
         this.playing = playing;
@@ -172,7 +175,7 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset), (int) (32 * Game.SCALE), (int) (32 * Game.SCALE), null);
+        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset) + flipX, (int) (hitBox.y - yDrawOffset), (int) (32 * Game.SCALE) * flipW, (int) (32 * Game.SCALE), null);
         renderHitBox(g); // Render the hitbox for debugging
     }
 
@@ -247,11 +250,15 @@ public class Player extends Entity {
         // Handle horizontal movement
         if (left) {
             xTempSpeed = -playerSpeed; // Move left
+            flipX = width;
+            flipW = -1;
             lastDirectionLeft = true; // Set the last direction to left
             lastDirectionRight = false; // Unset the last direction right
         }
         if (right) {
             xTempSpeed = playerSpeed; // Move right
+            flipX = 0;
+            flipW = 1;
             lastDirectionRight = true; // Set the last direction to right
             lastDirectionLeft = false; // Unset the last direction left
         }
