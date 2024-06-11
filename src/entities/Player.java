@@ -376,15 +376,23 @@ public class Player extends Entity {
     }
 
     public void reset() {
-        resetDirBooleans();
-        isInAir = false;
-        isMoving = false;
-        playerAction = IDLE;
-        hitBox.x = x;
-        hitBox.y = y;
-        if(!isEntityOnGround(hitBox, levelData)){
-            isInAir = true;
-        }
+        resetDirBooleans(); // Reset the direction booleans
+        isInAir = false; // Set the player to be on the ground
+        airSpeed = 0; // Reset the air speed
+        horizontalVelocity = 0; // Reset the horizontal velocity
+        jumpTime = 0; // Reset the jump time
+        isJumping = false; // Reset the jumping flag
+        hitBox.x = x; // Reset the x position
+        hitBox.y = y; // Reset the y position
+        resetAnimationTick(); // Reset the animation tick
+        playerAction = IDLE; // Reset the player action
+        fallStartTime = 0; // Reset the fall start time
+        jumpChargeStartTime = 0; // Reset the jump charge start time
+        jumpChargeForce = BASE_JUMP_FORCE; // Reset the jump charge force
+        lastDirectionLeft = false; // Reset the last direction left
+        lastDirectionRight = false; // Reset the last direction right
+        canRedirectJump = false; // Reset the jump redirection flag
+        isChargingJump = false; // Reset the charging jump flag
     }
 }
 
