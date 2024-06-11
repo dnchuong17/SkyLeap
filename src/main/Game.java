@@ -57,7 +57,8 @@ public class Game implements Runnable {
         playing = new Playing(this);
         option = new Option(this);
         levelsManager = new LevelsManager(this);
-        player = new Player(200, GAME_HEIGHT - 150, (int)(32 * Game.SCALE), (int)(32 * Game.SCALE));
+//        player = new Player(200, GAME_HEIGHT - 150, (int)(32 * Game.SCALE), (int)(32 * Game.SCALE));
+        player = new Player(200, 200, (int)(32 * Game.SCALE), (int)(32 * Game.SCALE));
         player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
         playing.setPlayer(player); // Pass player to playing
     }

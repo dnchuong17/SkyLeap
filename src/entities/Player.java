@@ -55,7 +55,7 @@ public class Player extends Entity {
     public Player(float startX, float startY, int width, int height) throws IOException {
         super(startX, startY, width, height);
         loadAnimation(); // Load the player's animations
-        initHitBox(x, y, (int) (28 * Game.SCALE), (int) (28 * Game.SCALE)); // Initialize the hitbox
+        initHitBox(x, y, (int) (25 * Game.SCALE), (int) (25 * Game.SCALE)); // Initialize the hitbox
     }
 
     public void loadLevelData(int[][] levelData) {
@@ -125,11 +125,13 @@ public class Player extends Entity {
                 airSpeed = MAX_FALL_SPEED; // Limit the air speed to max fall speed
             }
             System.out.println("Airborne: x=" + hitBox.x + ", y=" + hitBox.y + ", airSpeed=" + airSpeed + ", horizontalVelocity=" + horizontalVelocity);
-        } else {
+        }
+        else {
             if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, horizontalVelocity, levelData)) {
                 horizontalVelocity = -horizontalVelocity * 0.5f; // Rebound effect with reduced speed
                 System.out.println("Rebound: horizontalVelocity=" + horizontalVelocity);
-            } else {
+            }
+            else {
                 hitBox.y = HelpMeMethod.getEntityYPosUnderRoofOrAboveGround(hitBox, airSpeed); // Get the correct y position after collision
                 airSpeed = 0; // Stop vertical movement
                 horizontalVelocity = 0; // Stop horizontal movement
@@ -215,9 +217,9 @@ public class Player extends Entity {
         if (isInAir) {
             hitBox.x += horizontalVelocity;
         }
-//        else if (xTempSpeed != 0) {
-//            updateXPosition(xTempSpeed);
-//        }
+        else if (xTempSpeed != 0) {
+            updateXPosition(xTempSpeed);
+        }
 
         isMoving = (xTempSpeed != 0);
         System.out.println("Updated position: x=" + hitBox.x + ", y=" + hitBox.y + ", isMoving=" + isMoving + ", horizontalVelocity=" + horizontalVelocity);

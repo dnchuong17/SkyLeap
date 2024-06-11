@@ -26,10 +26,14 @@ public class HelpMeMethod {
             return true;
         if (y < 0 || y >= maxHeight)
             return true;
-        int xIndex = (int) (x / Game.TILE_SIZE);  // column index of the tile based on x-coordinate.
-        int yIndex = (int) (y / Game.TILE_SIZE);  // row index of the tile based on y-coordinate.
-        int tileValue = levelData[yIndex][xIndex];  // Retrieve the tile type from the level data using the calculated indices.
-        return (tileValue == 39 || tileValue == 47 || tileValue == 55 || tileValue == 41 || tileValue == 43 || tileValue == 51 || tileValue == 45 || tileValue == 53 || tileValue == 61 || tileValue == 62 || tileValue == 63 || tileValue == 66 || tileValue == 70 || tileValue == 71 || tileValue == 91)  ;  // Determine if the tile is solid based on its value.
+        float xIndex = x / Game.TILE_SIZE;  // column index of the tile based on x-coordinate.
+        float yIndex = y / Game.TILE_SIZE;  // row index of the tile based on y-coordinate.
+        int tileValue = levelData[(int) yIndex][(int) xIndex];  // Retrieve the tile type from the level data using the calculated indices.
+        if (tileValue >= 104 || tileValue < 0 || (tileValue != 94 && tileValue != 73 && tileValue != 75 && tileValue != 76 && tileValue != 78 && tileValue != 81 && tileValue != 83 && tileValue != 84 && tileValue != 86 && tileValue != 89 && tileValue != 102 && tileValue != 92 && tileValue != 93 && tileValue != 95 && tileValue != 97 && tileValue != 98 && tileValue != 99 && tileValue != 100 && tileValue != 101 && tileValue != 103)) {
+            return true;
+        }
+        return false;
+        //        return (tileValue == 39 || tileValue == 47 || tileValue == 55 || tileValue == 41 || tileValue == 43 || tileValue == 51 || tileValue == 45 || tileValue == 53 || tileValue == 61 || tileValue == 62 || tileValue == 63 || tileValue == 66 || tileValue == 70 || tileValue == 71 || tileValue == 91)  ;  // Determine if the tile is solid based on its value.
     }
 
     //&& tileValue != 73 && tileValue != 75 && tileValue != 76 && tileValue != 78 && tileValue != 76 && tileValue != 81 && tileValue != 83 && tileValue != 84 && tileValue != 86 && tileValue != 89 && tileValue != 89 && tileValue != 92 && tileValue != 93 && tileValue != 94 && tileValue != 95 && tileValue != 97 && tileValue != 98 && tileValue != 99 && tileValue != 100 && tileValue != 101 && tileValue != 103
@@ -68,7 +72,7 @@ public class HelpMeMethod {
 
     public static boolean isEntityOnFloor(Rectangle2D.Float hitBox, int[][] levelData) {
         if(!isSolid(hitBox.x, hitBox.y + hitBox.height + 1, levelData)) {
-            if (!isSolid(hitBox.x + hitBox.width, hitBox.y + hitBox.height + 1, levelData)) {
+            if(!isSolid(hitBox.x + hitBox.width, hitBox.y + hitBox.height + 1, levelData)) {
                 return false;
             }
         }
