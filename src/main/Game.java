@@ -35,15 +35,6 @@ public class Game implements Runnable {
 	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
 	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
 
-    //Old Map
-//    public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
-//    public static final float SCALE = 2.0f;
-//    public static final int TILE_IN_WIDTH = 26;    // 30 => 960 1920 sau khi scale
-//    public static final int TILE_IN_HEIGHT = 14;	//20
-//    public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
-//    public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
-//    public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
-
     public Game() throws IOException {
 		initClasses();
 		gamePanel = new GamePanel(this);
@@ -57,7 +48,7 @@ public class Game implements Runnable {
         playing = new Playing(this);
         option = new Option(this);
         levelsManager = new LevelsManager(this);
-        player = new Player(180,  700, (int)(TILE_DEFAULT_SIZE * Game.SCALE), (int)(TILE_DEFAULT_SIZE * Game.SCALE));
+        player = new Player(180,  600, (int)(TILE_DEFAULT_SIZE * Game.SCALE), (int)(TILE_DEFAULT_SIZE * Game.SCALE));
         player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
         playing.setPlayer(player); // Pass player to playing
     }

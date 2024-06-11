@@ -9,11 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static utilz.Constants.PlayerConstants.*;
-import static utilz.HelpMeMethod.isEntityOnGround;
-
+import static utilz.HelpMeMethod.*;
 public class Player extends Entity {
     // Player attributes
-    private float playerSpeed = 1.5f * Game.SCALE; // The speed at which the player moves
+    private float playerSpeed = 0.5f * Game.SCALE; // The speed at which the player moves
     private boolean isMoving = false; // Whether the player is currently moving
     private float horizontalVelocity = 0f; // The horizontal speed of the player
     private float verticalVelocity = 0f; // The vertical speed of the player
@@ -26,13 +25,13 @@ public class Player extends Entity {
     private float jumpTime = 0.0f; // The duration of the player's jump
     private final float BASE_JUMP_FORCE = -2.0f * Game.SCALE; // The base force applied for a jump
     private final float MAX_JUMP_CHARGE_FORCE = -5.0f * Game.SCALE; // The maximum force applied for a charged jump
-    private final float JUMP_MULTIPLIER = 0.1f * Game.SCALE; // The multiplier for jump force
+    private final float JUMP_MULTIPLIER = 0.2f * Game.SCALE; // The multiplier for jump force
     private final long JUMP_CHARGE_START_TIME = 0; // The start time for jump charge
     private final float GRAVITY = 0.1f * Game.SCALE; // The gravity applied to the player
     private final float MAX_FALL_SPEED = 10.0f * Game.SCALE; // The maximum speed the player can fall
     private final float SIGNIFICANT_FALL_SPEED = 8.0f; // The speed considered significant for falling
     private float fallSpeedAfterCollision = 0.0f * Game.SCALE; // The fall speed after a collision
-    private static final float MAX_CHARGE_TIME = 3000; // max charge time in milliseconds
+    private static final float MAX_CHARGE_TIME = 2500; // max charge time in milliseconds
 
     // Player actions and rendering
     private BufferedImage[][] animations; // Array to hold animation frames
@@ -51,6 +50,10 @@ public class Player extends Entity {
     private float jumpChargeForce = BASE_JUMP_FORCE; // The force of the jump charge
     private boolean lastDirectionLeft = false; // Whether the last direction input was left
     private boolean lastDirectionRight = false; // Whether the last direction input was right
+    private boolean canRedirectJump = false; // Whether the player can redirect the jump
+
+    // Fall attributes
+    private long fallStartTime = 0; // The start time of the fall
 
     public Player(float startX, float startY, int width, int height) throws IOException {
         super(startX, startY, width, height);
@@ -77,6 +80,8 @@ public class Player extends Entity {
     private void startJumpCharging() {
         isChargingJump = true; // Start charging the jump
         jumpChargeStartTime = System.currentTimeMillis(); // Record the start time
+        canRedirectJump = false; // Disable jump redirection initially\
+
         if (left) {
             lastDirectionLeft = true; // Set the last direction to left
             lastDirectionRight = false; // Unset the last direction right
@@ -115,6 +120,29 @@ public class Player extends Entity {
         updatePosition(); // Update the player's position
         updateAnimationTick(); // Update the animation tick
         setAnimation(); // Set the current animation
+
+        if (isInAir && fallStartTime == 0) {
+            fallStartTime = System.currentTimeMillis(); // Start fall timer
+        } else if (!isInAir && fallStartTime != 0) {
+            long fallDuration = System.currentTimeMillis() - fallStartTime;
+            fallStartTime = 0; // Reset fall timer
+
+            if (fallDuration >= 2000) {
+                triggerSignificantFallEvent();
+            } else if (fallDuration > 0) {
+                triggerMinorFallEvent();
+            }
+        }
+    }
+
+    private void triggerSignificantFallEvent() {
+        System.out.println("Significant fall event triggered.");
+        // Implement the logic for significant fall event
+    }
+
+    private void triggerMinorFallEvent() {
+        System.out.println("Minor fall event triggered.");
+        // Implement the logic for minor fall event
     }
 
     private void updateAirbornePosition() {
@@ -163,13 +191,13 @@ public class Player extends Entity {
                 }
             }
 
-//            horizontalVelocity = 0; // Stop horizontal movement
+            //horizontalVelocity = 0; // Stop horizontal movement
         }
     }
 
 
-    public void render(Graphics g, int lvlOffSet) {
-        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), null);
+    public void render(Graphics g) {
+        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset), (int) (hitBox.y - yDrawOffset), (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), null);
         renderHitBox(g); // Render the hitbox for debugging
     }
 
@@ -213,6 +241,8 @@ public class Player extends Entity {
                 startJumpCharging(); // Start charging the jump if not already charging or in the air
             } else if (isChargingJump && (System.currentTimeMillis() - jumpChargeStartTime >= MAX_CHARGE_TIME)) {
                 releaseJump(); // Release the jump if charging time exceeds max charge time
+            } else if (isChargingJump && (System.currentTimeMillis() - jumpChargeStartTime >= 500)) {
+                canRedirectJump = true; // Allow jump redirection after 0.5 seconds of charging
             }
         } else {
             if (isChargingJump) {
@@ -220,6 +250,16 @@ public class Player extends Entity {
             }
         }
 
+        // Handle horizontal movement for jump redirection
+        if (canRedirectJump) {
+            if (left) {
+                lastDirectionLeft = true; // Set the last direction to left
+                lastDirectionRight = false; // Unset the last direction right
+            } else if (right) {
+                lastDirectionRight = true; // Set the last direction to right
+                lastDirectionLeft = false; // Unset the last direction left
+            }
+        }
         // Prevent movement while charging the jump
         if (isChargingJump) {
             isMoving = false;
@@ -263,7 +303,7 @@ public class Player extends Entity {
 
     private void resetIsInAir() {
         isInAir = false; // Set the player to be on the ground
-        airSpeed = 0.1f; // Slight positive value for bounce effect
+        airSpeed = 0.05f; // Slight positive value for bounce effect
         System.out.println("Landed: airSpeed=" + airSpeed);
     }
 
