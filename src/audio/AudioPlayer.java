@@ -68,11 +68,12 @@ public class AudioPlayer {
     }
 
     public void setLevelSong(){
-        if (gamestate == Gamestate.MENU){
-            playSong(MENU);
-        }
-        if (gamestate == Gamestate.PLAYING)
-            stopSong();
+            if (gamestate == Gamestate.MENU && !songs[MENU].isActive()){
+                playSong(MENU);
+            }
+            if (gamestate == Gamestate.PLAYING && songs[MENU].isActive()){
+                stopSong();
+            }
     }
 
    public void setVolume(float volume){
@@ -87,14 +88,10 @@ public class AudioPlayer {
         songs[currentSongID].stop();
     }
     public void stopEffect(){
-        if (effects[JUMP].isActive())
-            effects[JUMP].stop();
-        if (effects[FALL].isActive())
-            effects[FALL].stop();
-        if (effects[WALK].isActive())
-            effects[WALK].stop();
-        if (effects[BOUNCE].isActive())
-            effects[BOUNCE].stop();
+        for (Clip clip: effects){
+            if (clip.isActive())
+                clip.stop();
+        }
     }
 
 
@@ -141,4 +138,5 @@ public class AudioPlayer {
             gainControl.setValue(gain);
         }
     }
+
 }

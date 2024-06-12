@@ -118,6 +118,7 @@ public class Player extends Entity {
         updatePosition(); // Update the player's position
         updateAnimationTick(); // Update the animation tick
         setAnimation(); // Set the current animation
+        playing.getGame().getAudioPlayer().setLevelSong();
     }
 
     private void updateAirbornePosition() {
@@ -192,6 +193,7 @@ public class Player extends Entity {
         } else {
             if (isChargingJump) {
                 releaseJump(); // Release the jump if the jump key is released
+                playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
             }
         }
 
@@ -208,17 +210,14 @@ public class Player extends Entity {
             xTempSpeed = -playerSpeed; // Move left
             lastDirectionLeft = true; // Set the last direction to left
             lastDirectionRight = false; // Unset the last direction right
-            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.WALK);
         }
-        else playing.getGame().getAudioPlayer().stopEffect();
         if (right) {
             xTempSpeed = playerSpeed; // Move right
             lastDirectionRight = true; // Set the last direction to right
             lastDirectionLeft = false; // Unset the last direction left
-            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.WALK);
-        }
-        else playing.getGame().getAudioPlayer().stopEffect();
 
+
+        }
         // Update the x position
         if (isInAir) {
             hitBox.x += horizontalVelocity;
@@ -235,10 +234,10 @@ public class Player extends Entity {
         }
 
         if (isInAir) {
-            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
             updateAirbornePosition();
         }
-        else playing.getGame().getAudioPlayer().stopEffect();
+        else  playing.getGame().getAudioPlayer().stopEffect();
+
 
     }
 
@@ -247,6 +246,7 @@ public class Player extends Entity {
         airSpeed = 0.1f; // Slight positive value for bounce effect
         System.out.println("Landed: airSpeed=" + airSpeed);
     }
+
 
     private void updateXPosition(float xTempSpeed) {
         if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, xTempSpeed, levelData)) {
