@@ -150,6 +150,7 @@ public class Player extends Entity {
     private void triggerMinorFallEvent() {
         System.out.println("Minor fall event triggered.");
         // Implement the logic for minor fall event
+        playing.getGame().getAudioPlayer().setLevelSong();
     }
 
     private void updateAirbornePosition() {
@@ -225,6 +226,7 @@ public class Player extends Entity {
         } else {
             if (isChargingJump) {
                 releaseJump(); // Release the jump if the jump key is released
+                playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
             }
         }
 
@@ -261,6 +263,8 @@ public class Player extends Entity {
             flipW = 1;
             lastDirectionRight = true; // Set the last direction to right
             lastDirectionLeft = false; // Unset the last direction left
+
+
         }
 
         // Update the x position
@@ -281,6 +285,9 @@ public class Player extends Entity {
         if (isInAir) {
             updateAirbornePosition();
         }
+        else  playing.getGame().getAudioPlayer().stopEffect();
+
+
     }
 
     private void resetIsInAir() {
