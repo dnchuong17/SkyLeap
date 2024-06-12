@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class Menu extends State implements Statemethods {
 	private MenuChoices[] buttons = new MenuChoices[3];
-	private BufferedImage bgImage, bgImageFull;
+	private BufferedImage bgImage, bgImageFull, banner;
 	private int menuX, menuY, menuWidth, menuHeight, index, rowIndex;
 	private int choice = 0;
 
@@ -22,6 +22,7 @@ public class Menu extends State implements Statemethods {
 		super(game);
 		loadButtons();
 		loadBackground();
+		banner = LoadSave.getSpriteAtlas(LoadSave.BANNER_IMG);
 		bgImageFull = LoadSave.getSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG);
 	}
 
@@ -50,6 +51,7 @@ public class Menu extends State implements Statemethods {
 	public void draw(Graphics g) {
 
 		g.drawImage(bgImageFull, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+		g.drawImage(banner, Game.GAME_WIDTH/2 - 150, 1, (int)(150 * Game.SCALE),(int)(150 * Game.SCALE), null);
 
 		g.drawImage(bgImage, menuX, menuY, menuWidth, menuHeight, null);
 
