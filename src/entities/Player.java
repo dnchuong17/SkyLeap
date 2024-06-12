@@ -59,7 +59,7 @@ public class Player extends Entity {
 
     public Player(float startX, float startY, int width, int height) throws IOException {
         super(startX, startY, width, height);
-        initHitBox(x, y, (int) (14 * Game.SCALE), (int) (14 * Game.SCALE)); // Initialize the hitbox
+        initHitBox(x, y, (int) (12 * Game.SCALE), (int) (12 * Game.SCALE)); // Initialize the hitbox
         loadAnimation(); // Load the player's animations
 
     }
@@ -175,7 +175,6 @@ public class Player extends Entity {
                 System.out.println("Horizontal collision: adjusted position to avoid sticking. x=" + hitBox.x);
             }
 
-
             boolean collidedVertically = !HelpMeMethod.canMoveHere(hitBox.x, hitBox.y + airSpeed, hitBox.width, hitBox.height, levelData);
             System.out.println("Vertical collision: " + collidedVertically);
 
@@ -202,6 +201,8 @@ public class Player extends Entity {
         g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset) + flipX, (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE) * flipW, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), null);
         renderHitBox(g); // Render the hitbox for debugging
     }
+
+
 
     private void updateAnimationTick() {
         animationTick++;
@@ -323,6 +324,7 @@ public class Player extends Entity {
             hitBox.x = HelpMeMethod.getEntityXPosNextToWall(hitBox, xTempSpeed); // Get the correct x position after collision
             System.out.println("Horizontal collision: x=" + hitBox.x);
         }
+
     }
 
     private void loadAnimation() throws IOException {
