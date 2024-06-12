@@ -1,5 +1,6 @@
 package entities;
 
+import audio.AudioPlayer;
 import gameStates.Playing;
 import main.Game;
 import utilz.HelpMeMethod;
@@ -60,6 +61,7 @@ public class Player extends Entity {
 
     private int flipX = 0;
     private int flipW = 1;
+
 
     public Player(float startX, float startY, int width, int height, Playing playing) throws IOException {
         super(startX, startY, width, height);
