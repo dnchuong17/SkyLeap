@@ -28,7 +28,7 @@ public class LevelsManager {
         for (int j = 0; j < 13 ; j++) {
             for (int i = 0; i < 8; i++) {
                 int index = j * 8 + i;
-                levelSprite[index] = img.getSubimage(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                levelSprite[index] = img.getSubimage(i * TILE_DEFAULT_SIZE, j * TILE_DEFAULT_SIZE, TILE_DEFAULT_SIZE, TILE_DEFAULT_SIZE);
             }
         }
     }

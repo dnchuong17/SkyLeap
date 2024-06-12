@@ -9,6 +9,7 @@ import utilz.LoadSave;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Playing extends State implements Statemethods {
@@ -24,9 +25,13 @@ public class Playing extends State implements Statemethods {
 	private int maxTilesOffSet = lvlTilesHigh - Game.TILE_IN_HEIGHT; //92 - 24 = 68
 	private int maxlvlOffSetY = maxTilesOffSet * Game.TILE_SIZE;
 
+	private BufferedImage backgroundPlayingImg;
+
 	public Playing(Game game) throws IOException {
 		super(game);
 		initClasses(game);
+
+		backgroundPlayingImg = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG);
 	}
 
 	private void initClasses(Game game) throws IOException {
@@ -71,6 +76,8 @@ public class Playing extends State implements Statemethods {
 
 	@Override
 	public void draw(Graphics g) {
+		g.drawImage(backgroundPlayingImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+
 		levelManager.draw(g, yLvlOffSet);
 		player.render(g, yLvlOffSet);
 		if(paused){
