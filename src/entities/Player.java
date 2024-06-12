@@ -58,8 +58,8 @@ public class Player extends Entity {
     private int flipW = 1;
 
     public Player(float startX, float startY, int width, int height) throws IOException {
-        super(startX, startY, width, height);
-        initHitBox(x, y, (int) (14 * Game.SCALE), (int) (14 * Game.SCALE)); // Initialize the hitbox
+        super(startX, startY, width , height);
+        initHitBox(x, y, (int) (14 * Game.SCALE ), (int) (14 * Game.SCALE)); // Initialize the hitbox
         loadAnimation(); // Load the player's animations
 
     }
@@ -192,15 +192,14 @@ public class Player extends Entity {
                     System.out.println("Vertical collision: player hit the roof.");
                 }
             }
-
             //horizontalVelocity = 0; // Stop horizontal movement
         }
     }
 
 
     public void render(Graphics g, int lvlOffSet) {
-        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset) + flipX, (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE) * flipW, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), null);
-        renderHitBox(g); // Render the hitbox for debugging
+        g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset) + flipX, (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE * 1.5) * flipW, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE *1.5), null);
+        renderHitBox(g);
     }
 
     private void updateAnimationTick() {
@@ -314,14 +313,22 @@ public class Player extends Entity {
     }
 
     private void updateXPosition(float xTempSpeed) {
-        if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, xTempSpeed, levelData)) {
-            horizontalVelocity = -horizontalVelocity * 0.5f; // Rebound effect with reduced speed
-            System.out.println("Horizontal collision with rebound: horizontalVelocity=" + horizontalVelocity);
-        } else if (HelpMeMethod.canMoveHere(hitBox.x + xTempSpeed, hitBox.y, hitBox.width, hitBox.height, levelData)) {
+        if (canMoveHere(hitBox.x + xTempSpeed, hitBox.y, hitBox.width, hitBox.height, levelData)) {
             hitBox.x += xTempSpeed; // Update the x position
+            horizontalVelocity = xTempSpeed; // Set the horizontal velocity
         } else {
-            hitBox.x = HelpMeMethod.getEntityXPosNextToWall(hitBox, xTempSpeed); // Get the correct x position after collision
-            System.out.println("Horizontal collision: x=" + hitBox.x);
+            boolean collidedHorizontally = isEntityCollidingHorizontally(hitBox, xTempSpeed, levelData);
+            System.out.println("Collision detected. Horizontal collision: " + collidedHorizontally);
+
+            if (collidedHorizontally) {
+                if (xTempSpeed > 0) {
+                    hitBox.x = getEntityXPosNextToWall(hitBox, xTempSpeed) - 1; // Adjust to the left of the wall
+                } else {
+                    hitBox.x = getEntityXPosNextToWall(hitBox, xTempSpeed) + 1; // Adjust to the right of the wall
+                }
+                horizontalVelocity = 0; // Stop horizontal movement
+                System.out.println("Horizontal collision: adjusted position to avoid sticking. x=" + hitBox.x);
+            }
         }
     }
 

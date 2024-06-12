@@ -1,7 +1,5 @@
 package utilz;
 
-import main.Game;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
