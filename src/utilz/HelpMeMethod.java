@@ -44,7 +44,10 @@ public class HelpMeMethod {
             return tileXPos + xOffset - 1;  // Return the computed position, adjusted by -1 to avoid overlapping into the next tile.
         } else {
             // If moving left:
-            return currentTile * Game.TILE_SIZE;  // Return the starting x-coordinate of the current tile.
+            int tileXPos = currentTile * Game.TILE_SIZE;
+            int xOffset = (int) (hitBox.width);
+            return tileXPos + xOffset + 4;
+//            return currentTile * Game.TILE_SIZE;  // Return the starting x-coordinate of the current tile.
         }
     }
 
