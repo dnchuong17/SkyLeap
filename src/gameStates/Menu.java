@@ -31,14 +31,14 @@ public class Menu extends State implements Statemethods {
 		menuWidth = (int)(bgImage.getWidth()* Game.SCALE) -100;
 		menuHeight = (int)(bgImage.getHeight()* Game.SCALE) -100;
 		menuX = Game.GAME_WIDTH / 2 - menuWidth /2;
-		menuY = (int) (130 * Game.SCALE);
+		menuY = (int) (130 * Game.SCALE) + 40;
 
 	}
 
 	private void loadButtons() throws IOException {
-		buttons[0] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 0, Gamestate.PLAYING);
-		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (280 * Game.SCALE), 1, Gamestate.OPTION);
-		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (340 * Game.SCALE), 2, Gamestate.QUIT);
+		buttons[0] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (245 * Game.SCALE), 0, Gamestate.PLAYING);
+		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (300 * Game.SCALE), 1, Gamestate.OPTION);
+		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (355 * Game.SCALE), 2, Gamestate.QUIT);
 	}
 //test choice
 	@Override
