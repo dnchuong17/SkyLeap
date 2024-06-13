@@ -192,7 +192,6 @@ public class Player extends Entity {
                     System.out.println("Vertical collision: player hit the roof.");
                 }
             }
-            //horizontalVelocity = 0; // Stop horizontal movement
         }
     }
 
