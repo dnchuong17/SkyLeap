@@ -29,8 +29,6 @@ public class LoadSave {
     public static final String COMPLETED = "/GameUI/completed.png";
 
 
-
-
     public static BufferedImage getSpriteAtlas(String filePath) throws IOException {
         BufferedImage img = null;
         InputStream is = LoadSave.class.getResourceAsStream(filePath);

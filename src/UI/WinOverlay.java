@@ -1,28 +1,26 @@
 package UI;
 
 import main.Game;
+import utilz.LoadSave;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class WinOverlay {
     public BufferedImage backGroundImg;
     private  int bgX, bgY,bgW,bgH;
-    public WinOverlay(){
-        //load sprites
+    public WinOverlay() throws IOException {
+        loadSprites();
 
-        try {
-            BufferedImage background= ImageIO.read(getClass().getResourceAsStream("/GameUI/completed.png"));
-            bgW=124;
-            bgH=41;
-            bgX= Game.GAME_WIDTH/2-50;
-            bgY=Game.GAME_HEIGHT/2;
-            backGroundImg=background.getSubimage(0,0,124,41);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    }
 
+    public void loadSprites() throws IOException {
+        bgW = 124;
+        bgH = 41;
+        bgX = Game.GAME_WIDTH / 2 - 50;
+        bgY = Game.GAME_HEIGHT / 2;
+        backGroundImg = LoadSave.getSpriteAtlas(LoadSave.COMPLETED);
     }
     public void update(){
 

@@ -80,6 +80,7 @@ public class Player extends Entity {
         this.playing = playing;
         initHitBox(x, y, (int) (12 * Game.SCALE), (int) (12 * Game.SCALE)); // Initialize the hitbox
         loadAnimation(); // Load the player's animations
+        winOverlay = new WinOverlay();
 
     }
 
@@ -159,7 +160,7 @@ public class Player extends Entity {
         }
 
         if (hitBox.intersects(door)) {
-            System.out.println("You Win");
+            playing.winOverlay.update();
             // Add a boolean flag to check if the player has won
                 hasWon();
                 // Set the game state to win
