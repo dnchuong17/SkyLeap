@@ -1,21 +1,24 @@
 package entities;
 
+import audio.AudioPlayer;
+import gameStates.Playing;
 import main.Game;
-import utilz.LoadSave;
 import utilz.HelpMeMethod;
+import utilz.LoadSave;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static utilz.Constants.PlayerConstants.*;
-import static utilz.HelpMeMethod.*;
+import static utilz.HelpMeMethod.isEntityOnGround;
 public class Player extends Entity {
     // Player attributes
     private float playerSpeed = 0.5f * Game.SCALE; // The speed at which the player moves
     private boolean isMoving = false; // Whether the player is currently moving
     private float horizontalVelocity = 0f; // The horizontal speed of the player
     private float verticalVelocity = 0f; // The vertical speed of the player
+    private Playing playing;
 
     // Jump attributes / gravity / fall speed
     private float airSpeed = 1.0f * Game.SCALE; // The speed at which the player falls
@@ -58,8 +61,9 @@ public class Player extends Entity {
     private int flipX = 0;
     private int flipW = 1;
 
-    public Player(float startX, float startY, int width, int height) throws IOException {
+    public Player(float startX, float startY, int width, int height, Playing playing) throws IOException {
         super(startX, startY, width, height);
+        this.playing = playing;
         initHitBox(x, y, (int) (12 * Game.SCALE), (int) (12 * Game.SCALE)); // Initialize the hitbox
         loadAnimation(); // Load the player's animations
 
@@ -194,8 +198,6 @@ public class Player extends Entity {
                     System.out.println("Vertical collision: player hit the roof.");
                 }
             }
-
-            //horizontalVelocity = 0; // Stop horizontal movement
         }
     }
 
@@ -204,8 +206,6 @@ public class Player extends Entity {
         g.drawImage(animations[playerAction][animationIndex], (int) (hitBox.x - xDrawOffset) + flipX, (int) (hitBox.y - yDrawOffset) - lvlOffSet, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE) * flipW, (int) (Game.TILE_DEFAULT_SIZE * Game.SCALE), null);
         renderHitBox(g); // Render the hitbox for debugging
     }
-
-
 
     private void updateAnimationTick() {
         animationTick++;
@@ -258,6 +258,18 @@ public class Player extends Entity {
         } else {
             if (isChargingJump) {
                 releaseJump(); // Release the jump if the jump key is released
+                playing.getGame().getAudioPlayer().playEffect(AudioPlayer.JUMP);
+            }
+        }
+
+        // Handle horizontal movement for jump redirection
+        if (canRedirectJump) {
+            if (left) {
+                lastDirectionLeft = true; // Set the last direction to left
+                lastDirectionRight = false; // Unset the last direction right
+            } else if (right) {
+                lastDirectionRight = true; // Set the last direction to right
+                lastDirectionLeft = false; // Unset the last direction left
             }
         }
 
@@ -316,6 +328,9 @@ public class Player extends Entity {
         if (isInAir) {
             updateAirbornePosition();
         }
+        else  playing.getGame().getAudioPlayer().stopEffect();
+
+
     }
 
     private void resetIsInAir() {
@@ -334,7 +349,6 @@ public class Player extends Entity {
             hitBox.x = HelpMeMethod.getEntityXPosNextToWall(hitBox, xTempSpeed); // Get the correct x position after collision
             System.out.println("Horizontal collision: x=" + hitBox.x);
         }
-
     }
 
     private void loadAnimation() throws IOException {
@@ -410,6 +424,27 @@ public class Player extends Entity {
     public void setXVelocity(float horizontalVelocity) {
         this.horizontalVelocity = horizontalVelocity; // Set the horizontal velocity
     }
+
+    public void reset() {
+        resetDirBooleans(); // Reset the direction booleans
+        isInAir = false; // Set the player to be on the ground
+        airSpeed = 0; // Reset the air speed
+        horizontalVelocity = 0; // Reset the horizontal velocity
+        jumpTime = 0; // Reset the jump time
+        isJumping = false; // Reset the jumping flag
+        hitBox.x = x; // Reset the x position
+        hitBox.y = y; // Reset the y position
+        resetAnimationTick(); // Reset the animation tick
+        playerAction = IDLE; // Reset the player action
+        fallStartTime = 0; // Reset the fall start time
+        jumpChargeStartTime = 0; // Reset the jump charge start time
+        jumpChargeForce = BASE_JUMP_FORCE; // Reset the jump charge force
+        lastDirectionLeft = false; // Reset the last direction left
+        lastDirectionRight = false; // Reset the last direction right
+        canRedirectJump = false; // Reset the jump redirection flag
+        isChargingJump = false; // Reset the charging jump flag
+    }
 }
+
 
 

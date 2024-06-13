@@ -100,6 +100,8 @@ public class Playing extends State implements Statemethods {
 		levelManager.draw(g, yLvlOffSet);
 		player.render(g, yLvlOffSet);
 		if(paused){
+			g.setColor(new Color(0, 0, 0, 100));
+			g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 			pauseOverlay.draw(g);
 		}
 	}
@@ -163,7 +165,7 @@ public class Playing extends State implements Statemethods {
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(MouseEvent e) throws IOException {
 		if (paused){
 			pauseOverlay.mouseReleased(e);
 		}
@@ -185,6 +187,11 @@ public class Playing extends State implements Statemethods {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public void resetAll() throws IOException {
+		levelManager.reset();
+		player.reset();
 	}
 
 }

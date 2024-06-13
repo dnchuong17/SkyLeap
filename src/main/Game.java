@@ -1,12 +1,16 @@
 package main;
 
 import Levels.LevelsManager;
+import UI.AudioOptions;
+import audio.AudioPlayer;
 import entities.Player;
 import gameStates.Gamestate;
+import gameStates.Menu;
 import gameStates.Option;
 import gameStates.Playing;
-import gameStates.Menu;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
 
@@ -25,6 +29,9 @@ public class Game implements Runnable {
     private Option option;
     private Player player;
     private LevelsManager levelsManager;
+    private AudioOptions audioOptions;
+    private AudioPlayer audioPlayer;
+
 
     //New Map
     public static final int TILE_DEFAULT_SIZE = 16; // 16PIXELS => 64x64
@@ -35,20 +42,23 @@ public class Game implements Runnable {
     public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
     public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
 
-    public Game() throws IOException {
-        initClasses();
-        gamePanel = new GamePanel(this);
-        gameWindow = new GameWindow(gamePanel);
-        gamePanel.requestFocus();
-        startGameLoop();
-    }
+    public Game() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+		initClasses();
+		gamePanel = new GamePanel(this);
+		gameWindow = new GameWindow(gamePanel);
+		gamePanel.requestFocus();
+		startGameLoop();
+	}
 
-    private void initClasses() throws IOException {
+
+    private void initClasses() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        audioOptions = new AudioOptions(this);
+        audioPlayer = new AudioPlayer();
         menu = new Menu(this);
         playing = new Playing(this);
         option = new Option(this);
         levelsManager = new LevelsManager(this);
-        player = new Player((14 * TILE_SIZE),  (92 * TILE_SIZE) - (TILE_SIZE * 2), TILE_SIZE, TILE_SIZE); //old Y = 1472-32
+        player = new Player((14 * TILE_SIZE),  (92 * TILE_SIZE) - (TILE_SIZE * 2), TILE_SIZE, TILE_SIZE); //old Y = 1472-3
         player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
         playing.setPlayer(player); // Pass player to playing
     }
@@ -156,5 +166,11 @@ public class Game implements Runnable {
 
     public Player getPlayer() {
         return player;
+    }
+    public AudioOptions getAudioOptions() {
+        return audioOptions;
+    }
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
     }
 }
