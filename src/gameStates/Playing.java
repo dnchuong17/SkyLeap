@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import static main.Game.*;
+
 public class Playing extends State implements Statemethods {
 	private Player player;
 	private LevelsManager levelManager;
@@ -23,15 +25,23 @@ public class Playing extends State implements Statemethods {
 	private int upBorder = (int) (0.2 * Game.GAME_HEIGHT);
 	private int lvlTilesHigh = LoadSave.getLevelData().length; //92
 	private int maxTilesOffSet = lvlTilesHigh - Game.TILE_IN_HEIGHT; //92 - 24 = 68
-	private int maxlvlOffSetY = maxTilesOffSet * Game.TILE_SIZE;
+	private int maxlvlOffSetY = maxTilesOffSet * TILE_SIZE;
 
 	private BufferedImage backgroundPlayingImg;
+	private BufferedImage backgroundPlayingImg1;
+	private BufferedImage backgroundPlayingImg2;
+	private BufferedImage backgroundPlayingImg3;
+	private BufferedImage backgroundPlayingImg4;
 
 	public Playing(Game game) throws IOException {
 		super(game);
 		initClasses(game);
-
 		backgroundPlayingImg = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG);
+		backgroundPlayingImg1 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_1);
+		backgroundPlayingImg2 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_2);
+		backgroundPlayingImg3 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_3);
+		backgroundPlayingImg4 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_4);
+
 	}
 
 	private void initClasses(Game game) throws IOException {
@@ -76,7 +86,16 @@ public class Playing extends State implements Statemethods {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(backgroundPlayingImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+//		g.drawImage(backgroundPlayingImg, 0, 0, 1002, (int)(GAME_HEIGHT* SCALE), null);
+		int imageHeight = backgroundPlayingImg3.getHeight(null);
+		int startY = GAME_HEIGHT - imageHeight;
+
+		g.drawImage(backgroundPlayingImg3, 0, startY + 16 , Game.GAME_WIDTH, 30 * 32 , null);
+//		g.drawImage(backgroundPlayingImg2, 0, Game.GAME_HEIGHT, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+//		g.drawImage(backgroundPlayingImg1, 0, Game.GAME_HEIGHT * 2, Game.GAME_WIDTH,  Game.GAME_HEIGHT, null);
+
+//		drawBackground(g);
+
 
 		levelManager.draw(g, yLvlOffSet);
 		player.render(g, yLvlOffSet);
@@ -84,6 +103,13 @@ public class Playing extends State implements Statemethods {
 			pauseOverlay.draw(g);
 		}
 	}
+
+//	private void drawBackground(Graphics g) {
+//		for(int i = 0; i < 3; i++){
+//			g.drawImage(backgroundPlayingImg4, 0, 0 + i * GAME_HEIGHT , 1002, GAME_HEIGHT, null);
+//		}
+//
+//	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

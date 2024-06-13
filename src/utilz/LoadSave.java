@@ -23,6 +23,10 @@ public class LoadSave {
     public static final String VOLUME_BUTTONS = "/GameUI/volume_buttons.png";
     public static final String MENU_BACKGROUND_IMG = "/backgrounds/BackgroundMenu.png";
     public static final String PLAYING_BACKGROUND_IMG = "/backgrounds/backgroundForReal.png";
+    public static final String PLAYING_BACKGROUND_IMG_1 = "/backgrounds/backgroundForReal_1.png";
+    public static final String PLAYING_BACKGROUND_IMG_2 = "/backgrounds/backgroundForReal_2.png";
+    public static final String PLAYING_BACKGROUND_IMG_3 = "/backgrounds/backgroundForReal_3.png";
+    public static final String PLAYING_BACKGROUND_IMG_4 = "/backgrounds/backgroundForReal_4.png";
 
 
 
