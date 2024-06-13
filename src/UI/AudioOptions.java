@@ -22,17 +22,17 @@ public class AudioOptions {
     }
 
     private void createVolumeButtons() throws IOException {
-        int vX = (int) (309 * Game.SCALE);
-        int vY = (int) (278 *Game.SCALE);
-        volumeButton = new VolumeButton(vX, vY,SLIDER_WIDTH, VOLUME_HEIGHT);
+        int vX = (int) (309 * Game.SCALE) - 100;
+        int vY = (int) (278 *Game.SCALE) - 75;
+        volumeButton = new VolumeButton(vX - 196, vY,SLIDER_WIDTH - 115 , VOLUME_HEIGHT - 35);
     }
 
     private void createSoundButtons() throws IOException {
-        int soundX = (int) (450 * Game.SCALE);
-        int musicY = (int) (140 * Game.SCALE);
-        int sfxY = (int) (186 * Game.SCALE);
-        musicButton = new SoundButtons(soundX, musicY, SOUND_SIZE, SOUND_SIZE);
-        sfxButton = new SoundButtons(soundX, sfxY, SOUND_SIZE, SOUND_SIZE);
+        int soundX = (int) (450 * Game.SCALE) - 370;
+        int musicY = (int) (140 * Game.SCALE) - 50;
+        int sfxY = (int) (186 * Game.SCALE) - 50;
+        musicButton = new SoundButtons(soundX, musicY + 10, SOUND_SIZE - 30, SOUND_SIZE - 30);
+        sfxButton = new SoundButtons(soundX, sfxY - 5, SOUND_SIZE-30, SOUND_SIZE - 30);
 
     }
 

@@ -9,8 +9,8 @@ public class Constants {
         public static class Buttons {
             public static final int B_WIDTH_DEFAULT = 140;
             public static final int B_HEIGHT_DEFAULT = 56;
-            public static final int B_WIDTH = (int) (B_WIDTH_DEFAULT * Game.SCALE) - 30;
-            public static final int B_HEIGHT = (int) (B_HEIGHT_DEFAULT * Game.SCALE) - 15;
+            public static final int B_WIDTH = (int) (B_WIDTH_DEFAULT * Game.SCALE) - 60;
+            public static final int B_HEIGHT = (int) (B_HEIGHT_DEFAULT * Game.SCALE) - 25;
         }
 //pause button size
         public static class PauseButtons{
@@ -20,7 +20,7 @@ public class Constants {
 
         public static class UrmButtons {
             public static final int URM_SIZE_DEFAULT = 56;
-            public static final int URM_SIZE = (int) (URM_SIZE_DEFAULT *Game.SCALE);
+            public static final int URM_SIZE = (int) (URM_SIZE_DEFAULT *Game.SCALE) - 50;
         }
 
         public static class VolumeButtons {
@@ -31,8 +31,6 @@ public class Constants {
             public static final int VOLUME_WIDTH= (int) (VOLUME_WIDTH_DEFAULT *Game.SCALE);
             public static final int VOLUME_HEIGHT= (int) (VOLUME_HEIGHT_DEFAULT *Game.SCALE);
             public static final int SLIDER_WIDTH= (int) (SLIDER_WIDTH_DEFAULT *Game.SCALE);
-
-
         }
     }
 
