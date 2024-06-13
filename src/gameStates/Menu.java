@@ -1,6 +1,7 @@
 package gameStates;
 
 import UI.MenuChoices;
+import audio.AudioPlayer;
 import main.Game;
 import utilz.LoadSave;
 
@@ -12,9 +13,10 @@ import java.io.IOException;
 
 public class Menu extends State implements Statemethods {
 	private MenuChoices[] buttons = new MenuChoices[3];
-	private BufferedImage bgImage, bgImageFull;
+	private BufferedImage bgImage, bgImageFull, banner;
 	private int menuX, menuY, menuWidth, menuHeight, index, rowIndex;
 	private int choice = 0;
+	private AudioPlayer audioPlayer;
 
 	private boolean keyOver, keyPressed;
 
@@ -22,6 +24,7 @@ public class Menu extends State implements Statemethods {
 		super(game);
 		loadButtons();
 		loadBackground();
+		banner = LoadSave.getSpriteAtlas(LoadSave.BANNER_IMG);
 		bgImageFull = LoadSave.getSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG);
 	}
 
@@ -30,14 +33,14 @@ public class Menu extends State implements Statemethods {
 		menuWidth = (int)(bgImage.getWidth()* Game.SCALE) -100;
 		menuHeight = (int)(bgImage.getHeight()* Game.SCALE) -100;
 		menuX = Game.GAME_WIDTH / 2 - menuWidth /2;
-		menuY = (int) (130 * Game.SCALE);
+		menuY = (int) (130 * Game.SCALE) + 40;
 
 	}
 
 	private void loadButtons() throws IOException {
-		buttons[0] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 0, Gamestate.PLAYING);
-		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (280 * Game.SCALE), 1, Gamestate.OPTION);
-		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (340 * Game.SCALE), 2, Gamestate.QUIT);
+		buttons[0] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (245 * Game.SCALE), 0, Gamestate.PLAYING);
+		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (300 * Game.SCALE), 1, Gamestate.OPTION);
+		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (355 * Game.SCALE), 2, Gamestate.QUIT);
 	}
 //test choice
 	@Override
@@ -50,6 +53,7 @@ public class Menu extends State implements Statemethods {
 	public void draw(Graphics g) {
 
 		g.drawImage(bgImageFull, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+		g.drawImage(banner, Game.GAME_WIDTH/2 - 150, 1, (int)(150 * Game.SCALE),(int)(150 * Game.SCALE), null);
 
 		g.drawImage(bgImage, menuX, menuY, menuWidth, menuHeight, null);
 
@@ -119,8 +123,6 @@ public class Menu extends State implements Statemethods {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

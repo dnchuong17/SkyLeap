@@ -1,23 +1,27 @@
 package main;
 
 import Levels.LevelsManager;
+import UI.AudioOptions;
+import audio.AudioPlayer;
 import entities.Player;
 import gameStates.Gamestate;
+import gameStates.Menu;
 import gameStates.Option;
 import gameStates.Playing;
-import gameStates.Menu;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
 
 
 public class Game implements Runnable {
-	
-	private GameWindow gameWindow;
-	private GamePanel gamePanel;
-	private Thread gameThread;
-	private final int FPS = 120;
-	private final int UPS = 200;
+
+    private GameWindow gameWindow;
+    private GamePanel gamePanel;
+    private Thread gameThread;
+    private final int FPS = 120;
+    private final int UPS = 200;
 
 
     private Playing playing;
@@ -25,16 +29,20 @@ public class Game implements Runnable {
     private Option option;
     private Player player;
     private LevelsManager levelsManager;
+    private AudioOptions audioOptions;
+    private AudioPlayer audioPlayer;
 
-	public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
-	public static final float SCALE = 2.0f;
-	public static final int TILE_IN_WIDTH = 26;    // 30 => 960 1920 sau khi scale
-	public static final int TILE_IN_HEIGHT = 14;	//20
-	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
-	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
-	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
 
-    public Game() throws IOException {
+    //New Map
+    public static final int TILE_DEFAULT_SIZE = 16; // 16PIXELS => 64x64
+    public static final float SCALE = 2.0f;
+    public static final int TILE_IN_WIDTH = 30;    // 30 => 960 1920 sau khi scale
+    public static final int TILE_IN_HEIGHT = 24;	//20
+    public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
+    public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
+    public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
+
+    public Game() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 		initClasses();
 		gamePanel = new GamePanel(this);
 		gameWindow = new GameWindow(gamePanel);
@@ -42,20 +50,23 @@ public class Game implements Runnable {
 		startGameLoop();
 	}
 
-    private void initClasses() throws IOException {
+
+    private void initClasses() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        audioOptions = new AudioOptions(this);
+        audioPlayer = new AudioPlayer();
         menu = new Menu(this);
         playing = new Playing(this);
         option = new Option(this);
         levelsManager = new LevelsManager(this);
-        player = new Player(200, 200, (int)(32 * Game.SCALE), (int)(32 * Game.SCALE));
+        player = new Player((14 * TILE_SIZE),  (92 * TILE_SIZE) - (TILE_SIZE * 2), TILE_SIZE, TILE_SIZE); //old Y = 1472-3
         player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
         playing.setPlayer(player); // Pass player to playing
     }
 
-	private void startGameLoop(){
-		gameThread = new Thread(this);
-		gameThread.start();
-	}
+    private void startGameLoop(){
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
 
 
     public void update() {
@@ -80,7 +91,7 @@ public class Game implements Runnable {
 
     public void draw(Graphics g) {
 //        levelsManager.render(g);
-        player.render(g);
+//        player.render(g);
         switch (Gamestate.state) {
             case MENU:
                 menu.draw(g);
@@ -95,7 +106,7 @@ public class Game implements Runnable {
         }
     }
 
-	@Override
+    @Override
     public void run() {
         double timePerFrame = 1000000000.0 / FPS;
         double timePerUpdate = 1000000000.0 / UPS;
@@ -155,5 +166,11 @@ public class Game implements Runnable {
 
     public Player getPlayer() {
         return player;
+    }
+    public AudioOptions getAudioOptions() {
+        return audioOptions;
+    }
+    public AudioPlayer getAudioPlayer() {
+        return audioPlayer;
     }
 }

@@ -6,6 +6,7 @@ import main.GamePanel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 
 public class MouseInputs implements MouseListener, MouseMotionListener {
 
@@ -82,8 +83,12 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 				gamePanel.getGame().getMenu().mouseReleased(e);
 				break;
 			case PLAYING:
-				gamePanel.getGame().getPlaying().mouseReleased(e);
-				break;
+                try {
+                    gamePanel.getGame().getPlaying().mouseReleased(e);
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+                break;
 			case OPTION:
 				gamePanel.getGame().getOption().mouseReleased(e);
 				break;
