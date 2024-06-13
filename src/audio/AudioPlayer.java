@@ -5,8 +5,21 @@ import java.io.IOException;
 import java.net.URL;
 
 public class AudioPlayer {
+    private static AudioPlayer instance;
     public static int MENU = 0;
 
+    public AudioPlayer(){
+        loadSongs();
+        loadEffects();
+        playSong(MENU);
+    }
+
+    public static AudioPlayer getInstance() {
+        if (instance == null) {
+            instance = new AudioPlayer();
+        }
+        return instance;
+    }
     //in game
     public static int JUMP = 0;
 
@@ -14,13 +27,6 @@ public class AudioPlayer {
     private int currentSongID;
     private float volume = 0.6f;
     private boolean songMute, effectMute;
-
-
-    public AudioPlayer(){
-        loadSongs();
-        loadEffects();
-        playSong(MENU);
-    }
 
     private void loadSongs(){
         String[] names = {"/Audio/MenuSound.wav"};
