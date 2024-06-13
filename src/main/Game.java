@@ -16,12 +16,12 @@ import java.io.IOException;
 
 
 public class Game implements Runnable {
-	
-	private GameWindow gameWindow;
-	private GamePanel gamePanel;
-	private Thread gameThread;
-	private final int FPS = 120;
-	private final int UPS = 200;
+
+    private GameWindow gameWindow;
+    private GamePanel gamePanel;
+    private Thread gameThread;
+    private final int FPS = 120;
+    private final int UPS = 200;
 
 
     private Playing playing;
@@ -33,13 +33,14 @@ public class Game implements Runnable {
     private AudioPlayer audioPlayer;
 
 
-    public static final int TILE_DEFAULT_SIZE = 32; // 16PIXELS => 64x64
-	public static final float SCALE = 2.0f;
-	public static final int TILE_IN_WIDTH = 26;    // 30 => 960 1920 sau khi scale
-	public static final int TILE_IN_HEIGHT = 14;	//20
-	public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
-	public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
-	public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
+    //New Map
+    public static final int TILE_DEFAULT_SIZE = 16; // 16PIXELS => 64x64
+    public static final float SCALE = 2.0f;
+    public static final int TILE_IN_WIDTH = 30;    // 30 => 960 1920 sau khi scale
+    public static final int TILE_IN_HEIGHT = 24;	//20
+    public static final int TILE_SIZE = (int)(TILE_DEFAULT_SIZE * SCALE);
+    public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_WIDTH;
+    public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_HEIGHT;
 
     public Game() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 		initClasses();
@@ -57,15 +58,15 @@ public class Game implements Runnable {
         playing = new Playing(this);
         option = new Option(this);
         levelsManager = new LevelsManager(this);
-        player = new Player(200, 200, (int)(32 * Game.SCALE), (int)(32 * Game.SCALE), this.playing);
+        player = new Player((6 * TILE_SIZE),  (92 * TILE_SIZE) - (TILE_SIZE * 2), TILE_SIZE, TILE_SIZE); //old Y = 1472-32
         player.loadLevelData(levelsManager.getCurentLevel().getLevelData());
         playing.setPlayer(player); // Pass player to playing
     }
 
-	private void startGameLoop(){
-		gameThread = new Thread(this);
-		gameThread.start();
-	}
+    private void startGameLoop(){
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
 
 
     public void update() {
@@ -90,7 +91,7 @@ public class Game implements Runnable {
 
     public void draw(Graphics g) {
 //        levelsManager.render(g);
-        player.render(g);
+//        player.render(g);
         switch (Gamestate.state) {
             case MENU:
                 menu.draw(g);
@@ -105,7 +106,7 @@ public class Game implements Runnable {
         }
     }
 
-	@Override
+    @Override
     public void run() {
         double timePerFrame = 1000000000.0 / FPS;
         double timePerUpdate = 1000000000.0 / UPS;
