@@ -2,6 +2,7 @@ package gameStates;
 
 import Levels.LevelsManager;
 import UI.PauseOverlay;
+import UI.WinOverlay;
 import entities.Player;
 import main.Game;
 import utilz.LoadSave;
@@ -33,6 +34,9 @@ public class Playing extends State implements Statemethods {
 	private BufferedImage backgroundPlayingImg3;
 	private BufferedImage backgroundPlayingImg4;
 
+	public WinOverlay winOverlay;
+	public static boolean isWin = false;
+
 	public Playing(Game game) throws IOException {
 		super(game);
 		initClasses(game);
@@ -41,12 +45,12 @@ public class Playing extends State implements Statemethods {
 		backgroundPlayingImg2 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_2);
 		backgroundPlayingImg3 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_3);
 		backgroundPlayingImg4 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_4);
-
 	}
 
 	private void initClasses(Game game) throws IOException {
 		levelManager = new LevelsManager(game);
 		pauseOverlay = new PauseOverlay(this);
+		winOverlay= new WinOverlay();
 
 	}
 	public void setPlayer(Player player) {
@@ -104,6 +108,9 @@ public class Playing extends State implements Statemethods {
 			g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 			pauseOverlay.draw(g);
 		}
+		if(isWin) {
+			winOverlay.draw(g);
+		}
 	}
 
 //	private void drawBackground(Graphics g) {
@@ -135,10 +142,13 @@ public class Playing extends State implements Statemethods {
 			case KeyEvent.VK_D:
 				player.setRight(true);
 				break;
-			case KeyEvent.VK_ESCAPE:
-				paused = !paused;
-				break;
-		}
+				case KeyEvent.VK_ESCAPE:
+					paused = !paused;
+					break;
+			}
+
+
+
 	}
 
 	@Override

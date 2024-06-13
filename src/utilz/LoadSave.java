@@ -26,6 +26,7 @@ public class LoadSave {
     public static final String PLAYING_BACKGROUND_IMG_3 = "/backgrounds/backgroundForReal_3.png";
     public static final String PLAYING_BACKGROUND_IMG_4 = "/backgrounds/backgroundForReal_4.png";
     public static final String BANNER_IMG = "/backgrounds/banner.png";
+    public static final String COMPLETED = "/GameUI/completed.png";
 
 
 

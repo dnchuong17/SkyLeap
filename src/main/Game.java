@@ -173,4 +173,8 @@ public class Game implements Runnable {
     public AudioPlayer getAudioPlayer() {
         return audioPlayer;
     }
+
+    public void switchToMenuState() {
+        Gamestate.state = Gamestate.MENU;
+    }
 }
