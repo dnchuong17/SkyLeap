@@ -1,7 +1,5 @@
 package utilz;
 
-import main.Game;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,6 +21,7 @@ public class LoadSave {
     public static final String VOLUME_BUTTONS = "/GameUI/volume_buttons.png";
     public static final String MENU_BACKGROUND_IMG = "/backgrounds/BackgroundMenu.png";
     public static final String PLAYING_BACKGROUND_IMG = "/backgrounds/backgroundForReal.png";
+    public static final String BANNER_IMG = "/backgrounds/banner.png";
 
 
 

@@ -3,7 +3,6 @@ package entities;
 import audio.AudioPlayer;
 import gameStates.Playing;
 import main.Game;
-import utilz.LoadSave;
 import utilz.HelpMeMethod;
 import utilz.LoadSave;
 
@@ -12,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static utilz.Constants.PlayerConstants.*;
-import static utilz.HelpMeMethod.*;
+import static utilz.HelpMeMethod.isEntityOnGround;
 public class Player extends Entity {
     // Player attributes
     private float playerSpeed = 0.5f * Game.SCALE; // The speed at which the player moves
@@ -61,8 +60,9 @@ public class Player extends Entity {
     private int flipX = 0;
     private int flipW = 1;
 
-    public Player(float startX, float startY, int width, int height) throws IOException {
+    public Player(float startX, float startY, int width, int height, Playing playing) throws IOException {
         super(startX, startY, width, height);
+        this.playing = playing;
         initHitBox(x, y, (int) (12 * Game.SCALE), (int) (12 * Game.SCALE)); // Initialize the hitbox
         loadAnimation(); // Load the player's animations
 
