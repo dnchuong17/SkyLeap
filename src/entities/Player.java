@@ -25,6 +25,7 @@ public class Player extends Entity {
     private boolean isInAir = false; // Whether the player is currently in the air
     private boolean isJumping = false; // Whether the player is currently jumping
     private boolean hitWall = false; // Whether the player has hit a wall
+    private boolean isFalling = false;
     private float jumpTime = 0.0f; // The duration of the player's jump
     private final float BASE_JUMP_FORCE = -2.0f * Game.SCALE; // The base force applied for a jump
     private final float MAX_JUMP_CHARGE_FORCE = -5.0f * Game.SCALE; // The maximum force applied for a charged jump
@@ -133,9 +134,11 @@ public class Player extends Entity {
             long fallDuration = System.currentTimeMillis() - fallStartTime;
             fallStartTime = 0; // Reset fall timer
 
-            if (fallDuration >= 2000) {
+            if (fallDuration >= 500) {
+                isFalling = true;
                 triggerSignificantFallEvent();
             } else if (fallDuration > 0) {
+                isFalling = false;
                 triggerMinorFallEvent();
             }
         }
@@ -223,7 +226,12 @@ public class Player extends Entity {
             playerAction = CHARGING; // Ensure the player action is idle while charging jump
         } else if (isMoving) {
             playerAction = RUNNING; // Set the player action to running if moving
-        } else {
+        } else if(isInAir){
+            playerAction = JUMPING;
+        } else if(isFalling){
+            playerAction = FAILING;
+        }
+        else {
             playerAction = IDLE; // Set the player action to idle if not moving
         }
 
@@ -285,6 +293,7 @@ public class Player extends Entity {
 
         // Handle horizontal movement
         if (left) {
+            isFalling = false;
             xTempSpeed = -playerSpeed; // Move left
             flipX = width;
             flipW = -1;
@@ -292,6 +301,7 @@ public class Player extends Entity {
             lastDirectionRight = false; // Unset the last direction right
         }
         if (right) {
+            isFalling = false;
             xTempSpeed = playerSpeed; // Move right
             flipX = 0;
             flipW = 1;
