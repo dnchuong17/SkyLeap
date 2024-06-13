@@ -1,7 +1,5 @@
 package audio;
 
-import gameStates.Gamestate;
-
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
@@ -11,16 +9,12 @@ public class AudioPlayer {
 
     //in game
     public static int JUMP = 0;
-    public static int FALL = 1;
-    public static int WALK = 2;
-    public static int BOUNCE = 3;
 
     private Clip[] songs, effects;
     private int currentSongID;
     private float volume = 0.6f;
     private boolean songMute, effectMute;
 
-    private Gamestate gamestate;
 
     public AudioPlayer(){
         loadSongs();
@@ -37,9 +31,9 @@ public class AudioPlayer {
     }
 
    private void loadEffects(){
-        String[] effectNames = {"/Audio/JumpSound.wav", "/Audio/OnLandSound.wav", "/Audio/WalkSound.wav", "/Audio/Bounce.wav"};
+        String[] effectNames = {"/Audio/JumpSound.wav"};
         effects = new Clip[effectNames.length];
-        for (int i = 0; i< effects.length; i++){
+        for (int i = 0; i < effects.length; i++){
                 effects[i] = getClip(effectNames[i]);
         }
 
@@ -67,14 +61,6 @@ public class AudioPlayer {
         effects[effect].start();
     }
 
-    public void setLevelSong(){
-            if (gamestate == Gamestate.MENU && !songs[MENU].isActive()){
-                playSong(MENU);
-            }
-            if (gamestate == Gamestate.PLAYING && songs[MENU].isActive()){
-                stopSong();
-            }
-    }
 
    public void setVolume(float volume){
         this.volume = volume;
