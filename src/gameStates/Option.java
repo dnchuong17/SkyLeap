@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Option extends State implements Statemethods{
-    private BufferedImage optionImage;
+    private BufferedImage optionImage,optionBg;
     private int optionX, optionY, optionWidth, optionHeight;
     private Color helpColor;
     private Font helpFont;
@@ -25,6 +25,7 @@ public class Option extends State implements Statemethods{
     }
 
     private void loadOptionImage() throws IOException {
+        optionBg = LoadSave.getSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG);
         optionImage = LoadSave.getSpriteAtlas(LoadSave.HELP_IMAGE);
         optionWidth =  Game.GAME_WIDTH +10 ;
         optionHeight =Game.GAME_HEIGHT -200;
@@ -42,6 +43,7 @@ public class Option extends State implements Statemethods{
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(optionBg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
         g.drawImage(optionImage, optionX, optionY, optionWidth, optionHeight, null);
 
         g.setColor(helpColor);
