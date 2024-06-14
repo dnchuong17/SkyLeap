@@ -1,6 +1,8 @@
 package entities;
 
+import UI.WinOverlay;
 import audio.AudioPlayer;
+import gameStates.Gamestate;
 import gameStates.Playing;
 import main.Game;
 import utilz.HelpMeMethod;
@@ -13,6 +15,11 @@ import java.io.IOException;
 import static utilz.Constants.PlayerConstants.*;
 import static utilz.HelpMeMethod.isEntityOnGround;
 public class Player extends Entity {
+    private static final int DOOR_WIDTH = 32;
+    private static final int DOOR_HEIGHT = 32;
+
+    private boolean hasWon = false;
+    public boolean canReturnToMenu = false;
     // Player attributes
     private float playerSpeed = 0.5f * Game.SCALE; // The speed at which the player moves
     private boolean isMoving = false; // Whether the player is currently moving
@@ -58,14 +65,22 @@ public class Player extends Entity {
 
     // Fall attributes
     private long fallStartTime = 0; // The start time of the fall
+
+    //flip character
     private int flipX = 0;
     private int flipW = 1;
+
+    public WinOverlay winOverlay;
+
+    //door
+    Rectangle door = new Rectangle(455, 807, DOOR_WIDTH, DOOR_HEIGHT);
 
     public Player(float startX, float startY, int width, int height, Playing playing) throws IOException {
         super(startX, startY, width, height);
         this.playing = playing;
         initHitBox(x, y, (int) (12 * Game.SCALE), (int) (12 * Game.SCALE)); // Initialize the hitbox
         loadAnimation(); // Load the player's animations
+        winOverlay = new WinOverlay();
 
     }
 
@@ -128,6 +143,7 @@ public class Player extends Entity {
         updateAnimationTick(); // Update the animation tick
         setAnimation(); // Set the current animation
 
+
         if (isInAir && fallStartTime == 0) {
             fallStartTime = System.currentTimeMillis(); // Start fall timer
         } else if (!isInAir && fallStartTime != 0) {
@@ -141,6 +157,36 @@ public class Player extends Entity {
                 isFalling = false;
                 triggerMinorFallEvent();
             }
+        }
+
+        if (hitBox.intersects(door)) {
+            playing.winOverlay.update();
+            // Add a boolean flag to check if the player has won
+                hasWon();
+                // Set the game state to win
+                Gamestate.state = Gamestate.WIN;
+        }
+        if (hasWon) {
+            playing.winOverlay.update();
+        }
+    }
+
+    public boolean hasWon() {
+        return hasWon;
+    }
+    public void draw(Graphics g) {
+        switch (Gamestate.state) {
+            case Gamestate.PLAYING:
+                break;
+            case Gamestate.MENU:
+                // Handle the MENU state
+                break;
+            case Gamestate.OPTION:
+                // Handle the OPTION state
+                break;
+            case Gamestate.WIN:
+                playing.winOverlay.draw(g);
+                break;
         }
     }
 

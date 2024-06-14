@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public interface Statemethods {
-	public void update();
+	public void update() throws IOException;
 
 	public void draw(Graphics g);
 

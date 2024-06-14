@@ -2,6 +2,7 @@ package gameStates;
 
 import Levels.LevelsManager;
 import UI.PauseOverlay;
+import UI.WinOverlay;
 import entities.Player;
 import main.Game;
 import utilz.LoadSave;
@@ -33,6 +34,9 @@ public class Playing extends State implements Statemethods {
 	private BufferedImage backgroundPlayingImg3;
 	private BufferedImage backgroundPlayingImg4;
 
+	public WinOverlay winOverlay;
+	public static boolean isWin = false;
+
 	public Playing(Game game) throws IOException {
 		super(game);
 		initClasses(game);
@@ -41,12 +45,12 @@ public class Playing extends State implements Statemethods {
 		backgroundPlayingImg2 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_2);
 		backgroundPlayingImg3 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_3);
 		backgroundPlayingImg4 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_4);
-
 	}
 
 	private void initClasses(Game game) throws IOException {
 		levelManager = new LevelsManager(game);
 		pauseOverlay = new PauseOverlay(this);
+		winOverlay = new WinOverlay();
 
 	}
 	public void setPlayer(Player player) {
@@ -61,6 +65,7 @@ public class Playing extends State implements Statemethods {
 			checkCloseToBorder();
 		}
 		else pauseOverlay.update();
+		if (isWin) winOverlay.update();
 	}
 
 	private void checkCloseToBorder() {
@@ -86,15 +91,11 @@ public class Playing extends State implements Statemethods {
 
 	@Override
 	public void draw(Graphics g) {
-//		g.drawImage(backgroundPlayingImg, 0, 0, 1002, (int)(GAME_HEIGHT* SCALE), null);
 		int imageHeight = backgroundPlayingImg3.getHeight(null);
 		int startY = GAME_HEIGHT - imageHeight;
 
 		g.drawImage(backgroundPlayingImg3, 0, startY + 16 , Game.GAME_WIDTH, 30 * 32 , null);
-//		g.drawImage(backgroundPlayingImg2, 0, Game.GAME_HEIGHT, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-//		g.drawImage(backgroundPlayingImg1, 0, Game.GAME_HEIGHT * 2, Game.GAME_WIDTH,  Game.GAME_HEIGHT, null);
 
-//		drawBackground(g);
 
 
 		levelManager.draw(g, yLvlOffSet);
@@ -104,14 +105,10 @@ public class Playing extends State implements Statemethods {
 			g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 			pauseOverlay.draw(g);
 		}
+		if(getPlayer().hasWon()) {
+			winOverlay.draw(g);
+		}
 	}
-
-//	private void drawBackground(Graphics g) {
-//		for(int i = 0; i < 3; i++){
-//			g.drawImage(backgroundPlayingImg4, 0, 0 + i * GAME_HEIGHT , 1002, GAME_HEIGHT, null);
-//		}
-//
-//	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -135,10 +132,10 @@ public class Playing extends State implements Statemethods {
 			case KeyEvent.VK_D:
 				player.setRight(true);
 				break;
-			case KeyEvent.VK_ESCAPE:
-				paused = !paused;
-				break;
-		}
+				case KeyEvent.VK_ESCAPE:
+					paused = !paused;
+					break;
+			}
 	}
 
 	@Override

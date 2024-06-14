@@ -19,7 +19,7 @@ public class VolumeButton extends PauseButtons{
     public VolumeButton(int x, int y, int width, int height) throws IOException {
         super(x + width/2, y, VOLUME_WIDTH, height);
         bounds.x -= VOLUME_WIDTH/2;
-        buttonX = x +width/2;
+        buttonX = x + width/2;
         this.x = x;
         this.width = width;
         minX = x + VOLUME_WIDTH/2;
@@ -68,8 +68,8 @@ public class VolumeButton extends PauseButtons{
     }
 
     public void draw(Graphics g){
-        g.drawImage(slider, x, y, width, height, null);
-        g.drawImage(imgs[index], buttonX - VOLUME_WIDTH/2, y, VOLUME_WIDTH, height, null);
+        g.drawImage(slider, x, y, width, height , null);
+        g.drawImage(imgs[index], buttonX - VOLUME_WIDTH/2, y, VOLUME_WIDTH -20, height, null);
 
     }
 

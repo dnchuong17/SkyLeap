@@ -10,27 +10,30 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Option extends State implements Statemethods{
-    private BufferedImage optionImage;
+    private BufferedImage optionImage,optionBg;
     private int optionX, optionY, optionWidth, optionHeight;
     private Color helpColor;
     private Font helpFont;
 
-    private String Help1 = "Movement: Use the left and right arrow keys to move your character. ";
-    private String Help2 = "Jumping: The spacebar is your friend for leaps of faith (and hopefully, success).";
+    private String Help1 = "Movement: Use the left and right arrow keys";
+    private String Help2 = "or 'A' and 'D' to move your character.";
+    private String Help3 = "Jumping: The spacebar is your friend ";
+    private String Help4= "for leaps of faith (and hopefully, success).";
     public Option(Game game) throws IOException {
         super(game);
         loadOptionImage();
     }
 
     private void loadOptionImage() throws IOException {
+        optionBg = LoadSave.getSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG);
         optionImage = LoadSave.getSpriteAtlas(LoadSave.HELP_IMAGE);
-        optionWidth =  Game.GAME_WIDTH;
-        optionHeight =Game.GAME_HEIGHT ;
-        optionX = Game.GAME_WIDTH/2 - 850;
-        optionY = (int) (Game.SCALE+10);
+        optionWidth =  Game.GAME_WIDTH +10 ;
+        optionHeight =Game.GAME_HEIGHT -200;
+        optionX = Game.GAME_WIDTH/2 - optionWidth/2;
+        optionY = (int) (Game.SCALE + 80);
 
-        helpColor = new Color(128,0,0);
-        helpFont = new Font("Century Gothic", Font.PLAIN, 28);
+        helpColor = new Color(255,255,252);
+        helpFont = new Font("Century Gothic", Font.BOLD, 26);
     }
 
     @Override
@@ -40,14 +43,15 @@ public class Option extends State implements Statemethods{
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(optionBg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
         g.drawImage(optionImage, optionX, optionY, optionWidth, optionHeight, null);
 
         g.setColor(helpColor);
         g.setFont(helpFont);
-        g.drawString(Help1,280, Game.GAME_HEIGHT/2);
-        g.drawString(Help2,280, Game.GAME_HEIGHT/2 + 40);
-
-
+        g.drawString(Help1,190, Game.GAME_HEIGHT - 500);
+        g.drawString(Help2,190, Game.GAME_HEIGHT - 460);
+        g.drawString(Help3,190, Game.GAME_HEIGHT - 400);
+        g.drawString(Help4,190, Game.GAME_HEIGHT - 350);
     }
 
     @Override

@@ -18,6 +18,7 @@ public class GameWindow {
 		jframe.setResizable(false);
 		jframe.pack();
 		jframe.setLocationRelativeTo(null);
+		jframe.setTitle("SKYLEAP");
 		jframe.addWindowFocusListener(new WindowFocusListener() {
 			@Override
 			public void windowGainedFocus(WindowEvent e) {

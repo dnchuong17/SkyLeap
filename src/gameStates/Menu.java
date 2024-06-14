@@ -1,7 +1,6 @@
 package gameStates;
 
 import UI.MenuChoices;
-import audio.AudioPlayer;
 import main.Game;
 import utilz.LoadSave;
 
@@ -14,11 +13,8 @@ import java.io.IOException;
 public class Menu extends State implements Statemethods {
 	private MenuChoices[] buttons = new MenuChoices[3];
 	private BufferedImage bgImage, bgImageFull, banner;
-	private int menuX, menuY, menuWidth, menuHeight, index, rowIndex;
+	private int menuX, menuY, menuWidth, menuHeight;
 	private int choice = 0;
-	private AudioPlayer audioPlayer;
-
-	private boolean keyOver, keyPressed;
 
 	public Menu(Game game) throws IOException {
 		super(game);
@@ -30,17 +26,17 @@ public class Menu extends State implements Statemethods {
 
 	private void loadBackground() throws IOException {
 		bgImage = LoadSave.getSpriteAtlas(LoadSave.MENU_BACKGROUND);
-		menuWidth = (int)(bgImage.getWidth()* Game.SCALE) -100;
-		menuHeight = (int)(bgImage.getHeight()* Game.SCALE) -100;
+		menuWidth = (int)(bgImage.getWidth()* Game.SCALE) -150;
+		menuHeight = (int)(bgImage.getHeight()* Game.SCALE) -200;
 		menuX = Game.GAME_WIDTH / 2 - menuWidth /2;
-		menuY = (int) (130 * Game.SCALE) + 40;
+		menuY = (int) (130 * Game.SCALE) + 30;
 
 	}
 
 	private void loadButtons() throws IOException {
-		buttons[0] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (245 * Game.SCALE), 0, Gamestate.PLAYING);
-		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (300 * Game.SCALE), 1, Gamestate.OPTION);
-		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (355 * Game.SCALE), 2, Gamestate.QUIT);
+		buttons[0] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (245 * Game.SCALE) - 55, 0, Gamestate.PLAYING);
+		buttons[1] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (300 * Game.SCALE) -65, 1, Gamestate.OPTION);
+		buttons[2] = new MenuChoices(Game.GAME_WIDTH / 2, (int) (355 * Game.SCALE) - 75, 2, Gamestate.QUIT);
 	}
 //test choice
 	@Override

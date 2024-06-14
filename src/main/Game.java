@@ -51,7 +51,7 @@ public class Game implements Runnable {
 	}
 
 
-    private void initClasses() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    private void initClasses() throws IOException {
         audioOptions = new AudioOptions(this);
         audioPlayer = new AudioPlayer();
         menu = new Menu(this);
@@ -164,9 +164,6 @@ public class Game implements Runnable {
         return option;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
     public AudioOptions getAudioOptions() {
         return audioOptions;
     }
