@@ -8,9 +8,7 @@ import java.io.InputStream;
 
 public class LoadSave {
     public static final String PLAYER_PATH = "/Player/maincharacter1.png";                                         //error
-//    public static final String LEVEL_ATLAS = "/backgrounds/outside_sprites.png";
-//    public static final String LEVEL_TEST = "/backgrounds/level_one_data_long.png";
-    public static final String LEVEL_ATLAS = "/backgrounds/level2_sprites.png";
+    public static final String LEVEL_ATLAS = "/Tileset/level2_sprites.png";
     public static final String LEVEL_TEST = "/backgrounds/level_2_data_long.png";// test level
     public static final String MENU_BUTTONS = "/GameUI/button_atlas.png";
     public static final String MENU_BACKGROUND = "/GameUI/menu_background.png";
@@ -21,10 +19,7 @@ public class LoadSave {
     public static final String VOLUME_BUTTONS = "/GameUI/volume_buttons.png";
     public static final String MENU_BACKGROUND_IMG = "/backgrounds/BackgroundMenu.png";
     public static final String PLAYING_BACKGROUND_IMG = "/backgrounds/backgroundForReal.png";
-    public static final String PLAYING_BACKGROUND_IMG_1 = "/backgrounds/backgroundForReal_1.png";
-    public static final String PLAYING_BACKGROUND_IMG_2 = "/backgrounds/backgroundForReal_2.png";
     public static final String PLAYING_BACKGROUND_IMG_3 = "/backgrounds/backgroundForReal_3.png";
-    public static final String PLAYING_BACKGROUND_IMG_4 = "/backgrounds/backgroundForReal_4.png";
     public static final String BANNER_IMG = "/backgrounds/banner.png";
     public static final String COMPLETED = "/GameUI/completed.png";
 

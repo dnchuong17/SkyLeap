@@ -41,10 +41,7 @@ public class Playing extends State implements Statemethods {
 		super(game);
 		initClasses(game);
 		backgroundPlayingImg = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG);
-		backgroundPlayingImg1 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_1);
-		backgroundPlayingImg2 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_2);
 		backgroundPlayingImg3 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_3);
-		backgroundPlayingImg4 = LoadSave.getSpriteAtlas(LoadSave.PLAYING_BACKGROUND_IMG_4);
 	}
 
 	private void initClasses(Game game) throws IOException {

@@ -14,12 +14,6 @@ public class AudioPlayer {
         playSong(MENU);
     }
 
-    public static AudioPlayer getInstance() {
-        if (instance == null) {
-            instance = new AudioPlayer();
-        }
-        return instance;
-    }
     //in game
     public static int JUMP = 0;
 

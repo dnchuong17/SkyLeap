@@ -40,10 +40,6 @@ public class UrmButtons extends PauseButtons{
 
     }
 
-    public boolean isMouseOver() {
-        return mouseOver;
-    }
-
     public void setMouseOver(boolean mouseOver) {
         this.mouseOver = mouseOver;
     }

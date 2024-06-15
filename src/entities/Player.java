@@ -379,12 +379,6 @@ public class Player extends Entity {
 
     }
 
-    private void resetIsInAir() {
-        isInAir = false; // Set the player to be on the ground
-        airSpeed = 0.05f; // Slight positive value for bounce effect
-        System.out.println("Landed: airSpeed=" + airSpeed);
-    }
-
     private void updateXPosition(float xTempSpeed) {
         if (HelpMeMethod.isEntityCollidingHorizontally(hitBox, xTempSpeed, levelData)) {
             horizontalVelocity = -horizontalVelocity * 0.5f; // Rebound effect with reduced speed
@@ -414,63 +408,25 @@ public class Player extends Entity {
         right = false; // Reset the right flag
     }
 
-    public boolean isLeft() {
-        return left; // Return whether the left flag is set
-    }
-
     public void setLeft(boolean left) {
         this.left = left; // Set the left flag
-    }
-
-    public boolean isUp() {
-        return up; // Return whether the up flag is set
     }
 
     public void setUp(boolean up) {
         this.up = up; // Set the up flag
     }
 
-    public boolean isRight() {
-        return right; // Return whether the right flag is set
-    }
-
     public void setRight(boolean right) {
         this.right = right; // Set the right flag
-    }
-
-    public boolean isJumping() {
-        return jump; // Return whether the jump flag is set
     }
 
     public void setJumping(boolean jumping) {
         this.jump = jumping; // Set the jump flag
     }
 
-    // Getters and setters for testing purposes
-    public float getYVelocity() {
-        return airSpeed; // Return the air speed
-    }
-
     public float getXVelocity() {
         return horizontalVelocity; // Return the horizontal velocity
     }
-
-    public boolean getIsJumping() {
-        return isJumping; // Return whether the player is jumping
-    }
-
-    public float getJumpTime() {
-        return jumpTime; // Return the jump time
-    }
-
-    public void setYVelocity(float airSpeed) {
-        this.airSpeed = airSpeed; // Set the air speed
-    }
-
-    public void setXVelocity(float horizontalVelocity) {
-        this.horizontalVelocity = horizontalVelocity; // Set the horizontal velocity
-    }
-
     public void reset() {
         resetDirBooleans(); // Reset the direction booleans
         isInAir = false; // Set the player to be on the ground

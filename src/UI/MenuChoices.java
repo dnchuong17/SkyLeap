@@ -17,11 +17,10 @@ public class MenuChoices {
     private int xOffsetCenter = B_WIDTH / 2;
     private Gamestate state;
     private BufferedImage[] imgs;
-    private boolean mouseOver;
     private boolean mousePressed;
     private Rectangle bounds;
 
-    private boolean keyPressed, keyOver;
+    private boolean keyPressed;
 
     public MenuChoices(int xPos, int yPos, int rowIndex, Gamestate state) throws IOException {
         this.xPos = xPos;
@@ -60,14 +59,6 @@ public class MenuChoices {
         g.drawImage(imgs[index], xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT, null);
     }
 
-    public boolean isMouseOver() {
-        return this.mouseOver;
-    }
-
-    public void setMouseOver(boolean mouseOver) {
-        this.mouseOver = mouseOver;
-    }
-
     public boolean isMousePressed() {
         return this.mousePressed;
     }
@@ -80,32 +71,8 @@ public class MenuChoices {
         return this.bounds;
     }
 
-    public void applyGamestate() {
-        Gamestate.state = this.state;
-    }
-
-    public boolean isKeyPressed() {
-        return keyPressed;
-    }
-
     public void setKeyPressed(boolean keyPressed) {
         this.keyPressed = keyPressed;
-    }
-
-    public boolean isKeyOver() {
-        return keyOver;
-    }
-
-    public void setKeyOver(boolean keyOver) {
-        this.keyOver = keyOver;
-    }
-
-    public void resetBools() {
-        this.mouseOver = false;
-        this.mousePressed = false;
-
-        this.keyOver = false;
-        this.keyPressed = false;
     }
 
     public Gamestate getState(){

@@ -90,8 +90,6 @@ public class Game implements Runnable {
     }
 
     public void draw(Graphics g) {
-//        levelsManager.render(g);
-//        player.render(g);
         switch (Gamestate.state) {
             case MENU:
                 menu.draw(g);

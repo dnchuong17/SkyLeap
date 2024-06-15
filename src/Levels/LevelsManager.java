@@ -12,7 +12,6 @@ import static main.Game.*;
 public class LevelsManager {
     private Game game;
     private BufferedImage[] levelSprite;
-    private BufferedImage[] levelTestSprite;
     private Level levelTest;
 
     public LevelsManager(Game game) throws IOException {
