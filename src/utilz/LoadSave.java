@@ -8,8 +8,6 @@ import java.io.InputStream;
 
 public class LoadSave {
     public static final String PLAYER_PATH = "/Player/maincharacter.png";                                         //error
-//    public static final String LEVEL_ATLAS = "/backgrounds/outside_sprites.png";
-//    public static final String LEVEL_TEST = "/backgrounds/level_one_data_long.png";
     public static final String LEVEL_ATLAS = "/backgrounds/level2_sprites.png";
     public static final String LEVEL_TEST = "/backgrounds/level_2_data_long.png";// test level
     public static final String MENU_BUTTONS = "/GameUI/button_atlas.png";
